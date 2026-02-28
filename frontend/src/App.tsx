@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
+import ListeOffres from './pages/offres/ListeOffres';
+import DetailOffre from './pages/offres/DetailOffre';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -23,7 +25,17 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           } />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/offres" element={
+            <ProtectedRoute>
+              <ListeOffres />
+            </ProtectedRoute>
+          } />
+          <Route path="/offres/:id" element={
+            <ProtectedRoute>
+              <DetailOffre />
+            </ProtectedRoute>
+          } />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
