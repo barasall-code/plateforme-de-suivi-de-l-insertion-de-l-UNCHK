@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import offresRoutes from './routes/offres.routes';
+import candidaturesRoutes from './routes/candidatures.routes';
 
 dotenv.config();
 
@@ -29,11 +30,13 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/offres', offresRoutes);
+app.use('/api/candidatures', candidaturesRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`🚀 Serveur demarre sur http://localhost:${PORT}`);
   console.log(`🔐 Auth : http://localhost:${PORT}/api/auth`);
   console.log(`📋 Offres : http://localhost:${PORT}/api/offres`);
+  console.log(`📝 Candidatures : http://localhost:${PORT}/api/candidatures`);
 });
 
 process.on('SIGTERM', () => server.close());
