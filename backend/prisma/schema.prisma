@@ -1,0 +1,288 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TypeUtilisateur {
+  etudiant
+  entreprise
+  admin
+  superviseur
+}
+
+enum NiveauEtude {
+  licence
+  master
+  doctorat
+}
+
+enum TypeOffre {
+  stage
+  alternance
+  cdi
+  cdd
+  freelance
+}
+
+enum ModeTravail {
+  presentiel
+  teletravail
+  hybride
+}
+
+enum StatutOffre {
+  brouillon
+  soumis
+  valide
+  publie
+  ferme
+}
+
+enum StatutCandidature {
+  soumise
+  vue
+  entretien
+  acceptee
+  refusee
+}
+
+enum TypeStatutProfessionnel {
+  en_emploi
+  en_recherche
+  en_formation
+  autre
+}
+
+enum TypeNotification {
+  offre
+  candidature
+  statut
+  rappel
+  systeme
+}
+
+enum CategorieCompetence {
+  technique
+  transversale
+  linguistique
+}
+
+model Utilisateur {
+  id               String          @id @default(uuid())
+  email            String          @unique
+  motDePasseHash   String
+  typeUtilisateur  TypeUtilisateur
+  estActif         Boolean         @default(true)
+  dateCreation     DateTime        @default(now())
+  dateModification DateTime        @updatedAt
+  etudiant         Etudiant?
+  entreprise       Entreprise?
+  admin            Admin?
+  superviseur      Superviseur?
+  notifications    Notification[]
+  historiques      HistoriqueStatutCandidature[]
+  @@map("utilisateurs")
+}
+
+model Etudiant {
+  id                       String      @id @default(uuid())
+  utilisateur              Utilisateur @relation(fields: [id], references: [id])
+  numeroEtudiant           String      @unique
+  nom                      String
+  prenom                   String
+  dateNaissance            DateTime?
+  telephone                String?
+  filiere                  String
+  niveauEtude              NiveauEtude
+  promotion                String
+  dateDiplome              DateTime?
+  pourcentageProfilComplet Int         @default(0)
+  cvUrl                    String?
+  photoUrl                 String?
+  linkedinUrl              String?
+  candidatures             Candidature[]
+  statutsProfessionnels    StatutProfessionnel[]
+  competences              EtudiantCompetence[]
+  supervisions             Supervision[]
+  @@map("etudiants")
+}
+
+model Entreprise {
+  id               String      @id @default(uuid())
+  utilisateur      Utilisateur @relation(fields: [id], references: [id])
+  nomEntreprise    String
+  siret            String?     @unique
+  secteurActivite  String
+  tailleEntreprise String?
+  siteWeb          String?
+  ville            String?
+  pays             String?
+  description      String?
+  logoUrl          String?
+  estValide        Boolean     @default(false)
+  dateValidation   DateTime?
+  offres           Offre[]
+  @@map("entreprises")
+}
+
+model Admin {
+  id              String      @id @default(uuid())
+  utilisateur     Utilisateur @relation(fields: [id], references: [id])
+  role            String
+  departement     String?
+  permission      String?
+  dateNommination DateTime?
+  @@map("admins")
+}
+
+model Superviseur {
+  id           String      @id @default(uuid())
+  utilisateur  Utilisateur @relation(fields: [id], references: [id])
+  nom          String
+  prenom       String
+  departement  String?
+  telephone    String?
+  supervisions Supervision[]
+  @@map("superviseurs")
+}
+
+model Offre {
+  id                    String      @id @default(uuid())
+  entreprise            Entreprise  @relation(fields: [entrepriseId], references: [id])
+  entrepriseId          String
+  titre                 String
+  description           String
+  typeOffre             TypeOffre
+  domaine               String
+  niveauRequis          NiveauEtude
+  dureeMois             Int?
+  salaireMin            Decimal?
+  salaireMax            Decimal?
+  localisation          String
+  modeTravail           ModeTravail @default(presentiel)
+  competencesRequises   Json?
+  dateLimiteCandidature DateTime
+  statut                StatutOffre @default(brouillon)
+  nombrePostes          Int         @default(1)
+  dateCreation          DateTime    @default(now())
+  datePublication       DateTime?
+  dateFermeture         DateTime?
+  candidatures          Candidature[]
+  competences           OffreCompetence[]
+  @@map("offres")
+}
+
+model Candidature {
+  id                       String            @id @default(uuid())
+  etudiant                 Etudiant          @relation(fields: [etudiantId], references: [id])
+  etudiantId               String
+  offre                    Offre             @relation(fields: [offreId], references: [id])
+  offreId                  String
+  lettreMotivation         String
+  cvUrl                    String
+  documentsComplementaires Json?
+  statut                   StatutCandidature @default(soumise)
+  dateCandidature          DateTime          @default(now())
+  dateDerniereModification DateTime          @updatedAt
+  commentaireEntreprise    String?
+  noteEvaluation           Int?
+  historique               HistoriqueStatutCandidature[]
+  @@unique([etudiantId, offreId])
+  @@map("candidatures")
+}
+
+model StatutProfessionnel {
+  id                String                  @id @default(uuid())
+  etudiant          Etudiant                @relation(fields: [etudiantId], references: [id])
+  etudiantId        String
+  typeStatut        TypeStatutProfessionnel
+  nomEntreprise     String?
+  poste             String?
+  typeContrat       String?
+  salaireBrutAnnuel Decimal?
+  dateDebut         DateTime
+  dateFin           DateTime?
+  secteurActivite   String?
+  ville             String?
+  pays              String?
+  justificatifUrl   String?
+  estValide         Boolean                 @default(false)
+  idValidateur      String?
+  dateDeclaration   DateTime                @default(now())
+  dateValidation    DateTime?
+  @@map("statuts_professionnels")
+}
+
+model Competence {
+  id            String              @id @default(uuid())
+  nomCompetence String              @unique
+  categorie     CategorieCompetence
+  description   String?
+  etudiants     EtudiantCompetence[]
+  offres        OffreCompetence[]
+  @@map("competences")
+}
+
+model EtudiantCompetence {
+  etudiant        Etudiant   @relation(fields: [etudiantId], references: [id])
+  etudiantId      String
+  competence      Competence @relation(fields: [competenceId], references: [id])
+  competenceId    String
+  niveauMaitrise  String
+  dateAcquisition DateTime   @default(now())
+  @@id([etudiantId, competenceId])
+  @@map("etudiant_competences")
+}
+
+model OffreCompetence {
+  offre          Offre      @relation(fields: [offreId], references: [id])
+  offreId        String
+  competence     Competence @relation(fields: [competenceId], references: [id])
+  competenceId   String
+  niveauRequis   String
+  estObligatoire Boolean    @default(true)
+  @@id([offreId, competenceId])
+  @@map("offre_competences")
+}
+
+model Notification {
+  id               String           @id @default(uuid())
+  utilisateur      Utilisateur      @relation(fields: [utilisateurId], references: [id])
+  utilisateurId    String
+  typeNotification TypeNotification
+  titre            String
+  message          String
+  lienAction       String?
+  estLue           Boolean          @default(false)
+  dateCreation     DateTime         @default(now())
+  @@map("notifications")
+}
+
+model HistoriqueStatutCandidature {
+  id               String      @id @default(uuid())
+  candidature      Candidature @relation(fields: [candidatureId], references: [id])
+  candidatureId    String
+  ancienStatut     String
+  nouveauStatut    String
+  modificateur     Utilisateur @relation(fields: [modificateurId], references: [id])
+  modificateurId   String
+  commentaire      String?
+  dateModification DateTime    @default(now())
+  @@map("historique_statuts_candidatures")
+}
+
+model Supervision {
+  superviseur   Superviseur @relation(fields: [superviseurId], references: [id])
+  superviseurId String
+  etudiant      Etudiant    @relation(fields: [etudiantId], references: [id])
+  etudiantId    String
+  dateDebut     DateTime    @default(now())
+  estActif      Boolean     @default(true)
+  commentaire   String?
+  @@id([superviseurId, etudiantId])
+  @@map("supervisions")
+}
