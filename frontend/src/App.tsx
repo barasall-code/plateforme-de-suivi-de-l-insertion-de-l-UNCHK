@@ -11,11 +11,23 @@ import CreerOffre from './pages/entreprise/CreerOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
 import MonProfil from './pages/profil/MonProfil';
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
   if (isLoading) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
   if (!user) return <Navigate to="/login" replace />;
+  if (roles && !roles.includes(user.role)) {
+    if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
+  }
   return <>{children}</>;
+}
+
+function HomeRedirect() {
+  const { user, isLoading } = useAuth();
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 function App() {
@@ -25,31 +37,53 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Routes étudiant */}
           <Route path="/dashboard" element={
-            <ProtectedRoute><Dashboard /></ProtectedRoute>
+            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+              <Dashboard />
+            </ProtectedRoute>
           } />
           <Route path="/offres" element={
-            <ProtectedRoute><ListeOffres /></ProtectedRoute>
+            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+              <ListeOffres />
+            </ProtectedRoute>
           } />
           <Route path="/offres/:id" element={
-            <ProtectedRoute><DetailOffre /></ProtectedRoute>
+            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+              <DetailOffre />
+            </ProtectedRoute>
           } />
           <Route path="/candidatures" element={
-            <ProtectedRoute><MesCandidatures /></ProtectedRoute>
+            <ProtectedRoute roles={['etudiant']}>
+              <MesCandidatures />
+            </ProtectedRoute>
           } />
           <Route path="/profil" element={
-            <ProtectedRoute><MonProfil /></ProtectedRoute>
+            <ProtectedRoute roles={['etudiant', 'entreprise']}>
+              <MonProfil />
+            </ProtectedRoute>
           } />
+
+          {/* Routes entreprise */}
           <Route path="/entreprise/dashboard" element={
-            <ProtectedRoute><DashboardEntreprise /></ProtectedRoute>
+            <ProtectedRoute roles={['entreprise']}>
+              <DashboardEntreprise />
+            </ProtectedRoute>
           } />
           <Route path="/entreprise/creer-offre" element={
-            <ProtectedRoute><CreerOffre /></ProtectedRoute>
+            <ProtectedRoute roles={['entreprise']}>
+              <CreerOffre />
+            </ProtectedRoute>
           } />
           <Route path="/entreprise/offres/:offreId/candidatures" element={
-            <ProtectedRoute><CandidaturesOffre /></ProtectedRoute>
+            <ProtectedRoute roles={['entreprise']}>
+              <CandidaturesOffre />
+            </ProtectedRoute>
           } />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          <Route path="/" element={<HomeRedirect />} />
+          <Route path="*" element={<HomeRedirect />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
