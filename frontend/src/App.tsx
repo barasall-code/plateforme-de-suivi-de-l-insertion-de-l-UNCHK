@@ -9,6 +9,7 @@ import MesCandidatures from './pages/candidatures/MesCandidatures';
 import DashboardEntreprise from './pages/entreprise/DashboardEntreprise';
 import CreerOffre from './pages/entreprise/CreerOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
+import MonProfil from './pages/profil/MonProfil';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -35,6 +36,9 @@ function App() {
           } />
           <Route path="/candidatures" element={
             <ProtectedRoute><MesCandidatures /></ProtectedRoute>
+          } />
+          <Route path="/profil" element={
+            <ProtectedRoute><MonProfil /></ProtectedRoute>
           } />
           <Route path="/entreprise/dashboard" element={
             <ProtectedRoute><DashboardEntreprise /></ProtectedRoute>
