@@ -110,7 +110,7 @@ export default function CandidaturesOffre() {
 
                 <div className="mb-4">
                   <p className="text-xs text-gray-500 mb-1">Lettre de motivation</p>
-                  <p className="text-sm text-gray-600 line-clamp-3">{c.lettreMotivation}</p>
+                  <p className="text-sm text-gray-600 line-clamp-2">{c.lettreMotivation}</p>
                 </div>
 
                 {c.commentaireEntreprise && (
@@ -131,6 +131,12 @@ export default function CandidaturesOffre() {
                         Voir CV
                       </a>
                     )}
+                    <Link
+                      to={`/entreprise/candidatures/${c.id}/profil`}
+                      className="text-sm text-purple-600 hover:text-purple-700 font-medium"
+                    >
+                      Voir profil
+                    </Link>
                     <button
                       onClick={() => { setSelected(c); setNewStatut(c.statut); }}
                       className="text-sm text-green-600 hover:text-green-700 font-medium"

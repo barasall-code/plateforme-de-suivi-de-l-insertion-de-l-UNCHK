@@ -46,3 +46,11 @@ export async function retirerCandidature(req: AuthRequest, res: Response): Promi
     res.status(400).json({ success: false, message: error.message });
   }
 }
+export async function getProfilCandidat(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await candidaturesService.getProfilCandidat(req.params.id as string, req.user!.userId);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+}

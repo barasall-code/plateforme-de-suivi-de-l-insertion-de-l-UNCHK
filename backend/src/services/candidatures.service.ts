@@ -108,3 +108,30 @@ export async function retirerCandidature(id: string, etudiantUserId: string) {
   await prisma.candidature.delete({ where: { id } });
   return { message: 'Candidature retiree' };
 }
+export async function getProfilCandidat(id: string, entrepriseUserId: string) {
+  const candidature = await prisma.candidature.findUnique({
+    where: { id },
+    include: {
+      offre: true,
+      etudiant: {
+        include: {
+          utilisateur: { select: { email: true } },
+          competences: { include: { competence: true } },
+        },
+      },
+    },
+  });
+  if (!candidature) throw new Error('Candidature introuvable');
+  if (candidature.offre.entrepriseId !== entrepriseUserId) throw new Error('Non autorise');
+
+  return {
+    etudiant: candidature.etudiant,
+    candidature: {
+      id: candidature.id,
+      statut: candidature.statut,
+      lettreMotivation: candidature.lettreMotivation,
+      cvUrl: candidature.cvUrl,
+      dateCandidature: candidature.dateCandidature,
+    },
+  };
+}
