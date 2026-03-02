@@ -18,6 +18,7 @@ import GestionUtilisateurs from './pages/admin/GestionUtilisateurs';
 import DashboardSuperviseur from './pages/superviseur/DashboardSuperviseur';
 import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
+import LandingPage from './pages/LandingPage';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
@@ -138,7 +139,7 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/" element={<HomeRedirect />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<HomeRedirect />} />
         </Routes>
       </AuthProvider>
