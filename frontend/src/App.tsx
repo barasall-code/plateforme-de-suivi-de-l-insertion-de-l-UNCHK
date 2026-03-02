@@ -9,6 +9,7 @@ import MesCandidatures from './pages/candidatures/MesCandidatures';
 import DashboardEntreprise from './pages/entreprise/DashboardEntreprise';
 import CreerOffre from './pages/entreprise/CreerOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
+import ProfilEntreprise from './pages/entreprise/ProfilEntreprise';
 import MonProfil from './pages/profil/MonProfil';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
@@ -37,8 +38,6 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
-          {/* Routes étudiant */}
           <Route path="/dashboard" element={
             <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
               <Dashboard />
@@ -60,15 +59,18 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/profil" element={
-            <ProtectedRoute roles={['etudiant', 'entreprise']}>
+            <ProtectedRoute roles={['etudiant']}>
               <MonProfil />
             </ProtectedRoute>
           } />
-
-          {/* Routes entreprise */}
           <Route path="/entreprise/dashboard" element={
             <ProtectedRoute roles={['entreprise']}>
               <DashboardEntreprise />
+            </ProtectedRoute>
+          } />
+          <Route path="/entreprise/profil" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <ProfilEntreprise />
             </ProtectedRoute>
           } />
           <Route path="/entreprise/creer-offre" element={
@@ -81,7 +83,6 @@ function App() {
               <CandidaturesOffre />
             </ProtectedRoute>
           } />
-
           <Route path="/" element={<HomeRedirect />} />
           <Route path="*" element={<HomeRedirect />} />
         </Routes>
