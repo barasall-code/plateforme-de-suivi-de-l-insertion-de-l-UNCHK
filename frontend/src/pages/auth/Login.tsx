@@ -16,7 +16,15 @@ export default function Login() {
     setIsLoading(true);
     try {
       await login(email, motDePasse);
-      navigate('/dashboard');
+      const savedUser = localStorage.getItem('user');
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        if (user.role === 'entreprise') {
+          navigate('/entreprise/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erreur de connexion');
     } finally {
