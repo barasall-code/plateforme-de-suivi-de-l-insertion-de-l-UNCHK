@@ -7,6 +7,7 @@ import offresRoutes from './routes/offres.routes';
 import candidaturesRoutes from './routes/candidatures.routes';
 import profilRoutes from './routes/profil.routes';
 import notificationsRoutes from './routes/notifications.routes';
+import adminRoutes from './routes/admin.routes';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use('/api/offres', offresRoutes);
 app.use('/api/candidatures', candidaturesRoutes);
 app.use('/api/profil', profilRoutes);
 app.use('/api/notifications', notificationsRoutes);
+app.use('/api/admin', adminRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`🚀 Serveur demarre sur http://localhost:${PORT}`);
@@ -43,6 +45,7 @@ const server = app.listen(PORT, () => {
   console.log(`📝 Candidatures : http://localhost:${PORT}/api/candidatures`);
   console.log(`👤 Profil : http://localhost:${PORT}/api/profil`);
   console.log(`🔔 Notifications : http://localhost:${PORT}/api/notifications`);
+  console.log(`⚙️  Admin : http://localhost:${PORT}/api/admin`);
 });
 
 process.on('SIGTERM', () => server.close());

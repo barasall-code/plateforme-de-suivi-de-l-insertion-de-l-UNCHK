@@ -10,8 +10,11 @@ import DashboardEntreprise from './pages/entreprise/DashboardEntreprise';
 import CreerOffre from './pages/entreprise/CreerOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
 import ProfilEntreprise from './pages/entreprise/ProfilEntreprise';
-import MonProfil from './pages/profil/MonProfil';
 import ProfilCandidat from './pages/entreprise/ProfilCandidат';
+import MonProfil from './pages/profil/MonProfil';
+import DashboardAdmin from './pages/admin/DashboardAdmin';
+import GestionEntreprises from './pages/admin/GestionEntreprises';
+import GestionUtilisateurs from './pages/admin/GestionUtilisateurs';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
@@ -19,6 +22,7 @@ function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?
   if (!user) return <Navigate to="/login" replace />;
   if (roles && !roles.includes(user.role)) {
     if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
+    if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
     return <Navigate to="/dashboard" replace />;
   }
   return <>{children}</>;
@@ -29,6 +33,7 @@ function HomeRedirect() {
   if (isLoading) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
+  if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
   return <Navigate to="/dashboard" replace />;
 }
 
@@ -39,18 +44,20 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Routes étudiant */}
           <Route path="/dashboard" element={
-            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant', 'superviseur']}>
               <Dashboard />
             </ProtectedRoute>
           } />
           <Route path="/offres" element={
-            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant', 'superviseur']}>
               <ListeOffres />
             </ProtectedRoute>
           } />
           <Route path="/offres/:id" element={
-            <ProtectedRoute roles={['etudiant', 'admin', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant', 'superviseur']}>
               <DetailOffre />
             </ProtectedRoute>
           } />
@@ -64,11 +71,8 @@ function App() {
               <MonProfil />
             </ProtectedRoute>
           } />
-          <Route path="/entreprise/candidatures/:candidatureId/profil" element={
-  <ProtectedRoute roles={['entreprise']}>
-    <ProfilCandidat />
-  </ProtectedRoute>
-} />
+
+          {/* Routes entreprise */}
           <Route path="/entreprise/dashboard" element={
             <ProtectedRoute roles={['entreprise']}>
               <DashboardEntreprise />
@@ -89,6 +93,29 @@ function App() {
               <CandidaturesOffre />
             </ProtectedRoute>
           } />
+          <Route path="/entreprise/candidatures/:candidatureId/profil" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <ProfilCandidat />
+            </ProtectedRoute>
+          } />
+
+          {/* Routes admin */}
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute roles={['admin']}>
+              <DashboardAdmin />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/entreprises" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionEntreprises />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/utilisateurs" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionUtilisateurs />
+            </ProtectedRoute>
+          } />
+
           <Route path="/" element={<HomeRedirect />} />
           <Route path="*" element={<HomeRedirect />} />
         </Routes>
