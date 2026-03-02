@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Notifications from '../components/Notifications';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -10,6 +11,7 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-green-700">UNCHK</h1>
           <div className="flex items-center gap-4">
+            <Notifications />
             <span className="text-gray-600 text-sm">{user?.email}</span>
             <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
               {user?.role}

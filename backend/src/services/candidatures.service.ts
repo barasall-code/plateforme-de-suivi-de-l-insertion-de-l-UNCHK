@@ -96,6 +96,27 @@ export async function changerStatut(id: string, data: any, entrepriseUserId: str
     },
   });
 
+  // Notification automatique à l'étudiant
+  const messages: Record<string, string> = {
+    vue: 'Votre candidature a été consultée par l\'entreprise.',
+    entretien: 'Félicitations ! Vous êtes convoqué(e) à un entretien.',
+    acceptee: '🎉 Félicitations ! Votre candidature a été acceptée.',
+    refusee: 'Votre candidature n\'a pas été retenue cette fois.',
+  };
+
+  if (messages[data.statut]) {
+    await prisma.notification.create({
+      data: {
+        utilisateurId: candidature.etudiantId,
+        typeNotification: 'statut' as any,
+        titre: `Candidature — ${candidature.offre.titre}`,
+        message: messages[data.statut],
+        lienAction: '/candidatures',
+        estLue: false,
+      },
+    });
+  }
+
   return updated;
 }
 
