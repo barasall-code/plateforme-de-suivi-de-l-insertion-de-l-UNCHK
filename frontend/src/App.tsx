@@ -15,6 +15,9 @@ import MonProfil from './pages/profil/MonProfil';
 import DashboardAdmin from './pages/admin/DashboardAdmin';
 import GestionEntreprises from './pages/admin/GestionEntreprises';
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs';
+import DashboardSuperviseur from './pages/superviseur/DashboardSuperviseur';
+import MesEtudiants from './pages/superviseur/MesEtudiants';
+import DetailEtudiant from './pages/superviseur/DetailEtudiant';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
@@ -23,6 +26,7 @@ function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?
   if (roles && !roles.includes(user.role)) {
     if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === 'superviseur') return <Navigate to="/superviseur/dashboard" replace />;
     return <Navigate to="/dashboard" replace />;
   }
   return <>{children}</>;
@@ -34,6 +38,7 @@ function HomeRedirect() {
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
   if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === 'superviseur') return <Navigate to="/superviseur/dashboard" replace />;
   return <Navigate to="/dashboard" replace />;
 }
 
@@ -47,7 +52,7 @@ function App() {
 
           {/* Routes étudiant */}
           <Route path="/dashboard" element={
-            <ProtectedRoute roles={['etudiant', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant']}>
               <Dashboard />
             </ProtectedRoute>
           } />
@@ -113,6 +118,23 @@ function App() {
           <Route path="/admin/utilisateurs" element={
             <ProtectedRoute roles={['admin']}>
               <GestionUtilisateurs />
+            </ProtectedRoute>
+          } />
+
+          {/* Routes superviseur */}
+          <Route path="/superviseur/dashboard" element={
+            <ProtectedRoute roles={['superviseur']}>
+              <DashboardSuperviseur />
+            </ProtectedRoute>
+          } />
+          <Route path="/superviseur/etudiants" element={
+            <ProtectedRoute roles={['superviseur']}>
+              <MesEtudiants />
+            </ProtectedRoute>
+          } />
+          <Route path="/superviseur/etudiants/:etudiantId" element={
+            <ProtectedRoute roles={['superviseur']}>
+              <DetailEtudiant />
             </ProtectedRoute>
           } />
 
