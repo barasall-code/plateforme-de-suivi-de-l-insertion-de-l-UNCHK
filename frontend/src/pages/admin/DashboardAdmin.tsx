@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, PieChart, Pie, Cell
+} from 'recharts';
 
 export default function DashboardAdmin() {
   const { user, logout } = useAuth();
@@ -23,25 +27,34 @@ export default function DashboardAdmin() {
     }
   };
 
+  const barData = stats ? [
+    { label: 'Étudiants', value: stats.totalEtudiants, color: '#3B82F6' },
+    { label: 'Entreprises', value: stats.totalEntreprises, color: '#10B981' },
+    { label: 'Offres', value: stats.totalOffres, color: '#F59E0B' },
+    { label: 'Candidatures', value: stats.totalCandidatures, color: '#8B5CF6' },
+  ] : [];
+
+  const pieData = stats ? [
+    { name: 'Offres publiées', value: stats.offresPubliees, color: '#10B981' },
+    { name: 'Brouillons', value: stats.totalOffres - stats.offresPubliees, color: '#E5E7EB' },
+  ] : [];
+
+  const pieEntreprises = stats ? [
+    { name: 'Validées', value: stats.totalEntreprises - stats.entreprisesEnAttente, color: '#10B981' },
+    { name: 'En attente', value: stats.entreprisesEnAttente, color: '#F59E0B' },
+  ] : [];
+
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-green-700">UNCHK — Administration</h1>
+          <Link to="/" className="text-xl font-bold text-green-700">UNCHK — Administration</Link>
           <div className="flex items-center gap-4">
-            <Link to="/admin/entreprises" className="text-sm text-gray-600 hover:text-green-700 font-medium">
-              Entreprises
-            </Link>
-            <Link to="/admin/utilisateurs" className="text-sm text-gray-600 hover:text-green-700 font-medium">
-              Utilisateurs
-            </Link>
+            <Link to="/admin/entreprises" className="text-sm text-gray-600 hover:text-green-700 font-medium">Entreprises</Link>
+            <Link to="/admin/utilisateurs" className="text-sm text-gray-600 hover:text-green-700 font-medium">Utilisateurs</Link>
             <span className="text-gray-600 text-sm">{user?.email}</span>
-            <span className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-1 rounded-full">
-              admin
-            </span>
-            <button onClick={logout} className="text-sm text-red-600 hover:text-red-700 font-medium">
-              Déconnexion
-            </button>
+            <span className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-1 rounded-full">admin</span>
+            <button onClick={logout} className="text-sm text-red-600 hover:text-red-700 font-medium">Déconnexion</button>
           </div>
         </div>
       </nav>
@@ -53,6 +66,7 @@ export default function DashboardAdmin() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : (
           <>
+            {/* Stats cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                 <p className="text-3xl font-bold text-gray-800">{stats?.totalEtudiants}</p>
@@ -80,6 +94,60 @@ export default function DashboardAdmin() {
               </div>
             </div>
 
+            {/* Graphiques */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {/* Bar chart global */}
+              <div className="md:col-span-1 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="font-semibold text-gray-800 mb-4">Vue globale</h3>
+                <ResponsiveContainer width="100%" height={220}>
+                  <BarChart data={barData} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+                    <XAxis dataKey="label" tick={{ fontSize: 10 }} />
+                    <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
+                    <Tooltip />
+                    <Bar dataKey="value" name="Total" radius={[6, 6, 0, 0]}>
+                      {barData.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Pie offres */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="font-semibold text-gray-800 mb-4">Statut des offres</h3>
+                <ResponsiveContainer width="100%" height={220}>
+                  <PieChart>
+                    <Pie data={pieData} cx="50%" cy="50%" outerRadius={80}
+                      dataKey="value" label={({ name, value }) => `${name} (${value})`}>
+                      {pieData.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Pie entreprises */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="font-semibold text-gray-800 mb-4">Validation entreprises</h3>
+                <ResponsiveContainer width="100%" height={220}>
+                  <PieChart>
+                    <Pie data={pieEntreprises} cx="50%" cy="50%" outerRadius={80}
+                      dataKey="value" label={({ name, value }) => `${name} (${value})`}>
+                      {pieEntreprises.map((entry, index) => (
+                        <Cell key={index} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Navigation */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link to="/admin/entreprises"
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
