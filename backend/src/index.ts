@@ -9,6 +9,8 @@ import profilRoutes from './routes/profil.routes';
 import notificationsRoutes from './routes/notifications.routes';
 import adminRoutes from './routes/admin.routes';
 import superviseurRoutes from './routes/superviseur.routes';
+import uploadRoutes from './routes/upload.routes';
+import path from 'path';
 
 dotenv.config();
 
@@ -22,6 +24,8 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -49,6 +53,7 @@ const server = app.listen(PORT, () => {
   console.log(`🔔 Notifications : http://localhost:${PORT}/api/notifications`);
   console.log(`⚙️  Admin : http://localhost:${PORT}/api/admin`);
   console.log(`👁️  Superviseur : http://localhost:${PORT}/api/superviseur`);
+  console.log(`📁 Upload : http://localhost:${PORT}/api/upload`);
 });
 
 process.on('SIGTERM', () => server.close());
