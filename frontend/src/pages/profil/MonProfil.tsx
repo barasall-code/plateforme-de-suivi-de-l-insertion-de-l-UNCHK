@@ -13,9 +13,11 @@ export default function MonProfil() {
   const [error, setError] = useState('');
   const [form, setForm] = useState<any>({});
 
-  useEffect(() => {
-    chargerProfil();
-  }, []);
+  // Upload états
+  const [uploadingCv, setUploadingCv] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
+  useEffect(() => { chargerProfil(); }, []);
 
   const chargerProfil = async () => {
     try {
@@ -50,6 +52,64 @@ export default function MonProfil() {
     }
   };
 
+  const handleUploadCv = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCv(true);
+    try {
+      const formData = new FormData();
+      formData.append('fichier', file);
+      formData.append('type', 'cv');
+      const response = await api.post('/upload/fichier', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      const cvUrl = response.data.data.url;
+      await api.put('/profil', { ...profil, cvUrl });
+      setProfil({ ...profil, cvUrl });
+      setSuccess('CV uploadé avec succès !');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError('Erreur lors du téléchargement du CV');
+    } finally {
+      setUploadingCv(false);
+    }
+  };
+
+  const handleUploadPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append('fichier', file);
+      formData.append('type', 'photo');
+      const response = await api.post('/upload/fichier', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      const photoUrl = response.data.data.url;
+      await api.put('/profil', { ...profil, photoUrl });
+      setProfil({ ...profil, photoUrl });
+      setSuccess('Photo uploadée avec succès !');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError('Erreur lors du téléchargement de la photo');
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const getFileIcon = (url: string) => {
+    if (!url) return '📄';
+    if (url.endsWith('.pdf')) return '📕';
+    if (url.endsWith('.doc') || url.endsWith('.docx')) return '📘';
+    return '📄';
+  };
+
+  const getFileName = (url: string) => {
+    if (!url) return '';
+    return url.split('/').pop() || url;
+  };
+
   if (isLoading) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
 
   return (
@@ -57,9 +117,7 @@ export default function MonProfil() {
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-green-700">UNCHK</h1>
-          <Link to="/dashboard" className="text-sm text-gray-600 hover:text-green-700">
-            ← Dashboard
-          </Link>
+          <Link to="/dashboard" className="text-sm text-gray-600 hover:text-green-700">← Dashboard</Link>
         </div>
       </nav>
 
@@ -67,11 +125,9 @@ export default function MonProfil() {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-bold text-gray-800">Mon profil</h2>
           {!isEditing && (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2.5 rounded-lg transition"
-            >
-              Modifier
+            <button onClick={() => setIsEditing(true)}
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2.5 rounded-lg transition">
+              ✏️ Modifier
             </button>
           )}
         </div>
@@ -81,69 +137,135 @@ export default function MonProfil() {
             {success}
           </div>
         )}
-
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
             {error}
           </div>
         )}
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-          <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl font-bold text-green-700">
-              {profil?.prenom?.[0]}{profil?.nom?.[0]}
+        {/* En-tête profil */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              {profil?.photoUrl ? (
+                <img src={`http://localhost:3001${profil.photoUrl}`} alt="Photo"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-green-200" />
+              ) : (
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl font-bold text-green-700">
+                  {profil?.prenom?.[0]}{profil?.nom?.[0]}
+                </div>
+              )}
+              <label className="absolute -bottom-1 -right-1 bg-green-600 hover:bg-green-700 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer transition text-xs">
+                {uploadingPhoto ? '⏳' : '📷'}
+                <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
+              </label>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-gray-800">{profil?.prenom} {profil?.nom}</h3>
               <p className="text-gray-500">{profil?.utilisateur?.email}</p>
-              <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
-                {user?.role}
-              </span>
+              <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">{user?.role}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Section Documents */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+          <h3 className="font-semibold text-gray-800 mb-4">📁 Mes documents</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* CV */}
+            <div className={`border-2 rounded-xl p-4 ${profil?.cvUrl ? 'border-green-300 bg-green-50' : 'border-dashed border-gray-300'}`}>
+              <div className="text-center mb-3">
+                <span className="text-3xl">{profil?.cvUrl ? getFileIcon(profil.cvUrl) : '📄'}</span>
+                <p className="text-sm font-medium text-gray-700 mt-1">CV</p>
+              </div>
+              {profil?.cvUrl ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-500 truncate text-center" title={getFileName(profil.cvUrl)}>
+                    {getFileName(profil.cvUrl)}
+                  </p>
+                  <a href={`http://localhost:3001${profil.cvUrl}`} target="_blank" rel="noopener noreferrer"
+                    className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-1.5 rounded-lg transition">
+                    👁️ Voir le CV
+                  </a>
+                  <label className="block w-full text-center border border-gray-300 text-gray-600 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                    🔄 Remplacer
+                    <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadCv} className="hidden" />
+                  </label>
+                </div>
+              ) : (
+                <label className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-2 rounded-lg cursor-pointer transition">
+                  {uploadingCv ? '⏳ Upload...' : '⬆️ Charger CV'}
+                  <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadCv} className="hidden" />
+                </label>
+              )}
+            </div>
+
+            {/* Lettre de motivation */}
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
+              <div className="text-center mb-3">
+                <span className="text-3xl">✉️</span>
+                <p className="text-sm font-medium text-gray-700 mt-1">Lettre de motivation</p>
+              </div>
+              <p className="text-xs text-gray-400 text-center mb-3">Jointe lors des candidatures</p>
+              <div className="bg-blue-50 rounded-lg p-2">
+                <p className="text-xs text-blue-600 text-center">Uploadée à chaque candidature</p>
+              </div>
+            </div>
+
+            {/* Diplôme */}
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
+              <div className="text-center mb-3">
+                <span className="text-3xl">🎓</span>
+                <p className="text-sm font-medium text-gray-700 mt-1">Diplôme</p>
+              </div>
+              <p className="text-xs text-gray-400 text-center mb-3">Joint lors des candidatures</p>
+              <div className="bg-blue-50 rounded-lg p-2">
+                <p className="text-xs text-blue-600 text-center">Uploadé à chaque candidature</p>
+              </div>
             </div>
           </div>
 
+          {/* Liens externes */}
+          <div className="flex gap-3 mt-4 pt-4 border-t border-gray-50">
+            {profil?.cvUrl && (
+              <a href={`http://localhost:3001${profil.cvUrl}`} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+                📄 Voir mon CV
+              </a>
+            )}
+            {profil?.linkedinUrl && (
+              <a href={profil.linkedinUrl} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 border border-gray-300 text-gray-600 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition">
+                🔗 LinkedIn
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Informations personnelles */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <h3 className="font-semibold text-gray-800 mb-4">👤 Informations personnelles</h3>
+
           {!isEditing ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">Numéro étudiant</p>
-                  <p className="text-sm font-medium text-gray-800">{profil?.numeroEtudiant || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">Téléphone</p>
-                  <p className="text-sm font-medium text-gray-800">{profil?.telephone || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">Filière</p>
-                  <p className="text-sm font-medium text-gray-800">{profil?.filiere || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">Niveau d'étude</p>
-                  <p className="text-sm font-medium text-gray-800">{profil?.niveauEtude || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">Promotion</p>
-                  <p className="text-sm font-medium text-gray-800">{profil?.promotion || '—'}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">CV</p>
-                  {profil?.cvUrl ? (
-                    <a href={profil.cvUrl} target="_blank" rel="noopener noreferrer"
-                      className="text-sm text-green-600 hover:underline">Voir mon CV</a>
-                  ) : (
-                    <p className="text-sm text-gray-400">Non renseigné</p>
-                  )}
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">LinkedIn</p>
-                  {profil?.linkedinUrl ? (
-                    <a href={profil.linkedinUrl} target="_blank" rel="noopener noreferrer"
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: 'Numéro étudiant', value: profil?.numeroEtudiant },
+                { label: 'Téléphone', value: profil?.telephone },
+                { label: 'Filière', value: profil?.filiere },
+                { label: "Niveau d'étude", value: profil?.niveauEtude },
+                { label: 'Promotion', value: profil?.promotion },
+                { label: 'LinkedIn', value: profil?.linkedinUrl, link: true },
+              ].map((item) => (
+                <div key={item.label}>
+                  <p className="text-xs text-gray-500 mb-1">{item.label}</p>
+                  {item.link && item.value ? (
+                    <a href={item.value} target="_blank" rel="noopener noreferrer"
                       className="text-sm text-green-600 hover:underline">Voir profil</a>
                   ) : (
-                    <p className="text-sm text-gray-400">Non renseigné</p>
+                    <p className="text-sm font-medium text-gray-800">{item.value || '—'}</p>
                   )}
                 </div>
-              </div>
+              ))}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -162,13 +284,13 @@ export default function MonProfil() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
                   <input type="text" name="telephone" value={form.telephone || ''} onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Ex: +221 77 000 00 00" />
+                    placeholder="+221 77 000 00 00" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Filière</label>
                   <input type="text" name="filiere" value={form.filiere || ''} onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Ex: Informatique" />
+                    placeholder="Informatique" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Niveau d'étude</label>
@@ -183,14 +305,8 @@ export default function MonProfil() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Promotion</label>
                   <input type="text" name="promotion" value={form.promotion || ''} onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Ex: 2024" />
+                    placeholder="2026" />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Lien CV</label>
-                <input type="url" name="cvUrl" value={form.cvUrl || ''} onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="https://..." />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label>
