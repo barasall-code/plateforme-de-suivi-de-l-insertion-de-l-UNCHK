@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Notifications from '../../components/Notifications';
 import api from '../../services/api';
+import BoutonExport, { genererPDF } from '../../components/ExportPDF';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   RadialBarChart, RadialBar, Legend
@@ -63,9 +64,39 @@ export default function DashboardSuperviseur() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Tableau de bord</h2>
-        <p className="text-gray-500 mb-8">Suivi de l'insertion professionnelle de vos étudiants</p>
-
+   <div className="flex justify-between items-start mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Tableau de bord</h2>
+            <p className="text-gray-500">Suivi de l'insertion professionnelle de vos étudiants</p>
+          </div>
+          <BoutonExport label="Exporter rapport" onClick={() => {
+            const doc = genererPDF({
+              titre: 'Rapport d\'Insertion Professionnelle',
+              sousTitre: `Superviseur : ${user?.email}`,
+              stats: [
+                { label: 'Étudiants suivis', valeur: stats?.totalEtudiants ?? 0 },
+                { label: 'Actifs', valeur: stats?.etudiantsActifs ?? 0 },
+                { label: 'Candidatures', valeur: stats?.totalCandidatures ?? 0 },
+                { label: 'En cours', valeur: stats?.candidaturesEnCours ?? 0 },
+                { label: 'Acceptées', valeur: stats?.candidaturesAcceptees ?? 0 },
+                { label: 'Taux insertion', valeur: (stats?.tauxInsertion ?? 0) + '%' },
+              ],
+              tableaux: [{
+                titre: 'Statistiques d\'insertion',
+                colonnes: ['Indicateur', 'Valeur'],
+                lignes: [
+                  ['Étudiants suivis', stats?.totalEtudiants ?? 0],
+                  ['Étudiants actifs', stats?.etudiantsActifs ?? 0],
+                  ['Total candidatures', stats?.totalCandidatures ?? 0],
+                  ['Candidatures en cours', stats?.candidaturesEnCours ?? 0],
+                  ['Candidatures acceptées', stats?.candidaturesAcceptees ?? 0],
+                  ['Taux d\'insertion', (stats?.tauxInsertion ?? 0) + '%'],
+                ]
+              }]
+            });
+            doc.save(`rapport-insertion-${new Date().toISOString().slice(0,10)}.pdf`);
+          }} />
+        </div>
         {isLoading ? (
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : (
