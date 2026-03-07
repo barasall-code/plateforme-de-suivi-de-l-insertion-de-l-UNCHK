@@ -26,9 +26,11 @@ export default function Messagerie() {
       ouvrirOuCreerConversation(etudiantId, entrepriseId);
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    if (convActive) chargerMessages(convActive.id);
+useEffect(() => {
+    if (!convActive) return;
+    chargerMessages(convActive.id);
+    const interval = setInterval(() => chargerMessages(convActive.id), 5000);
+    return () => clearInterval(interval);
   }, [convActive]);
 
   useEffect(() => {
