@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import BoutonExport, { genererPDF } from '../../components/ExportPDF';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell
@@ -60,8 +61,36 @@ export default function DashboardAdmin() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-8">Tableau de bord administrateur</h2>
-
+  <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-800">Tableau de bord administrateur</h2>
+          <BoutonExport label="Exporter rapport admin" onClick={() => {
+            const doc = genererPDF({
+              titre: 'Rapport Administrateur UNCHK',
+              sousTitre: `Exporté par ${user?.email}`,
+              stats: [
+                { label: 'Utilisateurs', valeur: stats.totalUtilisateurs },
+                { label: 'Étudiants', valeur: stats.totalEtudiants },
+                { label: 'Entreprises', valeur: stats.totalEntreprises },
+                { label: 'Offres publiées', valeur: stats.offresPubliees },
+                { label: 'Candidatures', valeur: stats.totalCandidatures },
+                { label: 'Taux insertion', valeur: stats.tauxInsertion + '%' },
+              ],
+              tableaux: [{
+                titre: 'Statistiques globales de la plateforme',
+                colonnes: ['Indicateur', 'Valeur'],
+                lignes: [
+                  ['Total utilisateurs', stats.totalUtilisateurs],
+                  ['Étudiants inscrits', stats.totalEtudiants],
+                  ['Entreprises validées', stats.totalEntreprises],
+                  ['Offres publiées', stats.offresPubliees],
+                  ['Total candidatures', stats.totalCandidatures],
+                  ['Taux d\'insertion', stats.tauxInsertion + '%'],
+                ]
+              }]
+            });
+            doc.save(`rapport-admin-${new Date().toISOString().slice(0,10)}.pdf`);
+          }} />
+        </div>
         {isLoading ? (
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : (

@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import Notifications from '../components/Notifications';
 import api from '../services/api';
 import BadgeMessages from '../components/BadgeMessages';
+import BoutonExport, { genererPDF } from '../components/ExportPDF';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
@@ -97,9 +98,39 @@ export default function Dashboard() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue 👋</h2>
-        <p className="text-gray-500 mb-8">Plateforme de suivi d'insertion professionnelle de l'UNCHK</p>
-
+<div className="flex justify-between items-start mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue 👋</h2>
+            <p className="text-gray-500">Plateforme de suivi d'insertion professionnelle de l'UNCHK</p>
+          </div>
+          <BoutonExport label="Exporter mon rapport" onClick={() => {
+            const doc = genererPDF({
+              titre: 'Mon Rapport de Candidatures',
+              sousTitre: `Étudiant : ${user?.email}`,
+              stats: [
+                { label: 'Total candidatures', valeur: stats.totalCandidatures },
+                { label: 'Soumises', valeur: stats.soumises },
+                { label: 'Entretiens', valeur: stats.entretiens },
+                { label: 'Acceptées', valeur: stats.acceptees },
+                { label: 'Refusées', valeur: stats.refusees },
+              ],
+              tableaux: [{
+                titre: 'Récapitulatif des candidatures',
+                colonnes: ['Statut', 'Nombre'],
+                lignes: [
+                  ['Total', stats.totalCandidatures],
+                  ['Soumises', stats.soumises],
+                  ['Vues', stats.vues],
+                  ['Entretiens', stats.entretiens],
+                  ['Acceptées', stats.acceptees],
+                  ['Refusées', stats.refusees],
+                ],
+              
+              }]
+            });
+            doc.save(`rapport-candidatures-${new Date().toISOString().slice(0,10)}.pdf`);
+          }} />
+        </div>
         {isLoading ? (
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : (
