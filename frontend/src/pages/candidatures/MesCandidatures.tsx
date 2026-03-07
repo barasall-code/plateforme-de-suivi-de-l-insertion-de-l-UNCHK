@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getMesCandidatures, retirerCandidature } from '../../services/candidatures.service';
 import type { Candidature } from '../../services/candidatures.service';
+import BoutonExport, { genererPDF } from '../../components/ExportPDF';
 
 const statutConfig: Record<string, { label: string; color: string }> = {
   soumise: { label: 'Soumise', color: 'bg-blue-100 text-blue-700' },
@@ -54,11 +55,37 @@ export default function MesCandidatures() {
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Mes candidatures</h2>
-          <p className="text-gray-500">{candidatures.length} candidature{candidatures.length > 1 ? 's' : ''}</p>
+  <div className="flex justify-between items-start mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Mes candidatures</h2>
+            <p className="text-gray-500">{candidatures.length} candidature{candidatures.length > 1 ? 's' : ''}</p>
+          </div>
+          <BoutonExport label="Exporter PDF" onClick={() => {
+            const doc = genererPDF({
+              titre: 'Mes Candidatures',
+              sousTitre: `Total : ${candidatures.length} candidature${candidatures.length > 1 ? 's' : ''}`,
+              stats: [
+                { label: 'Total', valeur: candidatures.length },
+                { label: 'Soumises', valeur: candidatures.filter(c => c.statut === 'soumise').length },
+                { label: 'Entretiens', valeur: candidatures.filter(c => c.statut === 'entretien').length },
+                { label: 'Acceptées', valeur: candidatures.filter(c => c.statut === 'acceptee').length },
+                { label: 'Refusées', valeur: candidatures.filter(c => c.statut === 'refusee').length },
+              ],
+              tableaux: [{
+                titre: 'Détail des candidatures',
+                colonnes: ['Poste', 'Entreprise', 'Type', 'Statut', 'Date'],
+                lignes: candidatures.map(c => [
+                  c.offre.titre,
+                  c.offre.entreprise.nomEntreprise,
+                  c.offre.typeOffre,
+                  statutConfig[c.statut]?.label || c.statut,
+                  new Date(c.dateCandidature).toLocaleDateString('fr-FR'),
+                ])
+              }]
+            });
+            doc.save(`mes-candidatures-${new Date().toISOString().slice(0,10)}.pdf`);
+          }} />
         </div>
-
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
             {error}
