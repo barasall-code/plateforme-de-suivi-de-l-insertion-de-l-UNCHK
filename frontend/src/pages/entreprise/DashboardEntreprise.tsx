@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import BadgeMessages from '../../components/BadgeMessages';
 
 interface Offre {
   id: string;
@@ -55,6 +56,7 @@ export default function DashboardEntreprise() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-green-700">UNCHK — Entreprise</h1>
           <div className="flex items-center gap-4">
+            <BadgeMessages />
             <Link to="/entreprise/profil" className="text-sm text-gray-600 hover:text-green-700 font-medium">
               Mon profil
             </Link>

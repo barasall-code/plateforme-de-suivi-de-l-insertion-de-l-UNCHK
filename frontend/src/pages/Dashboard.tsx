@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Notifications from '../components/Notifications';
 import api from '../services/api';
+import BadgeMessages from '../components/BadgeMessages';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
@@ -83,7 +85,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700">Offres</Link>
             <Link to="/candidatures" className="text-sm text-gray-600 hover:text-green-700">Candidatures</Link>
-            <Link to="/messagerie" className="text-sm text-gray-600 hover:text-green-700">Messages</Link>
+            <BadgeMessages />
             <Link to="/profil" className="text-sm text-gray-600 hover:text-green-700">Profil</Link>
             <Notifications />
             <span className="text-gray-600 text-sm">{user?.email}</span>
