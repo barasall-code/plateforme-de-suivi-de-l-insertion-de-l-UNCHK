@@ -19,6 +19,8 @@ import DashboardSuperviseur from './pages/superviseur/DashboardSuperviseur';
 import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
 import LandingPage from './pages/LandingPage';
+import Messagerie from './pages/messagerie/Messagerie';
+
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
@@ -138,6 +140,11 @@ function App() {
               <DetailEtudiant />
             </ProtectedRoute>
           } />
+          <Route path="/messagerie" element={
+  <ProtectedRoute roles={['etudiant', 'entreprise']}>
+    <Messagerie />
+  </ProtectedRoute>
+} />
 
           <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<HomeRedirect />} />

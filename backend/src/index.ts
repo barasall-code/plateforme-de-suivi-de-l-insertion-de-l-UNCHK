@@ -11,6 +11,7 @@ import adminRoutes from './routes/admin.routes';
 import superviseurRoutes from './routes/superviseur.routes';
 import uploadRoutes from './routes/upload.routes';
 import path from 'path';
+import messagerieRoutes from './routes/messagerie.routes';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/upload', uploadRoutes);
+app.use('/api/messagerie', messagerieRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({
@@ -53,6 +55,7 @@ const server = app.listen(PORT, () => {
   console.log(`🔔 Notifications : http://localhost:${PORT}/api/notifications`);
   console.log(`⚙️  Admin : http://localhost:${PORT}/api/admin`);
   console.log(`👁️  Superviseur : http://localhost:${PORT}/api/superviseur`);
+  console.log(`💬 Messagerie : http://localhost:${PORT}/api/messagerie`);
   console.log(`📁 Upload : http://localhost:${PORT}/api/upload`);
 });
 

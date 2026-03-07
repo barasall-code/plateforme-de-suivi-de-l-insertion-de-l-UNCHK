@@ -72,6 +72,7 @@ enum CategorieCompetence {
 }
 
 model Utilisateur {
+  messages       Message[]
   id               String          @id @default(uuid())
   email            String          @unique
   motDePasseHash   String
@@ -89,6 +90,7 @@ model Utilisateur {
 }
 
 model Etudiant {
+  
   id                       String      @id @default(uuid())
   utilisateur              Utilisateur @relation(fields: [id], references: [id])
   numeroEtudiant           String      @unique
@@ -108,10 +110,12 @@ model Etudiant {
   statutsProfessionnels    StatutProfessionnel[]
   competences              EtudiantCompetence[]
   supervisions             Supervision[]
+  conversations  Conversation[]
   @@map("etudiants")
 }
 
 model Entreprise {
+  conversations  Conversation[]
   id               String      @id @default(uuid())
   utilisateur      Utilisateur @relation(fields: [id], references: [id])
   nomEntreprise    String
@@ -285,4 +289,30 @@ model Supervision {
   commentaire   String?
   @@id([superviseurId, etudiantId])
   @@map("supervisions")
+}
+model Conversation {
+  id           String    @id @default(uuid())
+  etudiant     Etudiant  @relation(fields: [etudiantId], references: [id])
+  etudiantId   String
+  entreprise   Entreprise @relation(fields: [entrepriseId], references: [id])
+  entrepriseId String
+  messages     Message[]
+  dateCreation DateTime  @default(now())
+  dateMaj      DateTime  @updatedAt
+
+  @@unique([etudiantId, entrepriseId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId String
+  expediteur     Utilisateur  @relation(fields: [expediteurId], references: [id])
+  expediteurId   String
+  contenu        String
+  lu             Boolean      @default(false)
+  dateEnvoi      DateTime     @default(now())
+
+  @@map("messages")
 }

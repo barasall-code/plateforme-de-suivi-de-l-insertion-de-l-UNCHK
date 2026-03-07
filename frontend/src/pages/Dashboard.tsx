@@ -83,6 +83,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700">Offres</Link>
             <Link to="/candidatures" className="text-sm text-gray-600 hover:text-green-700">Candidatures</Link>
+            <Link to="/messagerie" className="text-sm text-gray-600 hover:text-green-700">Messages</Link>
             <Link to="/profil" className="text-sm text-gray-600 hover:text-green-700">Profil</Link>
             <Notifications />
             <span className="text-gray-600 text-sm">{user?.email}</span>
