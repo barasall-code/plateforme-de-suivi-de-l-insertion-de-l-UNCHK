@@ -37,11 +37,8 @@ export default function Login() {
       {/* Panneau gauche */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-700 to-emerald-800 flex-col justify-between p-12">
         <div>
-          <div className="flex items-center gap-3 mb-16">
-            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-              <span className="text-green-700 font-bold text-lg">U</span>
-            </div>
-            <span className="text-white font-bold text-xl">UNCHK</span>
+ <div className="flex items-center gap-3 mb-16">
+            <img src="/logo_unchk.png" alt="UNCHK" className="h-10 w-auto bg-white rounded-lg p-1" />
           </div>
           <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
             Plateforme de suivi<br />d'insertion<br />professionnelle
@@ -76,7 +73,7 @@ export default function Login() {
             <div className="w-10 h-10 bg-green-700 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">U</span>
             </div>
-            <span className="text-green-700 font-bold text-xl">UNCHK</span>
+            <img src="/logo_unchk.png" alt="UNCHK" className="h-10 w-auto" />
           </div>
 
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Bienvenue 👋</h2>
