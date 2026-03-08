@@ -7,14 +7,8 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur border-b border-gray-100 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-green-700 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold">U</span>
-            </div>
-            <span className="text-green-700 font-bold text-xl">UNCHK</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/login" className="text-sm text-gray-600 hover:text-green-700 font-medium transition">
+          <img src="/logo_unchk.png" alt="UNCHK" className="h-10 w-auto" />
+          <div className="flex items-center gap-4">            <Link to="/login" className="text-sm text-gray-600 hover:text-green-700 font-medium transition">
               Se connecter
             </Link>
             <Link to="/register"
@@ -165,7 +159,7 @@ export default function LandingPage() {
             <div className="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">U</span>
             </div>
-            <span className="text-white font-bold">UNCHK</span>
+            <img src="/logo_unchk.png" alt="UNCHK" className="h-8 w-auto brightness-0 invert" />
           </div>
           <p className="text-sm">© 2026 Université Numérique Cheikh Hamidou Kane — Tous droits réservés</p>
           <div className="flex gap-4 text-sm">
