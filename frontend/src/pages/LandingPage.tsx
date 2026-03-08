@@ -20,17 +20,18 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-green-50 via-white to-emerald-50">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <span className="inline-block bg-green-100 text-green-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+      <section className="pt-32 pb-20 relative" style={{backgroundImage: "url(/image_de_fond_unchk.jpeg)", backgroundSize: "cover", backgroundPosition: "center"}}>
+        <div className="absolute inset-0 bg-green-900/40"></div>
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <span className="inline-block bg-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             🎓 Université Numérique Cheikh Hamidou Kane
           </span>
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
             Votre insertion<br />
-            <span className="text-green-600">professionnelle</span><br />
+            <span className="text-green-300">professionnelle</span><br />
             commence ici
           </h1>
-          <p className="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-green-100 mb-10 max-w-2xl mx-auto">
             La plateforme qui connecte les étudiants de l'UNCHK aux meilleures opportunités de stage et d'emploi au Sénégal.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -39,11 +40,11 @@ export default function LandingPage() {
               Commencer gratuitement →
             </Link>
             <Link to="/login"
-              className="border border-gray-300 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:bg-gray-50 transition text-lg">
+              className="border border-white text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/20 transition text-lg">
               Se connecter
             </Link>
           </div>
-          <p className="text-gray-400 text-sm mt-6">
+          <p className="text-green-200 text-sm mt-6">
             Déjà plus de 3 étudiants et 1 entreprise sur la plateforme
           </p>
         </div>
@@ -105,7 +106,7 @@ export default function LandingPage() {
             {[
               { icon: '🎓', role: 'Étudiant', color: 'border-blue-200 bg-blue-50', badge: 'bg-blue-100 text-blue-700',
                 features: ['Consulter les offres', 'Postuler en ligne', 'Suivre ses candidatures', 'Gérer son profil', 'Recevoir des alertes'] },
-              { icon: '🏢', role: 'Entreprise', color: 'border-green-200 bg-green-50', badge: 'bg-green-100 text-green-700',
+              { icon: '🏢', role: 'Entreprise', color: 'border-green-200 bg-green-50', badge: 'bg-white/20 text-white',
                 features: ['Publier des offres', 'Gérer les candidatures', 'Voir les profils', 'Valider les statuts', 'Tableau de bord'] },
               { icon: '⚙️', role: 'Admin', color: 'border-red-200 bg-red-50', badge: 'bg-red-100 text-red-700',
                 features: ['Valider les entreprises', 'Gérer les utilisateurs', 'Consulter les stats', 'Modérer la plateforme'] },
