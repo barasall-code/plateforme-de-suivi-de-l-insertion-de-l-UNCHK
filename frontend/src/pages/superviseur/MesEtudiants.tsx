@@ -78,7 +78,7 @@ export default function MesEtudiants() {
                   s.etudiant.niveauEtude || '—',
                   s.etudiant.promotion || '—',
                   s.etudiant.candidatures?.length || 0,
-                  s.etudiant.candidatures?.some((c: any) => c.statut === 'acceptee') ? 'Inséré ✓' : 'En cours',
+                  s.etudiant.candidatures?.some((c: any) => c.statut === 'acceptee') ? 'Insere' : 'En cours',
                 ])
               }]
             });
