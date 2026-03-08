@@ -57,7 +57,7 @@ export default function DetailEtudiant() {
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-green-700">UNCHK — Superviseur</h1>
+          <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
           <Link to="/superviseur/etudiants" className="text-sm text-gray-600 hover:text-green-700">
             ← Mes étudiants
           </Link>

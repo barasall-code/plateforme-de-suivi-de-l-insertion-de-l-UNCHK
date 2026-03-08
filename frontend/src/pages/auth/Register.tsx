@@ -83,7 +83,7 @@ export default function Register() {
           <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
             <span className="text-green-700 font-bold text-lg">U</span>
           </div>
-          <span className="text-white font-bold text-xl">UNCHK</span>
+          <img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto bg-white rounded-lg p-1" />
         </div>
 
         <div>
@@ -127,7 +127,7 @@ export default function Register() {
             <div className="w-10 h-10 bg-green-700 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">U</span>
             </div>
-            <span className="text-green-700 font-bold text-xl">UNCHK</span>
+            <img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" />
           </div>
 
           {/* Indicateur étapes */}
