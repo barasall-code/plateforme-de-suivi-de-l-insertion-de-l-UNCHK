@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import BoutonExport, { genererPDF } from '../../components/ExportPDF';
 
 export default function MesEtudiants() {
   const [supervisions, setSupervisions] = useState<any[]>([]);
@@ -52,11 +53,37 @@ export default function MesEtudiants() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
+       <div className="flex justify-between items-center mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-800">Mes étudiants</h2>
             <p className="text-gray-500 text-sm mt-1">{supervisions.length} étudiant{supervisions.length > 1 ? 's' : ''} suivi{supervisions.length > 1 ? 's' : ''}</p>
           </div>
+          <BoutonExport label="Exporter liste" onClick={() => {
+            const doc = genererPDF({
+              titre: 'Liste des Étudiants Supervisés',
+              sousTitre: `Total : ${supervisions.length} étudiant${supervisions.length > 1 ? 's' : ''}`,
+              stats: [
+                { label: 'Total étudiants', valeur: supervisions.length },
+                { label: 'Avec candidatures', valeur: supervisions.filter(s => s.etudiant.candidatures?.length > 0).length },
+                { label: 'Insertés', valeur: supervisions.filter(s => s.etudiant.candidatures?.some((c: any) => c.statut === 'acceptee')).length },
+                { label: 'Taux insertion', valeur: supervisions.length > 0 ? Math.round(supervisions.filter(s => s.etudiant.candidatures?.some((c: any) => c.statut === 'acceptee')).length / supervisions.length * 100) + '%' : '0%' },
+              ],
+              tableaux: [{
+                titre: 'Détail des étudiants supervisés',
+                colonnes: ['Nom', 'Email', 'Filière', 'Niveau', 'Promo', 'Candidatures', 'Statut'],
+                lignes: supervisions.map(s => [
+                  `${s.etudiant.prenom} ${s.etudiant.nom}`,
+                  s.etudiant.utilisateur?.email || '—',
+                  s.etudiant.filiere || '—',
+                  s.etudiant.niveauEtude || '—',
+                  s.etudiant.promotion || '—',
+                  s.etudiant.candidatures?.length || 0,
+                  s.etudiant.candidatures?.some((c: any) => c.statut === 'acceptee') ? 'Inséré ✓' : 'En cours',
+                ])
+              }]
+            });
+            doc.save(`etudiants-supervises-${new Date().toISOString().slice(0,10)}.pdf`);
+          }} />
         </div>
 
         <div className="mb-6">
