@@ -153,6 +153,27 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Galerie */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">La vie à l'UNCHK</h2>
+            <p className="text-gray-500 text-lg">Découvrez notre campus et notre communauté</p>
+          </div>
+          <div className="grid grid-cols-4 grid-rows-2 gap-4" style={{height: '480px'}}>
+            <div className="col-span-2 row-span-2 overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_campus2.jpeg" alt="Campus UNCHK" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_etudiants1.jpeg" alt="Etudiants" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_graduation.jpeg" alt="Graduation" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_etudiants3.jpeg" alt="Etudiants" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_campus3.jpeg" alt="Campus" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+          </div>
+          <div className="grid grid-cols-3 gap-4 mt-4" style={{height: '200px'}}>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_etudiants.jpeg" alt="Etudiants" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_parrain.jpeg" alt="Parrain" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+            <div className="overflow-hidden rounded-2xl shadow-lg"><img src="/galerie_campus3.jpeg" alt="Campus" className="w-full h-full object-cover hover:scale-105 transition duration-500" /></div>
+          </div>
+        </div>
+      </section>
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-8">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
