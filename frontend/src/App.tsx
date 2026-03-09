@@ -20,7 +20,7 @@ import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
 import LandingPage from './pages/LandingPage';
 import Messagerie from './pages/messagerie/Messagerie';
-
+import NotFound from './pages/NotFound';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
   const { user, isLoading } = useAuth();
@@ -145,7 +145,7 @@ function App() {
     <Messagerie />
   </ProtectedRoute>
 } />
-
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="*" element={<HomeRedirect />} />
         </Routes>
