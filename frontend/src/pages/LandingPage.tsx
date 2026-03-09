@@ -178,10 +178,7 @@ export default function LandingPage() {
       <footer className="bg-gray-900 text-gray-400 py-8">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-green-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">U</span>
-            </div>
-            <img src="/logo_unchk.png" alt="UNCHK" className="h-8 w-auto brightness-0 invert" />
+            <img src="/logo2_unchk.png" alt="UNCHK" className="h-8 w-auto bg-white rounded-lg p-1" />
           </div>
           <p className="text-sm">© 2026 Université Numérique Cheikh Hamidou Kane — Tous droits réservés</p>
           <div className="flex gap-4 text-sm">
