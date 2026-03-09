@@ -35,15 +35,16 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex">
       {/* Panneau gauche */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-700 to-emerald-800 flex-col justify-between p-12">
-        <div>
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative" style={{backgroundImage: "url(/slide-5.png)", backgroundSize: "cover", backgroundPosition: "center", backgroundSize: "cover", filter: "brightness(1.1) contrast(1.1)"}}>
+        <div className="absolute inset-0 bg-green-900/20"></div>
+        <div className="relative z-10">
  <div className="flex items-center gap-3 mb-16">
             <img src="/logo_unchk.png" alt="UNCHK" className="h-10 w-auto bg-white rounded-lg p-1" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl font-bold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-6 leading-tight">
             Plateforme de suivi<br />d'insertion<br />professionnelle
           </h1>
-          <p className="text-green-200 text-lg">
+          <p className="text-white text-lg font-semibold drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
             Connectez étudiants, entreprises et équipes pédagogiques en un seul espace.
           </p>
         </div>
@@ -54,11 +55,11 @@ export default function Login() {
             { icon: '🏢', label: 'Entreprises', desc: 'Publiez vos offres et recrutez les meilleurs talents' },
             { icon: '👁️', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants' },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-4 bg-white/10 rounded-xl p-4">
+            <div key={item.label} className="flex items-center gap-4 bg-green-800/40 backdrop-blur-sm rounded-xl p-4 border border-green-400/30">
               <span className="text-2xl">{item.icon}</span>
-              <div>
-                <p className="text-white font-semibold">{item.label}</p>
-                <p className="text-green-200 text-sm">{item.desc}</p>
+              <div className="relative z-10">
+                <p className="text-green-100 font-bold">{item.label}</p>
+                <p className="text-green-200 text-sm font-medium">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -86,7 +87,7 @@ export default function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
+            <div className="relative z-10">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Adresse email
               </label>
@@ -100,7 +101,7 @@ export default function Login() {
               />
             </div>
 
-            <div>
+            <div className="relative z-10">
               <div className="flex justify-between items-center mb-1.5">
                 <label className="block text-sm font-medium text-gray-700">
                   Mot de passe
@@ -125,7 +126,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold py-3 rounded-xl transition shadow-sm">
+              className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-green-100 font-bold py-3 rounded-xl transition shadow-sm">
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
