@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "build": "echo skip",
-    "start": "npx ts-node src/index.ts",
+    "start": "npx ts-node --transpile-only src/index.ts",
     "lint": "tsc --noEmit"
   },
   "keywords": [],
