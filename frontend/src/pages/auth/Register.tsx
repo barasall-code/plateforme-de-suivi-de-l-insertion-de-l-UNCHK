@@ -78,19 +78,17 @@ export default function Register() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex">
 
       {/* Panneau gauche */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-green-700 to-emerald-800 flex-col justify-between p-12">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
-            <span className="text-green-700 font-bold text-lg">U</span>
-          </div>
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative" style={{backgroundImage: "url(/slide-5.png)", backgroundSize: "cover", backgroundPosition: "center"}}>
+        <div className="absolute inset-0 bg-black/30"></div>
+  <div className="flex items-center gap-3 relative z-10">
           <img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto bg-white rounded-lg p-1" />
         </div>
 
         <div>
-          <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl font-bold text-white mb-6 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             Rejoignez la<br />communauté<br />UNCHK
           </h1>
-          <p className="text-green-200 text-lg mb-10">
+          <p className="text-white text-lg mb-10 font-semibold drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
             Créez votre compte et accédez à toutes les opportunités professionnelles.
           </p>
 
@@ -100,19 +98,19 @@ export default function Register() {
               { icon: '🏢', label: 'Entreprise', desc: 'Publiez vos offres et trouvez des talents' },
             ].map((item) => (
               <div key={item.label} className={`flex items-center gap-4 rounded-xl p-4 transition ${
-                role === item.label.toLowerCase() ? 'bg-white/20' : 'bg-white/10'
+                role === item.label.toLowerCase() ? 'bg-black/50 border border-white/40' : 'bg-black/40 border border-white/20'
               }`}>
                 <span className="text-2xl">{item.icon}</span>
                 <div>
                   <p className="text-white font-semibold">{item.label}</p>
-                  <p className="text-green-200 text-sm">{item.desc}</p>
+                  <p className="text-white text-sm font-medium">{item.desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <p className="text-green-300 text-sm">
+        <p className="text-white text-sm font-medium drop-shadow-md">
           Déjà un compte ?{' '}
           <Link to="/login" className="text-white font-medium underline">Se connecter</Link>
         </p>
