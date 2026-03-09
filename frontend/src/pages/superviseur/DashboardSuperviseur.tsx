@@ -5,7 +5,7 @@ import Notifications from '../../components/Notifications';
 import api from '../../services/api';
 import BoutonExport, { genererPDF } from '../../components/ExportPDF';
 import {
-  PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   RadialBarChart, RadialBar, Legend
 } from 'recharts';
 
@@ -178,7 +178,26 @@ export default function DashboardSuperviseur() {
                 </div>
               </div>
             )}
-
+{/* BarChart evolution */}
+<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+  <h3 className="font-semibold text-gray-800 mb-4">Évolution des candidatures par statut</h3>
+  <ResponsiveContainer width="100%" height={250}>
+    <BarChart data={[
+      { mois: 'Jan', acceptees: 0, enCours: 0, refusees: 0 },
+      { mois: 'Fév', acceptees: 0, enCours: 0, refusees: 0 },
+      { mois: 'Mar', acceptees: stats?.candidaturesAcceptees || 0, enCours: stats?.candidaturesEnCours || 0, refusees: Math.max(0, (stats?.totalCandidatures || 0) - (stats?.candidaturesAcceptees || 0) - (stats?.candidaturesEnCours || 0)) },
+    ]}>
+      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+      <XAxis dataKey="mois" tick={{ fontSize: 12 }} />
+      <YAxis tick={{ fontSize: 12 }} />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="acceptees" name="Acceptées" fill="#10B981" radius={[4,4,0,0]} />
+      <Bar dataKey="enCours" name="En cours" fill="#F59E0B" radius={[4,4,0,0]} />
+      <Bar dataKey="refusees" name="Refusées" fill="#EF4444" radius={[4,4,0,0]} />
+    </BarChart>
+  </ResponsiveContainer>
+</div>
             {/* Navigation rapide */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link to="/superviseur/etudiants"
