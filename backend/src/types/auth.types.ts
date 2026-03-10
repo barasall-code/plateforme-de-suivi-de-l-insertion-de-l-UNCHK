@@ -11,6 +11,7 @@ export interface RegisterDto {
   nom?: string;
   prenom?: string;
   numeroEtudiant?: string;
+  filiere?: string;
   nomEntreprise?: string;
   secteurActivite?: string;
 }

@@ -44,8 +44,8 @@ export default function Dashboard() {
         refusees: candidatures.filter((c: any) => c.statut === 'refusee').length,
       });
       setOffresRecentes(offresRes.data.data.offres.slice(0, 3));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      // Erreur silencieuse — l'UI reste dans son état initial
     } finally {
       setIsLoading(false);
     }

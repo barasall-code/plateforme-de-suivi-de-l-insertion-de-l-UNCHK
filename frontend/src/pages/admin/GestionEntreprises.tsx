@@ -16,7 +16,7 @@ export default function GestionEntreprises() {
       const response = await api.get('/admin/entreprises');
       setEntreprises(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
@@ -27,7 +27,7 @@ export default function GestionEntreprises() {
       await api.put(`/admin/entreprises/${id}/valider`);
       await chargerEntreprises();
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 
@@ -37,7 +37,7 @@ export default function GestionEntreprises() {
       await api.put(`/admin/entreprises/${id}/rejeter`);
       await chargerEntreprises();
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 

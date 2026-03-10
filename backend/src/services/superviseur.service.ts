@@ -1,6 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma';
+import { z } from 'zod';
 
-const prisma = new PrismaClient();
+const CommentaireSchema = z.string()
+  .min(1,   'Le commentaire ne peut pas etre vide')
+  .max(2000, 'Commentaire trop long (max 2000 caracteres)')
+  .trim();
 
 export async function getProfilSuperviseur(userId: string) {
   const superviseur = await prisma.superviseur.findUnique({
@@ -29,7 +33,7 @@ export async function getProfilSuperviseur(userId: string) {
 }
 
 export async function getMesEtudiants(userId: string) {
-  const supervisions = await prisma.supervision.findMany({
+  return prisma.supervision.findMany({
     where: { superviseurId: userId },
     include: {
       etudiant: {
@@ -37,21 +41,21 @@ export async function getMesEtudiants(userId: string) {
           utilisateur: { select: { email: true } },
           candidatures: {
             include: {
-              offre: {
-                include: { entreprise: { select: { nomEntreprise: true } } },
-              },
+              offre: { include: { entreprise: { select: { nomEntreprise: true } } } },
             },
             orderBy: { dateCandidature: 'desc' },
+            take: 5,
           },
         },
       },
     },
     orderBy: { dateDebut: 'desc' },
   });
-  return supervisions;
 }
 
 export async function getDetailEtudiant(etudiantId: string, superviseurId: string) {
+  if (!etudiantId) throw new Error('etudiantId requis');
+
   const supervision = await prisma.supervision.findUnique({
     where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
   });
@@ -60,21 +64,29 @@ export async function getDetailEtudiant(etudiantId: string, superviseurId: strin
   return prisma.etudiant.findUnique({
     where: { id: etudiantId },
     include: {
-      utilisateur: { select: { email: true, dateCreation: true } },
+      utilisateur:  { select: { email: true, dateCreation: true } },
       candidatures: {
         include: {
-          offre: {
-            include: { entreprise: { select: { nomEntreprise: true, secteurActivite: true } } },
-          },
+          offre: { include: { entreprise: { select: { nomEntreprise: true, secteurActivite: true } } } },
         },
         orderBy: { dateCandidature: 'desc' },
+        take: 50,
       },
       competences: { include: { competence: true } },
     },
   });
 }
 
-export async function ajouterCommentaire(etudiantId: string, superviseurId: string, commentaire: string) {
+export async function ajouterCommentaire(
+  etudiantId: string,
+  superviseurId: string,
+  commentaire: string,
+) {
+  const validation = CommentaireSchema.safeParse(commentaire);
+  if (!validation.success) {
+    throw new Error(validation.error.issues[0].message);
+  }
+
   const supervision = await prisma.supervision.findUnique({
     where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
   });
@@ -82,36 +94,29 @@ export async function ajouterCommentaire(etudiantId: string, superviseurId: stri
 
   return prisma.supervision.update({
     where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
-    data: { commentaire },
+    data:  { commentaire: validation.data },
   });
 }
 
 export async function getStatsSuperviseur(userId: string) {
   const supervisions = await prisma.supervision.findMany({
-    where: { superviseurId: userId },
-    include: {
-      etudiant: {
-        include: {
-          candidatures: true,
-        },
-      },
-    },
+    where:   { superviseurId: userId },
+    include: { etudiant: { include: { candidatures: { select: { statut: true } } } } },
   });
 
-  const totalEtudiants = supervisions.length;
-  const etudiantsActifs = supervisions.filter(s => s.estActif).length;
-
-  let totalCandidatures = 0;
+  const totalEtudiants      = supervisions.length;
+  const etudiantsActifs     = supervisions.filter(s => s.estActif).length;
+  let totalCandidatures     = 0;
   let candidaturesAcceptees = 0;
-  let candidaturesEnCours = 0;
+  let candidaturesEnCours   = 0;
 
-  supervisions.forEach(s => {
-    s.etudiant.candidatures.forEach(c => {
+  for (const s of supervisions) {
+    for (const c of s.etudiant.candidatures) {
       totalCandidatures++;
-      if (c.statut === 'acceptee') candidaturesAcceptees++;
+      if (c.statut === 'acceptee')                           candidaturesAcceptees++;
       if (['soumise', 'vue', 'entretien'].includes(c.statut)) candidaturesEnCours++;
-    });
-  });
+    }
+  }
 
   return {
     totalEtudiants,
@@ -119,6 +124,8 @@ export async function getStatsSuperviseur(userId: string) {
     totalCandidatures,
     candidaturesAcceptees,
     candidaturesEnCours,
-    tauxInsertion: totalEtudiants > 0 ? Math.round((candidaturesAcceptees / totalEtudiants) * 100) : 0,
+    tauxInsertion: totalEtudiants > 0
+      ? Math.round((candidaturesAcceptees / totalEtudiants) * 100)
+      : 0,
   };
 }

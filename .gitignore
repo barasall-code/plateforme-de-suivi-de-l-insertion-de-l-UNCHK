@@ -1,22 +1,7 @@
-# Environnement
-.env
-*.env.local
-
-# Node
 node_modules/
 dist/
-build/
-
-# Logs
+.env
+*.env.local
+uploads/
 *.log
-npm-debug.log*
-
-# OS
 .DS_Store
-Thumbs.db
-
-# Prisma
-prisma/migrations/dev.db
-
-# VSCode
-.vscode/

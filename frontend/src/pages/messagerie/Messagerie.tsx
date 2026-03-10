@@ -45,7 +45,7 @@ useEffect(() => {
         setConvActive(response.data.data[0]);
       }
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +57,7 @@ useEffect(() => {
       setConvActive(response.data.data);
       await chargerConversations();
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 
@@ -66,7 +66,7 @@ useEffect(() => {
       const response = await api.get(`/messagerie/conversations/${conversationId}/messages`);
       setMessages(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 
@@ -79,7 +79,7 @@ useEffect(() => {
       setMessages(prev => [...prev, response.data.data]);
       setContenu('');
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsSending(false);
     }

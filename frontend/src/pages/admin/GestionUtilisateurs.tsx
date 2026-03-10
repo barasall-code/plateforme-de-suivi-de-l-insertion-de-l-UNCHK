@@ -17,7 +17,7 @@ export default function GestionUtilisateurs() {
       const response = await api.get('/admin/utilisateurs');
       setUtilisateurs(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
@@ -28,7 +28,7 @@ export default function GestionUtilisateurs() {
       await api.put(`/admin/utilisateurs/${id}/toggle`);
       await chargerUtilisateurs();
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 

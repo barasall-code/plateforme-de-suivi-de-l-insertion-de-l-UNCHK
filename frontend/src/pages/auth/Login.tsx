@@ -17,14 +17,13 @@ export default function Login() {
     setIsLoading(true);
     try {
       await login(email, motDePasse);
+      // Lire le role depuis le contexte mis à jour par login()
       const savedUser = localStorage.getItem('user');
-      if (savedUser) {
-        const user = JSON.parse(savedUser);
-        if (user.role === 'entreprise') navigate('/entreprise/dashboard');
-        else if (user.role === 'admin') navigate('/admin/dashboard');
-        else if (user.role === 'superviseur') navigate('/superviseur/dashboard');
-        else navigate('/dashboard');
-      }
+      const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+      if (parsedUser?.role === 'entreprise') navigate('/entreprise/dashboard');
+      else if (parsedUser?.role === 'admin') navigate('/admin/dashboard');
+      else if (parsedUser?.role === 'superviseur') navigate('/superviseur/dashboard');
+      else navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Email ou mot de passe incorrect');
     } finally {
@@ -35,7 +34,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 flex">
       {/* Panneau gauche */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative" style={{backgroundImage: "url(/slide-5.png)", backgroundSize: "cover", backgroundPosition: "center", backgroundSize: "cover", filter: "brightness(1.1) contrast(1.1)"}}>
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative" style={{backgroundImage: "url(/slide-5.png)", backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(1.1) contrast(1.1)"}}>
         <div className="absolute inset-0 bg-green-900/20"></div>
         <div className="relative z-10">
  <div className="flex items-center gap-3 mb-16">

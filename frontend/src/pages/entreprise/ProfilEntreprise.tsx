@@ -23,7 +23,7 @@ export default function ProfilEntreprise() {
       setProfil(response.data.data);
       setForm(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }

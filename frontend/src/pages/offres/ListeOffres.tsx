@@ -52,7 +52,7 @@ export default function ListeOffres() {
       setTotal(response.data.data.total);
       setTotalPages(response.data.data.totalPages);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }

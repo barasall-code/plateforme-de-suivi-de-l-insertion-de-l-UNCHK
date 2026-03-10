@@ -87,6 +87,7 @@ model Utilisateur {
   notifications    Notification[]
   historiques      HistoriqueStatutCandidature[]
   @@map("utilisateurs")
+  refreshTokens RefreshToken[]
 }
 
 model Etudiant {
@@ -315,4 +316,13 @@ model Message {
   dateEnvoi      DateTime     @default(now())
 
   @@map("messages")
+}
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

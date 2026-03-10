@@ -38,7 +38,7 @@ export default function DashboardEntreprise() {
       const response = await api.get('/offres/mes-offres');
       setOffres(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }

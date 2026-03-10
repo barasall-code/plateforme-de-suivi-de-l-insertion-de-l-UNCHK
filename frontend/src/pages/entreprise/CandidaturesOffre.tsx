@@ -44,7 +44,7 @@ export default function CandidaturesOffre() {
       const response = await api.get(`/candidatures/offre/${offreId}`);
       setCandidatures(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +63,7 @@ export default function CandidaturesOffre() {
       setNewStatut('');
       setCommentaire('');
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsUpdating(false);
     }

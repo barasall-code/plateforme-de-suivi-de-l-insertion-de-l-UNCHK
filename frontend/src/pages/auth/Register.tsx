@@ -51,7 +51,7 @@ export default function Register() {
 
     setIsLoading(true);
     try {
-      const data: any = { email, motDePasse, role };
+      const data: any = { email, motDePasse, typeUtilisateur: role };
       if (role === 'etudiant') {
         data.nom = nom;
         data.prenom = prenom;

@@ -2,15 +2,17 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { JwtPayload } from '../types/auth.types';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+if (!process.env.JWT_SECRET) {
+  throw new Error('FATAL: JWT_SECRET non defini dans .env - serveur arrete');
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export interface AuthRequest extends Request {
   user?: JwtPayload;
 }
 
 export function authenticate(req: AuthRequest, res: Response, next: NextFunction): void {
-  // @ts-ignore
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers['authorization'];
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({ success: false, message: 'Token manquant' });
     return;

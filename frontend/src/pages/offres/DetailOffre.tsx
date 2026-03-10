@@ -36,7 +36,7 @@ export default function DetailOffre() {
       const data = await getOffreById(id!);
       setOffre(data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }

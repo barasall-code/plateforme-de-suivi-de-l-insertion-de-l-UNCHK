@@ -41,7 +41,7 @@ export default function Notifications() {
       setNotifications(response.data.data.notifications);
       setNonLues(response.data.data.nonLues);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     }
   };
 

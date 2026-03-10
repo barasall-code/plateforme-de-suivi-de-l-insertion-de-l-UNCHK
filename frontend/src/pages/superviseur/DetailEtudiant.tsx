@@ -19,7 +19,7 @@ export default function DetailEtudiant() {
       const response = await api.get(`/superviseur/etudiants/${etudiantId}`);
       setEtudiant(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
@@ -33,7 +33,7 @@ export default function DetailEtudiant() {
       setSuccess('Commentaire sauvegardé !');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsSaving(false);
     }

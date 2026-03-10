@@ -22,7 +22,7 @@ export default function DashboardAdmin() {
       const response = await api.get('/admin/stats');
       setStats(response.data.data);
     } catch (err) {
-      console.error(err);
+      // erreur silencieuse
     } finally {
       setIsLoading(false);
     }
