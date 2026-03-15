@@ -183,7 +183,13 @@ export default function DashboardAdmin() {
                 <div className="text-3xl mb-3">🏢</div>
                 <h3 className="font-semibold text-gray-800 mb-1">Gérer les entreprises</h3>
                 <p className="text-gray-500 text-sm">Valider, rejeter et gérer les comptes entreprises</p>
-                {stats?.entreprisesEnAttente > 0 && (
+                {(stats?.totalOffres - stats?.offresPubliees) > 0 && (
+                <button onClick={() => navigate('/admin/offres')}
+                  className="w-full text-left bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg px-4 py-2 text-sm text-amber-700 font-medium transition">
+                  📋 {stats.totalOffres - stats.offresPubliees} offre(s) en attente de validation →
+                </button>
+              )}
+              {stats?.entreprisesEnAttente > 0 && (
                   <span className="inline-block mt-2 bg-yellow-100 text-yellow-700 text-xs font-medium px-2.5 py-1 rounded-full">
                     {stats.entreprisesEnAttente} en attente
                   </span>

@@ -22,6 +22,7 @@ import LandingPage from './pages/LandingPage';
 import Messagerie from './pages/messagerie/Messagerie';
 import VerifierEmail from './pages/auth/VerifierEmail';
 import EmailEnvoye from './pages/auth/EmailEnvoye';
+import GestionOffres from './pages/admin/GestionOffres';
 import NotFound from './pages/NotFound';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
@@ -117,7 +118,8 @@ function App() {
               <DashboardAdmin />
             </ProtectedRoute>
           } />
-          <Route path="/admin/entreprises" element={
+          <Route path="/admin/offres" element={<GestionOffres />} />
+        <Route path="/admin/entreprises" element={
             <ProtectedRoute roles={['admin']}>
               <GestionEntreprises />
             </ProtectedRoute>
