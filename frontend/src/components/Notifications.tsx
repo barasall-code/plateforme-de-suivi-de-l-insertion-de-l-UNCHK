@@ -38,8 +38,15 @@ export default function Notifications() {
   const chargerNotifications = async () => {
     try {
       const response = await api.get('/notifications');
-      setNotifications(response.data.data.notifications);
-      setNonLues(response.data.data.nonLues);
+      const data = response.data.data;
+      // La réponse peut être imbriquée: data.notifications.notifications ou data.notifications (tableau)
+      const notifsList = Array.isArray(data.notifications)
+        ? data.notifications
+        : Array.isArray(data.notifications?.notifications)
+          ? data.notifications.notifications
+          : [];
+      setNotifications(notifsList);
+      setNonLues(data.nonLues || 0);
     } catch (err) {
       // erreur silencieuse
     }
