@@ -72,29 +72,31 @@ enum CategorieCompetence {
 }
 
 model Utilisateur {
-  messages       Message[]
-  id               String          @id @default(uuid())
-  email            String          @unique
-  motDePasseHash   String
-  typeUtilisateur  TypeUtilisateur
-  estActif         Boolean         @default(true)
-  dateCreation     DateTime        @default(now())
-  dateModification DateTime        @updatedAt
-  etudiant         Etudiant?
-  entreprise       Entreprise?
-  admin            Admin?
-  superviseur      Superviseur?
-  notifications    Notification[]
-  historiques      HistoriqueStatutCandidature[]
+  messages           Message[]
+  id                 String                        @id @default(uuid())
+  email              String                        @unique
+  motDePasseHash     String
+  typeUtilisateur    TypeUtilisateur
+  estActif           Boolean                       @default(true)
+  dateCreation       DateTime                      @default(now())
+  dateModification   DateTime                      @updatedAt
+  etudiant           Etudiant?
+  entreprise         Entreprise?
+  admin              Admin?
+  superviseur        Superviseur?
+  notifications      Notification[]
+  historiques        HistoriqueStatutCandidature[]
+  refreshTokens      RefreshToken[]
+  emailVerifie       Boolean                       @default(false)
+  verificationEmails VerificationEmail[]
+
   @@map("utilisateurs")
-  refreshTokens RefreshToken[]
 }
 
 model Etudiant {
-  
-  id                       String      @id @default(uuid())
-  utilisateur              Utilisateur @relation(fields: [id], references: [id])
-  numeroEtudiant           String      @unique
+  id                       String                @id @default(uuid())
+  utilisateur              Utilisateur           @relation(fields: [id], references: [id])
+  numeroEtudiant           String                @unique
   nom                      String
   prenom                   String
   dateNaissance            DateTime?
@@ -103,7 +105,7 @@ model Etudiant {
   niveauEtude              NiveauEtude
   promotion                String
   dateDiplome              DateTime?
-  pourcentageProfilComplet Int         @default(0)
+  pourcentageProfilComplet Int                   @default(0)
   cvUrl                    String?
   photoUrl                 String?
   linkedinUrl              String?
@@ -111,16 +113,17 @@ model Etudiant {
   statutsProfessionnels    StatutProfessionnel[]
   competences              EtudiantCompetence[]
   supervisions             Supervision[]
-  conversations  Conversation[]
+  conversations            Conversation[]
+
   @@map("etudiants")
 }
 
 model Entreprise {
-  conversations  Conversation[]
-  id               String      @id @default(uuid())
-  utilisateur      Utilisateur @relation(fields: [id], references: [id])
+  conversations    Conversation[]
+  id               String         @id @default(uuid())
+  utilisateur      Utilisateur    @relation(fields: [id], references: [id])
   nomEntreprise    String
-  siret            String?     @unique
+  siret            String?        @unique
   secteurActivite  String
   tailleEntreprise String?
   siteWeb          String?
@@ -128,9 +131,10 @@ model Entreprise {
   pays             String?
   description      String?
   logoUrl          String?
-  estValide        Boolean     @default(false)
+  estValide        Boolean        @default(false)
   dateValidation   DateTime?
   offres           Offre[]
+
   @@map("entreprises")
 }
 
@@ -141,23 +145,25 @@ model Admin {
   departement     String?
   permission      String?
   dateNommination DateTime?
+
   @@map("admins")
 }
 
 model Superviseur {
-  id           String      @id @default(uuid())
-  utilisateur  Utilisateur @relation(fields: [id], references: [id])
+  id           String        @id @default(uuid())
+  utilisateur  Utilisateur   @relation(fields: [id], references: [id])
   nom          String
   prenom       String
   departement  String?
   telephone    String?
   supervisions Supervision[]
+
   @@map("superviseurs")
 }
 
 model Offre {
-  id                    String      @id @default(uuid())
-  entreprise            Entreprise  @relation(fields: [entrepriseId], references: [id])
+  id                    String            @id @default(uuid())
+  entreprise            Entreprise        @relation(fields: [entrepriseId], references: [id])
   entrepriseId          String
   titre                 String
   description           String
@@ -168,34 +174,36 @@ model Offre {
   salaireMin            Decimal?
   salaireMax            Decimal?
   localisation          String
-  modeTravail           ModeTravail @default(presentiel)
+  modeTravail           ModeTravail       @default(presentiel)
   competencesRequises   Json?
   dateLimiteCandidature DateTime
-  statut                StatutOffre @default(brouillon)
-  nombrePostes          Int         @default(1)
-  dateCreation          DateTime    @default(now())
+  statut                StatutOffre       @default(brouillon)
+  nombrePostes          Int               @default(1)
+  dateCreation          DateTime          @default(now())
   datePublication       DateTime?
   dateFermeture         DateTime?
   candidatures          Candidature[]
   competences           OffreCompetence[]
+
   @@map("offres")
 }
 
 model Candidature {
-  id                       String            @id @default(uuid())
-  etudiant                 Etudiant          @relation(fields: [etudiantId], references: [id])
+  id                       String                        @id @default(uuid())
+  etudiant                 Etudiant                      @relation(fields: [etudiantId], references: [id])
   etudiantId               String
-  offre                    Offre             @relation(fields: [offreId], references: [id])
+  offre                    Offre                         @relation(fields: [offreId], references: [id])
   offreId                  String
   lettreMotivation         String
   cvUrl                    String
   documentsComplementaires Json?
-  statut                   StatutCandidature @default(soumise)
-  dateCandidature          DateTime          @default(now())
-  dateDerniereModification DateTime          @updatedAt
+  statut                   StatutCandidature             @default(soumise)
+  dateCandidature          DateTime                      @default(now())
+  dateDerniereModification DateTime                      @updatedAt
   commentaireEntreprise    String?
   noteEvaluation           Int?
   historique               HistoriqueStatutCandidature[]
+
   @@unique([etudiantId, offreId])
   @@map("candidatures")
 }
@@ -219,16 +227,18 @@ model StatutProfessionnel {
   idValidateur      String?
   dateDeclaration   DateTime                @default(now())
   dateValidation    DateTime?
+
   @@map("statuts_professionnels")
 }
 
 model Competence {
-  id            String              @id @default(uuid())
-  nomCompetence String              @unique
+  id            String               @id @default(uuid())
+  nomCompetence String               @unique
   categorie     CategorieCompetence
   description   String?
   etudiants     EtudiantCompetence[]
   offres        OffreCompetence[]
+
   @@map("competences")
 }
 
@@ -239,6 +249,7 @@ model EtudiantCompetence {
   competenceId    String
   niveauMaitrise  String
   dateAcquisition DateTime   @default(now())
+
   @@id([etudiantId, competenceId])
   @@map("etudiant_competences")
 }
@@ -250,6 +261,7 @@ model OffreCompetence {
   competenceId   String
   niveauRequis   String
   estObligatoire Boolean    @default(true)
+
   @@id([offreId, competenceId])
   @@map("offre_competences")
 }
@@ -264,6 +276,7 @@ model Notification {
   lienAction       String?
   estLue           Boolean          @default(false)
   dateCreation     DateTime         @default(now())
+
   @@map("notifications")
 }
 
@@ -277,6 +290,7 @@ model HistoriqueStatutCandidature {
   modificateurId   String
   commentaire      String?
   dateModification DateTime    @default(now())
+
   @@map("historique_statuts_candidatures")
 }
 
@@ -288,18 +302,20 @@ model Supervision {
   dateDebut     DateTime    @default(now())
   estActif      Boolean     @default(true)
   commentaire   String?
+
   @@id([superviseurId, etudiantId])
   @@map("supervisions")
 }
+
 model Conversation {
-  id           String    @id @default(uuid())
-  etudiant     Etudiant  @relation(fields: [etudiantId], references: [id])
+  id           String     @id @default(uuid())
+  etudiant     Etudiant   @relation(fields: [etudiantId], references: [id])
   etudiantId   String
   entreprise   Entreprise @relation(fields: [entrepriseId], references: [id])
   entrepriseId String
   messages     Message[]
-  dateCreation DateTime  @default(now())
-  dateMaj      DateTime  @updatedAt
+  dateCreation DateTime   @default(now())
+  dateMaj      DateTime   @updatedAt
 
   @@unique([etudiantId, entrepriseId])
   @@map("conversations")
@@ -317,6 +333,7 @@ model Message {
 
   @@map("messages")
 }
+
 model RefreshToken {
   id        String   @id @default(uuid())
   token     String   @unique
@@ -325,4 +342,13 @@ model RefreshToken {
   createdAt DateTime @default(now())
 
   utilisateur Utilisateur @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationEmail {
+  id            String      @id @default(uuid())
+  token         String      @unique
+  utilisateurId String
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  expiresAt     DateTime
+  createdAt     DateTime    @default(now())
 }

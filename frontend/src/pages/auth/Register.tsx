@@ -66,7 +66,7 @@ export default function Register() {
         data.siteWeb = siteWeb;
       }
       await api.post('/auth/register', data);
-      navigate('/login');
+      navigate('/email-envoye');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erreur lors de l\'inscription');
     } finally {

@@ -20,6 +20,8 @@ import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
 import LandingPage from './pages/LandingPage';
 import Messagerie from './pages/messagerie/Messagerie';
+import VerifierEmail from './pages/auth/VerifierEmail';
+import EmailEnvoye from './pages/auth/EmailEnvoye';
 import NotFound from './pages/NotFound';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
@@ -51,7 +53,9 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/verifier-email" element={<VerifierEmail />} />
+        <Route path="/email-envoye" element={<EmailEnvoye />} />
+        <Route path="/register" element={<Register />} />
 
           {/* Routes étudiant */}
           <Route path="/dashboard" element={

@@ -1,3 +1,7 @@
+import { envoyerEmailVerification } from "./email.service";
+import crypto from "crypto";
+import { envoyerEmailVerification } from "./email.service";
+import crypto from "crypto";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma';
@@ -79,6 +83,9 @@ export async function register(dto: RegisterDto): Promise<AuthResponse> {
     },
   });
 
+  const verifToken = crypto.randomBytes(32).toString("hex");
+  await prisma.verificationEmail.create({ data: { token: verifToken, utilisateurId: user.id, expiresAt: new Date(Date.now() + 86400000) } });
+  await envoyerEmailVerification(user.email, user.email, verifToken).catch(() => {});
   return { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.typeUtilisateur } };
 }
 
@@ -99,6 +106,9 @@ export async function login(dto: LoginDto): Promise<AuthResponse> {
     },
   });
 
+  const verifToken = crypto.randomBytes(32).toString("hex");
+  await prisma.verificationEmail.create({ data: { token: verifToken, utilisateurId: user.id, expiresAt: new Date(Date.now() + 86400000) } });
+  await envoyerEmailVerification(user.email, user.email, verifToken).catch(() => {});
   return { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.typeUtilisateur } };
 }
 
