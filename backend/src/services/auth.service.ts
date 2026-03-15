@@ -1,7 +1,5 @@
 import { envoyerEmailVerification } from "./email.service";
 import crypto from "crypto";
-import { envoyerEmailVerification } from "./email.service";
-import crypto from "crypto";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma';

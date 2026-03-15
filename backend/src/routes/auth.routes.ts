@@ -2,6 +2,7 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import * as authController from '../controllers/auth.controller';
 import { authenticate } from '../middlewares/auth.middleware';
+import { prisma } from '../lib/prisma';
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
