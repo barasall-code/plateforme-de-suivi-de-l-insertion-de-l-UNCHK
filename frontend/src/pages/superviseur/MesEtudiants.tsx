@@ -271,6 +271,19 @@ export default function MesEtudiants() {
                         className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
                         Voir détail
                       </Link>
+                      {modeVue === 'tous' && !supervisions.find(s => s.etudiantId === etudiantId) && (
+                        <button
+                          onClick={async () => {
+                            try {
+                              await api.post('/superviseur/supervisions', { etudiantId });
+                              alert('Étudiant ajouté à vos supervisions !');
+                              chargerDonnees();
+                            } catch { alert('Erreur lors de la supervision'); }
+                          }}
+                          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition">
+                          + Superviser
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -296,7 +309,9 @@ export default function MesEtudiants() {
                       <p className="text-sm text-gray-700">
                         {supInfo
                           ? new Date(supInfo.dateDebut).toLocaleDateString('fr-FR')
-                          : '—'}
+                          : e.utilisateur?.dateCreation
+                            ? new Date(e.utilisateur.dateCreation).toLocaleDateString('fr-FR')
+                            : '—'}
                       </p>
                     </div>
                   </div>
