@@ -63,20 +63,40 @@ export default function DashboardEntreprise() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
-          <div className="flex items-center gap-4">
+      <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+            <img src="/logo2_unchk.png" alt="UNCHK" className="h-9 w-auto" />
+          </Link>
+          <div className="hidden md:flex items-center gap-1">
+            {[
+              { to: '/entreprise/offres/creer', label: '➕ Créer offre' },
+              { to: '/entreprise/candidatures', label: '📋 Candidatures' },
+              { to: '/entreprise/profil', label: '🏢 Mon profil' },
+            ].map(({ to, label }) => (
+              <Link key={to} to={to}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
+                {label}
+              </Link>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
             <BadgeMessages />
-            <Link to="/entreprise/profil" className="text-sm text-gray-600 hover:text-green-700 font-medium">
-              Mon profil
-            </Link>
-            <span className="text-gray-600 text-sm">{user?.email}</span>
-            <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">
-              entreprise
-            </span>
-            <button onClick={logout} className="text-sm text-red-600 hover:text-red-700 font-medium">
-              Déconnexion
+            <Notifications />
+            <div className="h-6 w-px bg-gray-200 mx-1" />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
+                {user?.email?.charAt(0).toUpperCase()}
+              </div>
+              <div className="hidden lg:flex flex-col">
+                <span className="text-sm text-gray-700 font-medium max-w-32 truncate">{user?.email}</span>
+                <span className="text-xs text-blue-600 font-medium">Entreprise</span>
+              </div>
+            </div>
+            <button onClick={logout}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
+              <span>↗</span>
+              <span className="hidden sm:block">Déconnexion</span>
             </button>
           </div>
         </div>
