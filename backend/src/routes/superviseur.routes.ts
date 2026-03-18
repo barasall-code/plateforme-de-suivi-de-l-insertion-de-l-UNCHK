@@ -12,4 +12,5 @@ router.get('/etudiants', authenticate, authorize('superviseur'), superviseurCont
 router.get('/etudiants/:etudiantId', authenticate, authorize('superviseur'), superviseurController.getDetailEtudiant);
 router.put('/etudiants/:etudiantId/commentaire', authenticate, authorize('superviseur'), superviseurController.ajouterCommentaire);
 
+router.post('/supervisions', authenticate, authorize('superviseur'), superviseurController.creerSupervision);
 export default router;

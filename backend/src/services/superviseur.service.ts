@@ -231,3 +231,15 @@ export async function getTousEtudiants() {
     orderBy: { nom: 'asc' },
   });
 }
+
+export async function creerSupervision(superviseurId: string, etudiantId: string) {
+  const superviseur = await prisma.superviseur.findUnique({ where: { id: superviseurId } });
+  if (!superviseur) throw new Error('Superviseur introuvable');
+  const existing = await prisma.supervision.findUnique({
+    where: { superviseurId_etudiantId: { superviseurId, etudiantId } }
+  });
+  if (existing) throw new Error('Supervision déjà existante');
+  return prisma.supervision.create({
+    data: { superviseurId, etudiantId, estActif: true }
+  });
+}

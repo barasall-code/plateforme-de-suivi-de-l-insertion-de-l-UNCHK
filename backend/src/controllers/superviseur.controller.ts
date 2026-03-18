@@ -70,3 +70,14 @@ export async function getTousEtudiants(req: AuthRequest, res: Response): Promise
     res.status(400).json({ success: false, message: error.message });
   }
 }
+export const creerSupervision = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const superviseurId = req.user!.userId;
+    const { etudiantId } = req.body;
+    if (!etudiantId) { res.status(400).json({ success: false, message: 'etudiantId requis' }); return; }
+    const supervision = await superviseurService.creerSupervision(superviseurId, etudiantId);
+    res.status(201).json({ success: true, data: supervision });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
