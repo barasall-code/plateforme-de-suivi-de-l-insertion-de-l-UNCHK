@@ -59,7 +59,7 @@ export async function getDetailEtudiant(etudiantId: string, superviseurId: strin
   const supervision = await prisma.supervision.findUnique({
     where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
   });
-  if (!supervision) throw new Error('Etudiant non supervise');
+  // Accès autorisé même sans supervision (mode consultation tous les étudiants)
 
   return prisma.etudiant.findUnique({
     where: { id: etudiantId },
