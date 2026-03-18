@@ -55,6 +55,7 @@ export default function DashboardAdmin() {
           <div className="hidden md:flex items-center gap-1">
             {[
               { to: '/admin/offres', label: '📋 Valider offres' },
+              { to: '/admin/superviseurs', label: '👁️ Superviseurs' },
               { to: '/admin/entreprises', label: '🏢 Entreprises' },
               { to: '/admin/utilisateurs', label: '👥 Utilisateurs' },
             ].map(({ to, label }) => (
@@ -233,7 +234,18 @@ export default function DashboardAdmin() {
             </div>
           </>
         )}
-      </main>
+                {/* Carte superviseurs */}
+          <div className="mt-4">
+            <Link to="/admin/superviseurs"
+              className="flex items-center gap-3 p-5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-purple-200 transition-all">
+              <span className="text-3xl">��️</span>
+              <div>
+                <p className="font-semibold text-gray-800">Gérer les superviseurs</p>
+                <p className="text-sm text-gray-500">Créer et assigner des superviseurs</p>
+              </div>
+            </Link>
+          </div>
+        </main>
     </div>
   );
 }
