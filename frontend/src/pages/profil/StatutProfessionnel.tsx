@@ -1,3 +1,4 @@
+import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Notifications from '../../components/Notifications';
@@ -44,6 +45,7 @@ const emptyForm = {
 };
 
 export default function StatutProfessionnel() {
+  const { user, logout } = useAuth();
   const [statuts, setStatuts] = useState<StatutPro[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);

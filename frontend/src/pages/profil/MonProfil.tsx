@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api, { getFileUrl } from '../../services/api';
+import Notifications from '../../components/Notifications';
 
 export default function MonProfil() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [profil, setProfil] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);

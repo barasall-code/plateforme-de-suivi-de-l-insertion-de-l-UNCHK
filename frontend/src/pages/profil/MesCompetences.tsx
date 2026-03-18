@@ -1,3 +1,4 @@
+import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Notifications from '../../components/Notifications';
@@ -32,6 +33,7 @@ const niveauColor = (n: string) => {
 };
 
 export default function MesCompetences() {
+  const { user, logout } = useAuth();
   const [competences, setCompetences] = useState<UserCompetence[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [nomCompetence, setNomCompetence] = useState('');
