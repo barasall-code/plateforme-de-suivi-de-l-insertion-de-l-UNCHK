@@ -73,6 +73,14 @@ enum CategorieCompetence {
   linguistique
 }
 
+enum SituationEtudiant {
+  en_cours_etude
+  sous_contrat_stage
+  sous_contrat_cdd
+  sous_contrat_cdi
+  chomeur
+}
+
 model Utilisateur {
   messages           Message[]
   id                 String                        @id @default(uuid())
@@ -107,6 +115,7 @@ model Etudiant {
   niveauEtude              NiveauEtude
   promotion                String
   dateDiplome              DateTime?
+  situationActuelle        SituationEtudiant?    @default(en_cours_etude)
   pourcentageProfilComplet Int                   @default(0)
   cvUrl                    String?
   photoUrl                 String?

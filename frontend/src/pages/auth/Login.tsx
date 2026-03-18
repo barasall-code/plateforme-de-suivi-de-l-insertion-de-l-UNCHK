@@ -153,7 +153,7 @@ export default function Login() {
                 { role: 'Étudiant', email: 'bara.sall@unchk.edu.sn', color: 'bg-blue-50 text-blue-700' },
                 { role: 'Entreprise', email: 'entreprise@test.sn', color: 'bg-green-50 text-green-700' },
                 { role: 'Admin', email: 'admin@unchk.sn', color: 'bg-red-50 text-red-700' },
-                { role: 'Superviseur', email: 'superviseur@unchk.sn', color: 'bg-purple-50 text-purple-700' },
+                { role: 'Superviseur', email: 'superviseur@unchk.edu.sn', color: 'bg-purple-50 text-purple-700' },
               ].map((compte) => (
                 <button key={compte.role} type="button"
                   onClick={() => { setEmail(compte.email); setMotDePasse(''); }}

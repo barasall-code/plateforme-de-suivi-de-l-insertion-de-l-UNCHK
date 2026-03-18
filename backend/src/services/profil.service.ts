@@ -2,16 +2,17 @@ import { prisma } from '../lib/prisma';
 import { z } from 'zod';
 
 const UpdateEtudiantSchema = z.object({
-  nom:           z.string().min(1).max(100).optional(),
-  prenom:        z.string().min(1).max(100).optional(),
-  filiere:       z.string().max(100).optional(),
-  niveauEtude:   z.enum(['licence', 'master', 'doctorat']).optional(),
-  promotion:     z.string().max(20).optional(),
-  telephone:     z.string().max(20).optional(),
-  cvUrl:         z.string().url().optional().or(z.literal('')),
-  linkedinUrl:   z.string().url().optional().or(z.literal('')),
-  photoUrl:      z.string().url().optional().or(z.literal('')),
-  dateNaissance: z.string().optional(),
+  nom:              z.string().min(1).max(100).optional(),
+  prenom:           z.string().min(1).max(100).optional(),
+  filiere:          z.string().max(100).optional(),
+  niveauEtude:      z.enum(['licence', 'master', 'master1', 'master2', 'doctorat']).optional(),
+  promotion:        z.string().max(20).optional(),
+  telephone:        z.string().max(20).optional(),
+  cvUrl:            z.string().url().optional().or(z.literal('')),
+  linkedinUrl:      z.string().url().optional().or(z.literal('')),
+  photoUrl:         z.string().url().optional().or(z.literal('')),
+  dateNaissance:    z.string().optional(),
+  situationActuelle: z.enum(['en_cours_etude', 'sous_contrat_stage', 'sous_contrat_cdd', 'sous_contrat_cdi', 'chomeur']).optional(),
 }).strict();
 
 const UpdateEntrepriseSchema = z.object({
@@ -67,6 +68,7 @@ export async function updateProfilEtudiant(userId: string, data: any) {
       ...(d.dateNaissance !== undefined && {
         dateNaissance: d.dateNaissance ? new Date(d.dateNaissance) : null
       }),
+      ...(d.situationActuelle !== undefined && { situationActuelle: d.situationActuelle }),
     },
   });
 }

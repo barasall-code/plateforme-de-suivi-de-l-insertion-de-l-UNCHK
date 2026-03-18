@@ -52,6 +52,7 @@ export async function register(dto: RegisterDto): Promise<AuthResponse> {
               niveauEtude:    (dto.niveauEtude?.toLowerCase() as any) || 'licence',
               promotion:      dto.promotion || String(new Date().getFullYear()),
               telephone:      dto.telephone || null,
+              situationActuelle: (dto as any).situationActuelle || 'en_cours_etude',
             },
           },
         }),

@@ -2,6 +2,22 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api, { getFileUrl } from '../../services/api';
 
+const SITUATION_LABELS: Record<string, string> = {
+  en_cours_etude:    "En cours d'étude",
+  sous_contrat_stage: 'Sous contrat stage',
+  sous_contrat_cdd:  'Sous contrat CDD',
+  sous_contrat_cdi:  'Sous contrat CDI',
+  chomeur:           'Chômeur',
+};
+
+const SITUATION_COLORS: Record<string, string> = {
+  en_cours_etude:    'bg-blue-100 text-blue-700',
+  sous_contrat_stage: 'bg-purple-100 text-purple-700',
+  sous_contrat_cdd:  'bg-yellow-100 text-yellow-700',
+  sous_contrat_cdi:  'bg-green-100 text-green-700',
+  chomeur:           'bg-red-100 text-red-700',
+};
+
 export default function DetailEtudiant() {
   const { etudiantId } = useParams<{ etudiantId: string }>();
   const [etudiant, setEtudiant] = useState<any>(null);
@@ -75,6 +91,11 @@ export default function DetailEtudiant() {
               <h2 className="text-xl font-bold text-gray-800">{etudiant.prenom} {etudiant.nom}</h2>
               <p className="text-gray-500">{etudiant.utilisateur?.email}</p>
               <p className="text-gray-400 text-sm">N° {etudiant.numeroEtudiant}</p>
+              {etudiant.situationActuelle && (
+                <span className={`inline-block mt-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${SITUATION_COLORS[etudiant.situationActuelle] ?? 'bg-gray-100 text-gray-600'}`}>
+                  {SITUATION_LABELS[etudiant.situationActuelle] ?? etudiant.situationActuelle}
+                </span>
+              )}
             </div>
           </div>
 

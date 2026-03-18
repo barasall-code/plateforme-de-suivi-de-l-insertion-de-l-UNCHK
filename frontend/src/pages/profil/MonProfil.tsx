@@ -4,6 +4,22 @@ import { useAuth } from '../../context/AuthContext';
 import api, { getFileUrl } from '../../services/api';
 import Notifications from '../../components/Notifications';
 
+const SITUATION_LABELS: Record<string, string> = {
+  en_cours_etude:     "En cours d'\u00e9tude",
+  sous_contrat_stage: 'Sous contrat stage',
+  sous_contrat_cdd:   'Sous contrat CDD',
+  sous_contrat_cdi:   'Sous contrat CDI',
+  chomeur:            'Ch\u00f4meur',
+};
+
+const SITUATION_COLORS: Record<string, string> = {
+  en_cours_etude:     'bg-blue-100 text-blue-700',
+  sous_contrat_stage: 'bg-purple-100 text-purple-700',
+  sous_contrat_cdd:   'bg-yellow-100 text-yellow-700',
+  sous_contrat_cdi:   'bg-green-100 text-green-700',
+  chomeur:            'bg-red-100 text-red-700',
+};
+
 export default function MonProfil() {
   const { user, logout } = useAuth();
   const [profil, setProfil] = useState<any>(null);
@@ -37,7 +53,7 @@ export default function MonProfil() {
   };
 
   const buildPayload = (source: any) => {
-    const fields = ['nom', 'prenom', 'filiere', 'niveauEtude', 'promotion', 'telephone', 'cvUrl', 'linkedinUrl', 'photoUrl', 'dateNaissance'];
+    const fields = ['nom', 'prenom', 'filiere', 'niveauEtude', 'promotion', 'telephone', 'cvUrl', 'linkedinUrl', 'photoUrl', 'dateNaissance', 'situationActuelle'];
     const payload: Record<string, any> = {};
     for (const key of fields) {
       const val = source[key];
@@ -202,7 +218,14 @@ export default function MonProfil() {
             <div>
               <h3 className="text-xl font-semibold text-gray-800">{profil?.prenom} {profil?.nom}</h3>
               <p className="text-gray-500">{profil?.utilisateur?.email}</p>
-              <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">{user?.role}</span>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <span className="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">{user?.role}</span>
+                {profil?.situationActuelle && (
+                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${SITUATION_COLORS[profil.situationActuelle] ?? 'bg-gray-100 text-gray-700'}`}>
+                    {SITUATION_LABELS[profil.situationActuelle] ?? profil.situationActuelle}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -294,6 +317,7 @@ export default function MonProfil() {
                 { label: "Niveau d'étude", value: profil?.niveauEtude },
                 { label: 'Promotion', value: profil?.promotion },
                 { label: 'LinkedIn', value: profil?.linkedinUrl, link: true },
+                { label: 'Statut', value: SITUATION_LABELS[profil?.situationActuelle] ?? profil?.situationActuelle ?? null },
               ].map((item) => (
                 <div key={item.label}>
                   <p className="text-xs text-gray-500 mb-1">{item.label}</p>
@@ -353,6 +377,17 @@ export default function MonProfil() {
                 <input type="url" name="linkedinUrl" value={form.linkedinUrl || ''} onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://linkedin.com/in/..." />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Statut actuel</label>
+                <select name="situationActuelle" value={form.situationActuelle || 'en_cours_etude'} onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500">
+                  <option value="en_cours_etude">En cours d'étude</option>
+                  <option value="sous_contrat_stage">Sous contrat stage</option>
+                  <option value="sous_contrat_cdd">Sous contrat CDD</option>
+                  <option value="sous_contrat_cdi">Sous contrat CDI</option>
+                  <option value="chomeur">Chômeur</option>
+                </select>
               </div>
               <div className="flex gap-4 pt-2">
                 <button type="submit" disabled={isSaving}

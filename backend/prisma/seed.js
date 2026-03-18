@@ -19,10 +19,10 @@ async function main() {
   // Créer superviseur
   const hash = await bcrypt.hash('motdepasse123', 12);
   const supUser = await prisma.utilisateur.upsert({
-    where: { email: 'superviseur@unchk.sn' },
+    where: { email: 'superviseur@unchk.edu.sn' },
     update: {},
     create: {
-      email: 'superviseur@unchk.sn',
+      email: 'superviseur@unchk.edu.sn',
       motDePasseHash: hash,
       typeUtilisateur: 'superviseur',
       superviseur: { create: { nom: 'Sow', prenom: 'Ibrahima', departement: 'Informatique' } }

@@ -18,6 +18,7 @@ const RegisterSchema = z.object({
   secteurActivite: z.string().optional(),
   ville:           z.string().optional(),
   siteWeb:         z.string().optional(),
+  situationActuelle: z.enum(['en_cours_etude', 'sous_contrat_stage', 'sous_contrat_cdd', 'sous_contrat_cdi', 'chomeur']).optional(),
 });
 
 const LoginSchema = z.object({

@@ -24,6 +24,7 @@ export default function Register() {
   const [niveauEtude, setNiveauEtude] = useState('');
   const [promotion, setPromotion] = useState('');
   const [telephone, setTelephone] = useState('');
+  const [situationActuelle, setSituationActuelle] = useState('en_cours_etude');
 
   // Champs entreprise
   const [nomEntreprise, setNomEntreprise] = useState('');
@@ -59,6 +60,7 @@ export default function Register() {
         data.niveauEtude = niveauEtude;
         data.promotion = promotion;
         data.telephone = telephone;
+        data.situationActuelle = situationActuelle;
       } else {
         data.nomEntreprise = nomEntreprise;
         data.secteurActivite = secteurActivite;
@@ -251,6 +253,17 @@ export default function Register() {
                           placeholder="+221 77 000 00 00"
                           className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Statut actuel *</label>
+                      <select value={situationActuelle} onChange={e => setSituationActuelle(e.target.value)} required
+                        className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="en_cours_etude">En cours d'étude</option>
+                        <option value="sous_contrat_stage">Sous contrat stage</option>
+                        <option value="sous_contrat_cdd">Sous contrat CDD</option>
+                        <option value="sous_contrat_cdi">Sous contrat CDI</option>
+                        <option value="chomeur">Chômeur</option>
+                      </select>
                     </div>
                   </>
                 )}

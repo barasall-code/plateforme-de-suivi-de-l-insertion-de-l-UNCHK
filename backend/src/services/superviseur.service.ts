@@ -113,10 +113,48 @@ export async function updateProfilSuperviseur(userId: string, data: any) {
 }
 
 export async function getStatsSuperviseur(userId: string) {
-  const supervisions = await prisma.supervision.findMany({
-    where:   { superviseurId: userId },
-    include: { etudiant: { include: { candidatures: { select: { statut: true } } } } },
-  });
+  const [
+    supervisions,
+    totalEtudiantsPlateform,
+    totalCandidaturesPlateform,
+    accepteesPlateform,
+    enCoursPlateform,
+    recentes,
+    tousEtudiantsSituation,
+  ] = await Promise.all([
+    prisma.supervision.findMany({
+      where:   { superviseurId: userId },
+      include: { etudiant: { include: { candidatures: { select: { statut: true } } } } },
+    }),
+    prisma.etudiant.count(),
+    prisma.candidature.count(),
+    prisma.candidature.count({ where: { statut: 'acceptee' } }),
+    prisma.candidature.count({ where: { statut: { in: ['soumise', 'vue', 'entretien'] } } }),
+    prisma.candidature.findMany({
+      orderBy: { dateCandidature: 'desc' },
+      take: 5,
+      select: {
+        statut: true,
+        dateCandidature: true,
+        etudiant: { select: { nom: true, prenom: true } },
+        offre: { select: { titre: true, entreprise: { select: { nomEntreprise: true } } } },
+      },
+    }),
+    prisma.etudiant.findMany({ select: { situationActuelle: true } }),
+  ]);
+
+  // Répartition par situationActuelle — tous les étudiants de la plateforme
+  const parSituationPlateform: Record<string, number> = {
+    en_cours_etude:    0,
+    sous_contrat_stage: 0,
+    sous_contrat_cdd:  0,
+    sous_contrat_cdi:  0,
+    chomeur:           0,
+  };
+  for (const e of tousEtudiantsSituation) {
+    const sit = (e as any).situationActuelle || 'en_cours_etude';
+    if (sit in parSituationPlateform) parSituationPlateform[sit]++;
+  }
 
   const totalEtudiants      = supervisions.length;
   const etudiantsActifs     = supervisions.filter(s => s.estActif).length;
@@ -124,22 +162,72 @@ export async function getStatsSuperviseur(userId: string) {
   let candidaturesAcceptees = 0;
   let candidaturesEnCours   = 0;
 
+  const parSituationActuelle: Record<string, number> = {
+    en_cours_etude:    0,
+    sous_contrat_stage: 0,
+    sous_contrat_cdd:  0,
+    sous_contrat_cdi:  0,
+    chomeur:           0,
+  };
+
   for (const s of supervisions) {
     for (const c of s.etudiant.candidatures) {
       totalCandidatures++;
       if (c.statut === 'acceptee')                           candidaturesAcceptees++;
       if (['soumise', 'vue', 'entretien'].includes(c.statut)) candidaturesEnCours++;
     }
+    const sit = (s.etudiant as any).situationActuelle || 'en_cours_etude';
+    if (sit in parSituationActuelle) parSituationActuelle[sit]++;
   }
 
+  // Taux d'insertion = étudiants avec contrat (CDI, CDD, stage) / total
+  const insertesSupervises =
+    (parSituationActuelle['sous_contrat_cdi']   ?? 0) +
+    (parSituationActuelle['sous_contrat_cdd']   ?? 0) +
+    (parSituationActuelle['sous_contrat_stage'] ?? 0);
+
+  const insertesPlateform =
+    (parSituationPlateform['sous_contrat_cdi']   ?? 0) +
+    (parSituationPlateform['sous_contrat_cdd']   ?? 0) +
+    (parSituationPlateform['sous_contrat_stage'] ?? 0);
+
   return {
+    // Mes supervisions
     totalEtudiants,
     etudiantsActifs,
     totalCandidatures,
     candidaturesAcceptees,
     candidaturesEnCours,
+    parSituationActuelle,
     tauxInsertion: totalEtudiants > 0
-      ? Math.round((candidaturesAcceptees / totalEtudiants) * 100)
+      ? Math.round((insertesSupervises / totalEtudiants) * 100)
       : 0,
+    // Plateforme globale
+    totalEtudiantsPlateform,
+    totalCandidaturesPlateform,
+    accepteesPlateform,
+    enCoursPlateform,
+    parSituationPlateform,
+    tauxInsertionPlateform: totalEtudiantsPlateform > 0
+      ? Math.round((insertesPlateform / totalEtudiantsPlateform) * 100)
+      : 0,
+    recentes,
   };
+}
+
+export async function getTousEtudiants() {
+  return prisma.etudiant.findMany({
+    include: {
+      utilisateur: { select: { email: true } },
+      candidatures: {
+        select: { statut: true, dateCandidature: true },
+        orderBy: { dateCandidature: 'desc' },
+        take: 5,
+      },
+      supervisions: {
+        select: { superviseurId: true, estActif: true },
+      },
+    },
+    orderBy: { nom: 'asc' },
+  });
 }
