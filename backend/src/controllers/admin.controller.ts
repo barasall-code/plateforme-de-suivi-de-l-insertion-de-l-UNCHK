@@ -73,3 +73,81 @@ export async function validerOffre(req: AuthRequest, res: Response): Promise<voi
     res.status(400).json({ success: false, message: error.message });
   }
 }
+
+// ─── Superviseurs ─────────────────────────────────────────────────────────────
+
+export async function getSuperviseurs(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.getSuperviseurs();
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function creerSuperviseur(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.creerSuperviseur(req.body);
+    res.status(201).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function modifierSuperviseur(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.modifierSuperviseur(req.params.id as string, req.body);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function supprimerSuperviseur(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.supprimerSuperviseur(req.params.id as string);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+// ─── Supervisions ─────────────────────────────────────────────────────────────
+
+export async function getSupervisions(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.getSupervisions();
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function assignerSupervision(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const { superviseurId, etudiantId } = req.body;
+    const result = await adminService.assignerSupervision(superviseurId, etudiantId);
+    res.status(201).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function supprimerSupervision(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const { superviseurId, etudiantId } = req.params;
+    const result = await adminService.supprimerSupervision(superviseurId as string, etudiantId as string);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function getEtudiantsSansSupervision(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await adminService.getEtudiantsSansSupervision();
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}

@@ -44,6 +44,15 @@ export async function ajouterCommentaire(req: AuthRequest, res: Response): Promi
   }
 }
 
+export async function updateProfilSuperviseur(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await superviseurService.updateProfilSuperviseur(req.user!.userId, req.body);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
 export async function getStatsSuperviseur(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await superviseurService.getStatsSuperviseur(req.user!.userId);

@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export async function getStats() {
   const [
@@ -112,9 +113,136 @@ export async function validerOffre(id: string) {
 
 export async function getOffresEnAttente() {
   return prisma.offre.findMany({
-    where:   { statut: 'brouillon' },
+    where:   { statut: 'soumis' },
     include: { entreprise: { select: { nomEntreprise: true } } },
     orderBy: { dateCreation: 'desc' },
     take: 100,
+  });
+}
+
+// ─── Superviseurs ────────────────────────────────────────────────────────────
+
+export async function getSuperviseurs() {
+  return prisma.superviseur.findMany({
+    include: {
+      utilisateur: { select: { email: true, dateCreation: true, estActif: true } },
+      _count: { select: { supervisions: true } },
+    },
+    orderBy: { nom: 'asc' },
+  });
+}
+
+export async function creerSuperviseur(data: any) {
+  if (!data.email || !data.motDePasse) throw new Error('email et motDePasse requis');
+  if (!data.nom || !data.prenom)       throw new Error('nom et prenom requis');
+
+  const existing = await prisma.utilisateur.findUnique({ where: { email: data.email } });
+  if (existing) throw new Error('Email deja utilise');
+
+  const hash = await bcrypt.hash(data.motDePasse, 12);
+  return prisma.utilisateur.create({
+    data: {
+      email: data.email,
+      motDePasseHash: hash,
+      typeUtilisateur: 'superviseur',
+      superviseur: {
+        create: {
+          nom: data.nom,
+          prenom: data.prenom,
+          departement: data.departement || null,
+          telephone: data.telephone || null,
+        },
+      },
+    },
+    include: { superviseur: true },
+  });
+}
+
+export async function modifierSuperviseur(id: string, data: any) {
+  const superviseur = await prisma.superviseur.findUnique({ where: { id } });
+  if (!superviseur) throw new Error('Superviseur introuvable');
+  return prisma.superviseur.update({
+    where: { id },
+    data: {
+      nom: data.nom,
+      prenom: data.prenom,
+      departement: data.departement ?? null,
+      telephone: data.telephone ?? null,
+    },
+  });
+}
+
+export async function supprimerSuperviseur(id: string) {
+  const superviseur = await prisma.superviseur.findUnique({ where: { id } });
+  if (!superviseur) throw new Error('Superviseur introuvable');
+  await prisma.utilisateur.delete({ where: { id } });
+  return { message: 'Superviseur supprime' };
+}
+
+// ─── Supervisions ─────────────────────────────────────────────────────────────
+
+export async function getSupervisions() {
+  return prisma.supervision.findMany({
+    include: {
+      superviseur: { select: { nom: true, prenom: true, departement: true } },
+      etudiant: {
+        select: {
+          nom: true,
+          prenom: true,
+          filiere: true,
+          niveauEtude: true,
+          utilisateur: { select: { email: true } },
+        },
+      },
+    },
+    orderBy: { dateDebut: 'desc' },
+  });
+}
+
+export async function assignerSupervision(superviseurId: string, etudiantId: string) {
+  const superviseur = await prisma.superviseur.findUnique({ where: { id: superviseurId } });
+  if (!superviseur) throw new Error('Superviseur introuvable');
+  const etudiant = await prisma.etudiant.findUnique({ where: { id: etudiantId } });
+  if (!etudiant) throw new Error('Etudiant introuvable');
+
+  const existing = await prisma.supervision.findUnique({
+    where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
+  });
+  if (existing) throw new Error('Supervision deja existante');
+
+  return prisma.supervision.create({
+    data: { superviseurId, etudiantId },
+    include: {
+      superviseur: { select: { nom: true, prenom: true } },
+      etudiant: { select: { nom: true, prenom: true, utilisateur: { select: { email: true } } } },
+    },
+  });
+}
+
+export async function supprimerSupervision(superviseurId: string, etudiantId: string) {
+  const existing = await prisma.supervision.findUnique({
+    where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
+  });
+  if (!existing) throw new Error('Supervision introuvable');
+  await prisma.supervision.delete({
+    where: { superviseurId_etudiantId: { superviseurId, etudiantId } },
+  });
+  return { message: 'Supervision supprimee' };
+}
+
+export async function getEtudiantsSansSupervision() {
+  return prisma.etudiant.findMany({
+    where: {
+      supervisions: { none: { estActif: true } },
+    },
+    select: {
+      id: true,
+      nom: true,
+      prenom: true,
+      filiere: true,
+      niveauEtude: true,
+      utilisateur: { select: { email: true } },
+    },
+    orderBy: { nom: 'asc' },
   });
 }

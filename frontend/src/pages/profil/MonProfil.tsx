@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../services/api';
+import api, { getFileUrl } from '../../services/api';
 
 export default function MonProfil() {
   const { user } = useAuth();
@@ -35,18 +35,29 @@ export default function MonProfil() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const buildPayload = (source: any) => {
+    const fields = ['nom', 'prenom', 'filiere', 'niveauEtude', 'promotion', 'telephone', 'cvUrl', 'linkedinUrl', 'photoUrl', 'dateNaissance'];
+    const payload: Record<string, any> = {};
+    for (const key of fields) {
+      const val = source[key];
+      if (val !== null && val !== undefined) payload[key] = val;
+    }
+    return payload;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsSaving(true);
     try {
-      const response = await api.put('/profil', form);
+      const response = await api.put('/profil', buildPayload(form));
       setProfil(response.data.data);
       setSuccess('Profil mis à jour avec succès !');
       setIsEditing(false);
       setTimeout(() => setSuccess(''), 3000);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erreur lors de la mise à jour');
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { message?: string } } };
+      setError(e.response?.data?.message || 'Erreur lors de la mise à jour');
     } finally {
       setIsSaving(false);
     }
@@ -64,7 +75,7 @@ export default function MonProfil() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       const cvUrl = response.data.data.url;
-      await api.put('/profil', { ...profil, cvUrl });
+      await api.put('/profil', buildPayload({ ...profil, cvUrl }));
       setProfil({ ...profil, cvUrl });
       setSuccess('CV uploadé avec succès !');
       setTimeout(() => setSuccess(''), 3000);
@@ -87,7 +98,7 @@ export default function MonProfil() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       const photoUrl = response.data.data.url;
-      await api.put('/profil', { ...profil, photoUrl });
+      await api.put('/profil', buildPayload({ ...profil, photoUrl }));
       setProfil({ ...profil, photoUrl });
       setSuccess('Photo uploadée avec succès !');
       setTimeout(() => setSuccess(''), 3000);
@@ -148,7 +159,7 @@ export default function MonProfil() {
           <div className="flex items-center gap-4">
             <div className="relative">
               {profil?.photoUrl ? (
-                <img src={`http://localhost:3001${profil.photoUrl}`} alt="Photo"
+                <img src={getFileUrl(profil.photoUrl)} alt="Photo"
                   className="w-16 h-16 rounded-full object-cover border-2 border-green-200" />
               ) : (
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl font-bold text-green-700">
@@ -183,7 +194,7 @@ export default function MonProfil() {
                   <p className="text-xs text-gray-500 truncate text-center" title={getFileName(profil.cvUrl)}>
                     {getFileName(profil.cvUrl)}
                   </p>
-                  <a href={`http://localhost:3001${profil.cvUrl}`} target="_blank" rel="noopener noreferrer"
+                  <a href={getFileUrl(profil.cvUrl)} target="_blank" rel="noopener noreferrer"
                     className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-1.5 rounded-lg transition">
                     👁️ Voir le CV
                   </a>
@@ -297,7 +308,8 @@ export default function MonProfil() {
                   <select name="niveauEtude" value={form.niveauEtude || 'licence'} onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500">
                     <option value="licence">Licence</option>
-                    <option value="master">Master</option>
+                    <option value="master1">Master 1</option>
+                    <option value="master2">Master 2</option>
                     <option value="doctorat">Doctorat</option>
                   </select>
                 </div>

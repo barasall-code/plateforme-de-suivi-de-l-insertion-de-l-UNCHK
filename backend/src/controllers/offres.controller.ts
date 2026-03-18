@@ -64,3 +64,12 @@ export async function getMesOffres(req: AuthRequest, res: Response): Promise<voi
     res.status(400).json({ success: false, message: error.message });
   }
 }
+
+export async function soumettreOffre(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await offresService.soumettreOffre(req.params.id as string, req.user!.userId);
+    res.status(200).json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}

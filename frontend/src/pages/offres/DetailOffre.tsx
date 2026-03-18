@@ -179,25 +179,26 @@ export default function DetailOffre() {
             <p className="text-gray-600 leading-relaxed">{offre.description}</p>
           </div>
 
-          {success ? (
-            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl">
-              {success}
+          {user?.role === 'etudiant' ? (
+            success ? (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl">
+                {success}
+              </div>
+            ) : (
+              <button onClick={() => setShowForm(!showForm)}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition">
+                {showForm ? 'Annuler' : '📝 Postuler à cette offre'}
+              </button>
+            )
+          ) : (
+            <div className="bg-blue-50 border border-blue-100 text-blue-600 px-4 py-3 rounded-xl text-sm">
+              ℹ️ Connectez-vous en tant qu'étudiant pour postuler à cette offre.
             </div>
-          ) : user && user.role === 'etudiant' ? (
-            <button onClick={() => setShowForm(!showForm)}
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition">
-              {showForm ? 'Annuler' : '📝 Postuler à cette offre'}
-            </button>
-          ) : !user ? (
-            <a href="/login"
-              className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition">
-              🔐 Connectez-vous pour postuler
-            </a>
-          ) : null}
+          )}
         </div>
 
         {/* Formulaire candidature */}
-        {showForm && (
+        {showForm && user?.role === 'etudiant' && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6">Votre candidature</h3>
 

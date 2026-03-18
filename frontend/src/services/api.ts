@@ -61,4 +61,13 @@ api.interceptors.response.use(
   }
 );
 
+const BACKEND_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:3001/api').replace(/\/api$/, '');
+
+/** Converts a relative /uploads/... path to a full backend URL */
+export function getFileUrl(url: string | null | undefined): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${BACKEND_BASE}${url}`;
+}
+
 export default api;

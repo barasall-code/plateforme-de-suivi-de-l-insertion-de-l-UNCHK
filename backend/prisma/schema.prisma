@@ -17,6 +17,8 @@ enum TypeUtilisateur {
 enum NiveauEtude {
   licence
   master
+  master1
+  master2
   doctorat
 }
 

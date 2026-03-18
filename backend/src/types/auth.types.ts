@@ -12,8 +12,13 @@ export interface RegisterDto {
   prenom?: string;
   numeroEtudiant?: string;
   filiere?: string;
+  niveauEtude?: string;
+  promotion?: string;
+  telephone?: string;
   nomEntreprise?: string;
   secteurActivite?: string;
+  ville?: string;
+  siteWeb?: string;
 }
 
 export interface LoginDto {

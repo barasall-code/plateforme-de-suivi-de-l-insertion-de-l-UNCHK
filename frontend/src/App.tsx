@@ -8,16 +8,23 @@ import DetailOffre from './pages/offres/DetailOffre';
 import MesCandidatures from './pages/candidatures/MesCandidatures';
 import DashboardEntreprise from './pages/entreprise/DashboardEntreprise';
 import CreerOffre from './pages/entreprise/CreerOffre';
+import ModifierOffre from './pages/entreprise/ModifierOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
 import ProfilEntreprise from './pages/entreprise/ProfilEntreprise';
-import ProfilCandidat from './pages/entreprise/ProfilCandidат';
+import ProfilCandidat from './pages/entreprise/ProfilCandidat';
 import MonProfil from './pages/profil/MonProfil';
+import StatutProfessionnel from './pages/profil/StatutProfessionnel';
+import MesCompetences from './pages/profil/MesCompetences';
 import DashboardAdmin from './pages/admin/DashboardAdmin';
 import GestionEntreprises from './pages/admin/GestionEntreprises';
 import GestionUtilisateurs from './pages/admin/GestionUtilisateurs';
+import GestionOffres from './pages/admin/GestionOffres';
+import GestionSuperviseurs from './pages/admin/GestionSuperviseurs';
+import GestionSupervisions from './pages/admin/GestionSupervisions';
 import DashboardSuperviseur from './pages/superviseur/DashboardSuperviseur';
 import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
+import ProfilSuperviseur from './pages/superviseur/ProfilSuperviseur';
 import LandingPage from './pages/LandingPage';
 import Messagerie from './pages/messagerie/Messagerie';
 import VerifierEmail from './pages/auth/VerifierEmail';
@@ -70,7 +77,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/offres/:id" element={
-            <ProtectedRoute roles={['etudiant', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant', 'superviseur', 'admin']}>
               <DetailOffre />
             </ProtectedRoute>
           } />
@@ -82,6 +89,16 @@ function App() {
           <Route path="/profil" element={
             <ProtectedRoute roles={['etudiant']}>
               <MonProfil />
+            </ProtectedRoute>
+          } />
+          <Route path="/statut-professionnel" element={
+            <ProtectedRoute roles={['etudiant']}>
+              <StatutProfessionnel />
+            </ProtectedRoute>
+          } />
+          <Route path="/competences" element={
+            <ProtectedRoute roles={['etudiant']}>
+              <MesCompetences />
             </ProtectedRoute>
           } />
 
@@ -99,6 +116,11 @@ function App() {
           <Route path="/entreprise/creer-offre" element={
             <ProtectedRoute roles={['entreprise']}>
               <CreerOffre />
+            </ProtectedRoute>
+          } />
+          <Route path="/entreprise/offres/:offreId/modifier" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <ModifierOffre />
             </ProtectedRoute>
           } />
           <Route path="/entreprise/offres/:offreId/candidatures" element={
@@ -129,6 +151,21 @@ function App() {
               <GestionUtilisateurs />
             </ProtectedRoute>
           } />
+          <Route path="/admin/offres" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionOffres />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/superviseurs" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionSuperviseurs />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/supervisions" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionSupervisions />
+            </ProtectedRoute>
+          } />
 
           {/* Routes superviseur */}
           <Route path="/superviseur/dashboard" element={
@@ -146,14 +183,18 @@ function App() {
               <DetailEtudiant />
             </ProtectedRoute>
           } />
+          <Route path="/superviseur/profil" element={
+            <ProtectedRoute roles={['superviseur']}>
+              <ProfilSuperviseur />
+            </ProtectedRoute>
+          } />
           <Route path="/messagerie" element={
-  <ProtectedRoute roles={['etudiant', 'entreprise']}>
-    <Messagerie />
-  </ProtectedRoute>
-} />
-          <Route path="*" element={<NotFound />} />
+            <ProtectedRoute roles={['etudiant', 'entreprise']}>
+              <Messagerie />
+            </ProtectedRoute>
+          } />
           <Route path="/" element={<LandingPage />} />
-          <Route path="*" element={<HomeRedirect />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

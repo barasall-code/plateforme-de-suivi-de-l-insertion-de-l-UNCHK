@@ -20,6 +20,8 @@ import adminRoutes from './routes/admin.routes';
 import superviseurRoutes from './routes/superviseur.routes';
 import uploadRoutes from './routes/upload.routes';
 import messagerieRoutes from './routes/messagerie.routes';
+import statutProfessionnelRoutes from './routes/statutProfessionnel.routes';
+import competencesRoutes from './routes/competences.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -59,7 +61,9 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/admin',         adminRoutes);
 app.use('/api/superviseur',   superviseurRoutes);
 app.use('/api/upload',        uploadRoutes);
-app.use('/api/messagerie',    messagerieRoutes);
+app.use('/api/messagerie',           messagerieRoutes);
+app.use('/api/statut-professionnel', statutProfessionnelRoutes);
+app.use('/api/competences',          competencesRoutes);
 
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error('[ERROR]', err);

@@ -13,4 +13,16 @@ router.put('/utilisateurs/:id/toggle', authenticate, authorize('admin'), adminCo
 router.get('/offres-en-attente', authenticate, authorize('admin'), adminController.getOffresEnAttente);
 router.put('/offres/:id/valider', authenticate, authorize('admin'), adminController.validerOffre);
 
+// Superviseurs
+router.get('/superviseurs', authenticate, authorize('admin'), adminController.getSuperviseurs);
+router.post('/superviseurs', authenticate, authorize('admin'), adminController.creerSuperviseur);
+router.put('/superviseurs/:id', authenticate, authorize('admin'), adminController.modifierSuperviseur);
+router.delete('/superviseurs/:id', authenticate, authorize('admin'), adminController.supprimerSuperviseur);
+
+// Supervisions
+router.get('/supervisions', authenticate, authorize('admin'), adminController.getSupervisions);
+router.get('/supervisions/etudiants-sans-supervision', authenticate, authorize('admin'), adminController.getEtudiantsSansSupervision);
+router.post('/supervisions', authenticate, authorize('admin'), adminController.assignerSupervision);
+router.delete('/supervisions/:superviseurId/:etudiantId', authenticate, authorize('admin'), adminController.supprimerSupervision);
+
 export default router;

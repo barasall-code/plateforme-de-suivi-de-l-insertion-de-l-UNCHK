@@ -6,13 +6,18 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 const RegisterSchema = z.object({
   email:           z.string().email('Email invalide'),
   motDePasse:      z.string().min(8, 'Minimum 8 caracteres').max(100),
-  typeUtilisateur: z.enum(['etudiant', 'entreprise', 'admin']),
+  typeUtilisateur: z.enum(['etudiant', 'entreprise', 'admin', 'superviseur']),
   nom:             z.string().min(1).optional(),
   prenom:          z.string().min(1).optional(),
   filiere:         z.string().optional(),
+  niveauEtude:     z.string().optional(),
+  promotion:       z.string().optional(),
+  telephone:       z.string().optional(),
   numeroEtudiant:  z.string().optional(),
   nomEntreprise:   z.string().optional(),
   secteurActivite: z.string().optional(),
+  ville:           z.string().optional(),
+  siteWeb:         z.string().optional(),
 });
 
 const LoginSchema = z.object({

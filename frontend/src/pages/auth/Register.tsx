@@ -232,7 +232,8 @@ export default function Register() {
                           className="w-full border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
                           <option value="">Choisir</option>
                           <option value="licence">Licence</option>
-                          <option value="master">Master</option>
+                          <option value="master1">Master 1</option>
+                          <option value="master2">Master 2</option>
                           <option value="doctorat">Doctorat</option>
                         </select>
                       </div>

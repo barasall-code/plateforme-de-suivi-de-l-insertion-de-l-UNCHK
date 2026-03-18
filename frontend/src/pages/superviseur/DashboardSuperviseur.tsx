@@ -51,6 +51,9 @@ export default function DashboardSuperviseur() {
             <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700 font-medium">
               Offres
             </Link>
+            <Link to="/superviseur/profil" className="text-sm text-gray-600 hover:text-green-700 font-medium">
+              Mon profil
+            </Link>
             <Notifications />
             <span className="text-gray-600 text-sm">{user?.email}</span>
             <span className="bg-purple-100 text-purple-700 text-xs font-medium px-2.5 py-1 rounded-full">

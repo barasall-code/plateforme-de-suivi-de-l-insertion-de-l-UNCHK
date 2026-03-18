@@ -86,6 +86,8 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700">Offres</Link>
             <Link to="/candidatures" className="text-sm text-gray-600 hover:text-green-700">Candidatures</Link>
+            <Link to="/competences" className="text-sm text-gray-600 hover:text-green-700">Compétences</Link>
+            <Link to="/statut-professionnel" className="text-sm text-gray-600 hover:text-green-700">Mon statut</Link>
             <BadgeMessages />
             <Link to="/profil" className="text-sm text-gray-600 hover:text-green-700">Profil</Link>
             <Notifications />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api from '../../services/api';
+import api, { getFileUrl } from '../../services/api';
 
 export default function DetailEtudiant() {
   const { etudiantId } = useParams<{ etudiantId: string }>();
@@ -99,7 +99,7 @@ export default function DetailEtudiant() {
 
           <div className="flex gap-3">
             {etudiant.cvUrl && (
-              <a href={etudiant.cvUrl} target="_blank" rel="noopener noreferrer"
+              <a href={getFileUrl(etudiant.cvUrl)} target="_blank" rel="noopener noreferrer"
                 className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
                 📄 Voir CV
               </a>

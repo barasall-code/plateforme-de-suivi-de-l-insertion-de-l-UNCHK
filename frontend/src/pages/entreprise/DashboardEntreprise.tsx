@@ -13,6 +13,7 @@ interface Offre {
   dateCreation: string;
   dateLimiteCandidature: string;
   nombrePostes: number;
+  _count?: { candidatures: number };
 }
 
 const statutColors: Record<string, string> = {
@@ -41,6 +42,16 @@ export default function DashboardEntreprise() {
       // erreur silencieuse
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSoumettre = async (offreId: string) => {
+    if (!confirm('Soumettre cette offre pour validation par l\'administrateur ?')) return;
+    try {
+      await api.post(`/offres/${offreId}/soumettre`);
+      await chargerOffres();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erreur lors de la soumission');
     }
   };
 
@@ -125,11 +136,34 @@ export default function DashboardEntreprise() {
                   <p className="text-xs text-gray-400">
                     Créée le {new Date(offre.dateCreation).toLocaleDateString('fr-FR')} •
                     Limite : {new Date(offre.dateLimiteCandidature).toLocaleDateString('fr-FR')}
+                    {offre._count && offre._count.candidatures > 0 && (
+                      <span className="ml-2 bg-blue-100 text-blue-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                        {offre._count.candidatures} candidature{offre._count.candidatures > 1 ? 's' : ''}
+                      </span>
+                    )}
                   </p>
-                  <Link to={`/entreprise/offres/${offre.id}/candidatures`}
-                    className="text-sm text-green-600 hover:text-green-700 font-medium">
-                    Voir candidatures
-                  </Link>
+                  <div className="flex gap-3 items-center">
+                    {offre.statut === 'brouillon' && (
+                      <button
+                        onClick={() => handleSoumettre(offre.id)}
+                        className="text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-3 py-1.5 rounded-lg transition">
+                        Soumettre pour validation
+                      </button>
+                    )}
+                    {offre.statut === 'soumis' && (
+                      <span className="text-xs text-yellow-600 font-medium">⏳ En attente de validation</span>
+                    )}
+                    {offre.statut !== 'publie' && offre.statut !== 'ferme' && (
+                      <Link to={`/entreprise/offres/${offre.id}/modifier`}
+                        className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                        Modifier
+                      </Link>
+                    )}
+                    <Link to={`/entreprise/offres/${offre.id}/candidatures`}
+                      className="text-sm text-green-600 hover:text-green-700 font-medium">
+                      Voir candidatures
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}

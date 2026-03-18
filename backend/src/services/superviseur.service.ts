@@ -98,6 +98,20 @@ export async function ajouterCommentaire(
   });
 }
 
+export async function updateProfilSuperviseur(userId: string, data: any) {
+  const superviseur = await prisma.superviseur.findUnique({ where: { id: userId } });
+  if (!superviseur) throw new Error('Superviseur introuvable');
+  return prisma.superviseur.update({
+    where: { id: userId },
+    data: {
+      nom: data.nom,
+      prenom: data.prenom,
+      departement: data.departement ?? null,
+      telephone: data.telephone ?? null,
+    },
+  });
+}
+
 export async function getStatsSuperviseur(userId: string) {
   const supervisions = await prisma.supervision.findMany({
     where:   { superviseurId: userId },

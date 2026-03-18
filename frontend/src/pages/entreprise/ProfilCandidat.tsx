@@ -1,22 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api from '../../services/api';
+import api, { getFileUrl } from '../../services/api';
+
+interface Competence {
+  competenceId: string;
+  niveauMaitrise: string;
+  competence: { nomCompetence: string };
+}
+interface Etudiant {
+  nom: string;
+  prenom: string;
+  photoUrl?: string;
+  cvUrl?: string;
+  linkedinUrl?: string;
+  numeroEtudiant: string;
+  filiere?: string;
+  niveauEtude?: string;
+  promotion?: string;
+  telephone?: string;
+  utilisateur?: { email: string };
+  competences?: Competence[];
+}
+interface ProfilData {
+  etudiant: Etudiant;
+  candidature: { lettreMotivation: string; dateCandidature: string };
+}
 
 export default function ProfilCandidat() {
   const { candidatureId } = useParams<{ candidatureId: string }>();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ProfilData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     chargerProfil();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candidatureId]);
 
   const chargerProfil = async () => {
     try {
       const response = await api.get(`/candidatures/${candidatureId}/profil`);
       setData(response.data.data);
-    } catch (err: any) {
+    } catch {
       setError('Profil introuvable');
     } finally {
       setIsLoading(false);
@@ -25,6 +50,7 @@ export default function ProfilCandidat() {
 
   if (isLoading) return <div className="min-h-screen flex items-center justify-center">Chargement...</div>;
   if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  if (!data) return null;
 
   const { etudiant, candidature } = data;
 
@@ -46,7 +72,7 @@ export default function ProfilCandidat() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <div className="flex items-center gap-4 mb-6">
             {etudiant.photoUrl ? (
-              <img src={etudiant.photoUrl} alt="Photo" className="w-16 h-16 rounded-full object-cover" />
+              <img src={getFileUrl(etudiant.photoUrl)} alt="Photo" className="w-16 h-16 rounded-full object-cover" />
             ) : (
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-2xl font-bold text-green-700">
                 {etudiant.prenom?.[0]}{etudiant.nom?.[0]}
@@ -80,7 +106,7 @@ export default function ProfilCandidat() {
 
           <div className="flex gap-4 mt-4">
             {etudiant.cvUrl && (
-              <a href={etudiant.cvUrl} target="_blank" rel="noopener noreferrer"
+              <a href={getFileUrl(etudiant.cvUrl)} target="_blank" rel="noopener noreferrer"
                 className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
                 📄 Voir CV
               </a>
@@ -95,14 +121,14 @@ export default function ProfilCandidat() {
         </div>
 
         {/* Compétences */}
-        {etudiant.competences?.length > 0 && (
+        {etudiant.competences && etudiant.competences.length > 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
             <h3 className="font-semibold text-gray-800 mb-4">Compétences</h3>
             <div className="flex flex-wrap gap-2">
-              {etudiant.competences.map((c: any) => (
+              {(etudiant.competences ?? []).map((c) => (
                 <span key={c.competenceId}
                   className="bg-green-100 text-green-700 text-sm px-3 py-1 rounded-full">
-                  {c.competence.nom} — {c.niveauMaitrise}
+                  {c.competence.nomCompetence} — {c.niveauMaitrise}
                 </span>
               ))}
             </div>

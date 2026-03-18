@@ -108,6 +108,21 @@ export async function validerOffre(id: string) {
 export async function getMesOffres(entrepriseUserId: string) {
   return prisma.offre.findMany({
     where: { entrepriseId: entrepriseUserId },
+    include: {
+      _count: { select: { candidatures: true } },
+    },
     orderBy: { dateCreation: 'desc' },
+  });
+}
+
+export async function soumettreOffre(id: string, entrepriseUserId: string) {
+  const offre = await prisma.offre.findUnique({ where: { id } });
+  if (!offre) throw new Error('Offre introuvable');
+  if (offre.entrepriseId !== entrepriseUserId) throw new Error('Non autorise');
+  if (offre.statut !== 'brouillon') throw new Error('Seules les offres en brouillon peuvent etre soumises pour validation');
+
+  return prisma.offre.update({
+    where: { id },
+    data: { statut: 'soumis' },
   });
 }
