@@ -5,7 +5,7 @@ const UpdateEtudiantSchema = z.object({
   nom:              z.string().min(1).max(100).optional(),
   prenom:           z.string().min(1).max(100).optional(),
   filiere:          z.string().max(100).optional(),
-  niveauEtude:      z.enum(['licence', 'master', 'master1', 'master2', 'doctorat']).optional(),
+  niveauEtude:      z.enum(['licence', 'master', 'doctorat']).optional(),
   promotion:        z.string().max(20).optional(),
   telephone:        z.string().max(20).optional(),
   cvUrl:            z.string().url().optional().or(z.literal('')),
