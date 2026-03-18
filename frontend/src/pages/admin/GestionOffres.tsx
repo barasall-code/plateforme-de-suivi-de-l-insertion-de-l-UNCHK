@@ -78,7 +78,10 @@ export default function GestionOffres() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
           <div className="flex items-center gap-4">
-            <Link to="/admin/dashboard" className="text-sm text-gray-600 hover:text-green-700 font-medium">Dashboard</Link>
+            <button onClick={() => window.history.back()}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300 transition-all">
+            ← Retour
+          </button>
             <Link to="/admin/entreprises" className="text-sm text-gray-600 hover:text-green-700 font-medium">Entreprises</Link>
             <Link to="/admin/utilisateurs" className="text-sm text-gray-600 hover:text-green-700 font-medium">Utilisateurs</Link>
             <span className="text-gray-600 text-sm">{user?.email}</span>

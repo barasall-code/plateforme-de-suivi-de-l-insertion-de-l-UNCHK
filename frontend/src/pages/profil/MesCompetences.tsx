@@ -105,7 +105,10 @@ export default function MesCompetences() {
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
-          <Link to="/dashboard" className="text-sm text-gray-600 hover:text-green-700">← Dashboard</Link>
+          <button onClick={() => window.history.back()}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300 transition-all">
+            ← Retour
+          </button>
         </div>
       </nav>
 
