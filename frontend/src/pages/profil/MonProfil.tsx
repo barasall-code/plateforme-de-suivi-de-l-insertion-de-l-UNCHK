@@ -233,7 +233,7 @@ export default function MonProfil() {
         {/* Section Documents */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <h3 className="font-semibold text-gray-800 mb-4">📁 Mes documents</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* CV */}
             <div className={`border-2 rounded-xl p-4 ${profil?.cvUrl ? 'border-green-300 bg-green-50' : 'border-dashed border-gray-300'}`}>
               <div className="text-center mb-3">
@@ -284,6 +284,35 @@ export default function MonProfil() {
               <div className="bg-blue-50 rounded-lg p-2">
                 <p className="text-xs text-blue-600 text-center">Uploadé à chaque candidature</p>
               </div>
+            </div>
+            {/* Photo de profil */}
+            <div className={"border-2 rounded-xl p-4 " + (profil?.photoUrl ? "border-purple-300 bg-purple-50" : "border-dashed border-gray-300")}>
+              <div className="text-center mb-3">
+                {profil?.photoUrl ? (
+                  <img src={getFileUrl(profil.photoUrl)} alt="Photo"
+                    className="w-12 h-12 rounded-full object-cover mx-auto border-2 border-purple-300" />
+                ) : (
+                  <span className="text-3xl">🖼️</span>
+                )}
+                <p className="text-sm font-medium text-gray-700 mt-1">Photo de profil</p>
+              </div>
+              {profil?.photoUrl ? (
+                <div className="space-y-2">
+                  <a href={getFileUrl(profil.photoUrl)} target="_blank" rel="noopener noreferrer"
+                    className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium py-1.5 rounded-lg transition">
+                    👁️ Voir la photo
+                  </a>
+                  <label className="block w-full text-center border border-gray-300 text-gray-600 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                    🔄 Changer
+                    <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
+                  </label>
+                </div>
+              ) : (
+                <label className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium py-2 rounded-lg cursor-pointer transition">
+                  {uploadingPhoto ? '⏳ Upload...' : '📷 Ajouter photo'}
+                  <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
+                </label>
+              )}
             </div>
           </div>
 
