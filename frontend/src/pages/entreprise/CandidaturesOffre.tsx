@@ -10,6 +10,7 @@ interface Candidature {
   dateCandidature: string;
   lettreMotivation: string;
   cvUrl: string;
+  documentsComplementaires?: { lettre?: string; diplome?: string } | null;
   commentaireEntreprise?: string;
   etudiant: {
     nom: string;
@@ -211,11 +212,23 @@ export default function CandidaturesOffre() {
                     Reçue le {new Date(c.dateCandidature).toLocaleDateString('fr-FR')}
                   </p>
                   <div className="flex items-center gap-2 flex-wrap justify-end">
-                    {/* Liens secondaires */}
+                    {/* Documents */}
                     {c.cvUrl && (
                       <a href={getFileUrl(c.cvUrl)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1 rounded-lg transition">
                         📄 CV
+                      </a>
+                    )}
+                    {c.documentsComplementaires?.lettre && (
+                      <a href={getFileUrl(c.documentsComplementaires.lettre)} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-indigo-600 hover:text-indigo-800 border border-indigo-200 px-3 py-1 rounded-lg transition">
+                        ✉ Lettre
+                      </a>
+                    )}
+                    {c.documentsComplementaires?.diplome && (
+                      <a href={getFileUrl(c.documentsComplementaires.diplome)} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-orange-600 hover:text-orange-800 border border-orange-200 px-3 py-1 rounded-lg transition">
+                        🎓 Diplôme
                       </a>
                     )}
                     <Link to={`/entreprise/candidatures/${c.id}/profil`}

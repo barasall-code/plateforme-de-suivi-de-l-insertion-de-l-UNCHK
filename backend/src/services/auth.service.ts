@@ -107,9 +107,6 @@ export async function login(dto: LoginDto): Promise<AuthResponse> {
     },
   });
 
-  const verifToken = crypto.randomBytes(32).toString("hex");
-  await prisma.verificationEmail.create({ data: { token: verifToken, utilisateurId: user.id, expiresAt: new Date(Date.now() + 86400000) } });
-  await envoyerEmailVerification(user.email, user.email, verifToken).catch(() => {});
   return { accessToken, refreshToken, user: { id: user.id, email: user.email, role: user.typeUtilisateur } };
 }
 

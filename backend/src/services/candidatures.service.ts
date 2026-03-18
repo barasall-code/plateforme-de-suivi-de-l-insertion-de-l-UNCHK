@@ -15,12 +15,24 @@ export async function postuler(data: any, etudiantUserId: string) {
   });
   if (existante) throw new Error('Vous avez deja postule a cette offre');
 
+  let docs: object | undefined;
+  if (data.documentsComplementaires) {
+    try {
+      docs = typeof data.documentsComplementaires === 'string'
+        ? JSON.parse(data.documentsComplementaires)
+        : data.documentsComplementaires;
+    } catch {
+      docs = undefined;
+    }
+  }
+
   return prisma.candidature.create({
     data: {
       etudiantId: etudiantUserId,
       offreId: data.offreId,
       lettreMotivation: data.lettreMotivation,
       cvUrl: data.cvUrl || etudiant.cvUrl || '',
+      documentsComplementaires: docs ?? undefined,
       statut: 'soumise',
     },
     include: {
@@ -53,7 +65,14 @@ export async function getCandidaturesOffre(offreId: string, entrepriseUserId: st
 
   return prisma.candidature.findMany({
     where: { offreId },
-    include: {
+    select: {
+      id: true,
+      statut: true,
+      dateCandidature: true,
+      lettreMotivation: true,
+      cvUrl: true,
+      documentsComplementaires: true,
+      commentaireEntreprise: true,
       etudiant: {
         select: {
           nom: true,
