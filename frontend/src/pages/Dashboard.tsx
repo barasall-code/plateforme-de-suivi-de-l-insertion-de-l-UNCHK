@@ -91,7 +91,7 @@ export default function Dashboard() {
           <div className="hidden md:flex items-center gap-1">
             {[
               { to: '/offres', label: '💼 Offres' },
-              { to: '/candidatures', label: '📋 Candidatures' },
+              { to: '/candidatures', label: '📄 Candidatures' },
               { to: '/competences', label: '⭐ Compétences' },
               { to: '/statut-professionnel', label: '📊 Mon statut' },
             ].map(({ to, label }) => (
@@ -226,7 +226,7 @@ export default function Dashboard() {
             {/* Navigation rapide */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <Link to="/offres" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">📋</div>
+                <div className="text-3xl mb-3">📄</div>
                 <h3 className="font-semibold text-gray-800 mb-1">Offres disponibles</h3>
                 <p className="text-gray-500 text-sm">Consultez les offres de stage et d'emploi</p>
               </Link>

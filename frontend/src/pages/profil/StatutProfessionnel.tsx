@@ -164,6 +164,7 @@ export default function StatutProfessionnel() {
               { to: '/competences', label: '⭐ Compétences' },
               { to: '/profil', label: '👤 Profil' },
               { to: '/messagerie', label: '💬 Messages' },
+              { to: '/statut-professionnel', label: '📊 Mon statut' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
