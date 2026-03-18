@@ -15,7 +15,7 @@ export default function GestionUtilisateurs() {
   const chargerUtilisateurs = async () => {
     try {
       const response = await api.get('/admin/utilisateurs');
-      setUtilisateurs(response.data.data);
+      setUtilisateurs(response.data.data.utilisateurs || response.data.data);
     } catch (err) {
       // erreur silencieuse
     } finally {
