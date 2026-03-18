@@ -263,17 +263,42 @@ export default function DashboardSuperviseur() {
               </h3>
             </div>
             {stats?.totalEtudiants === 0 ? (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6 flex items-start gap-3">
-                <span className="text-2xl">ℹ️</span>
-                <div>
-                  <p className="font-semibold text-amber-800">Aucun étudiant supervisé</p>
-                  <p className="text-amber-700 text-sm mt-1">
-                    Aucun étudiant ne vous est encore affecté. Contactez l'administrateur pour qu'il vous assigne des étudiants.
-                  </p>
+              <div className="mb-6 rounded-2xl overflow-hidden border border-purple-100 shadow-sm">
+                <div className="bg-gradient-to-r from-purple-600 to-purple-400 px-6 py-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">🎓</span>
+                    <div>
+                      <p className="text-white font-bold text-lg">Aucun étudiant supervisé</p>
+                      <p className="text-purple-100 text-sm">Commencez à suivre vos premiers étudiants</p>
+                    </div>
+                  </div>
                   <Link to="/superviseur/etudiants"
-                    className="inline-block mt-2 text-sm text-amber-700 underline hover:text-amber-900">
-                    Consulter la liste des étudiants →
+                    className="flex items-center gap-2 bg-white text-purple-700 font-semibold text-sm px-4 py-2 rounded-xl hover:bg-purple-50 transition shadow">
+                    Voir les étudiants →
                   </Link>
+                </div>
+                <div className="bg-white px-6 py-4 grid grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-50">
+                    <span className="text-2xl">👁️</span>
+                    <div>
+                      <p className="text-xs text-gray-500">À superviser</p>
+                      <p className="font-bold text-gray-800">{stats?.totalEtudiantsInscrits ?? 0} étudiants</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50">
+                    <span className="text-2xl">📋</span>
+                    <div>
+                      <p className="text-xs text-gray-500">Candidatures total</p>
+                      <p className="font-bold text-gray-800">{stats?.totalCandidaturesInscrits ?? 0}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-green-50">
+                    <span className="text-2xl">✅</span>
+                    <div>
+                      <p className="text-xs text-gray-500">Taux insertion global</p>
+                      <p className="font-bold text-green-700">{stats?.tauxInsertionGlobal ?? 0}%</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
