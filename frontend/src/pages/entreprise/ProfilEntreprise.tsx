@@ -58,8 +58,9 @@ export default function ProfilEntreprise() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
           <button onClick={() => window.history.back()}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300 transition-all">
-            ← Retour
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border-2 border-gray-200 text-sm font-semibold text-gray-700 hover:border-green-500 hover:text-green-700 hover:bg-green-50 shadow-sm hover:shadow-md transition-all duration-200 group">
+            <span className="text-base group-hover:-translate-x-1 transition-transform duration-200">←</span>
+            Retour
           </button>
         </div>
       </nav>
