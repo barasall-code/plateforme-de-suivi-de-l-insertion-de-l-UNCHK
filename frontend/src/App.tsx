@@ -29,7 +29,6 @@ import LandingPage from './pages/LandingPage';
 import Messagerie from './pages/messagerie/Messagerie';
 import VerifierEmail from './pages/auth/VerifierEmail';
 import EmailEnvoye from './pages/auth/EmailEnvoye';
-import GestionOffres from './pages/admin/GestionOffres';
 import NotFound from './pages/NotFound';
 
 function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?: string[] }) {
