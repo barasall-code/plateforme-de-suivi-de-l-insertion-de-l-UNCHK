@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import BadgeMessages from '../../components/BadgeMessages';
+import Notifications from '../../components/Notifications';
 
 interface Offre {
   id: string;
