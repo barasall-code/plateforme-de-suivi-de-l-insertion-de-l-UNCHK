@@ -128,7 +128,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 py-8">
 <div className="flex justify-between items-start mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue 👋</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue {user?.email?.split('@')[0]} 👋</h2>
             <p className="text-gray-500">Plateforme de suivi d'insertion professionnelle de l'UNCHK</p>
           </div>
           <BoutonExport label="Exporter mon rapport" onClick={() => {
