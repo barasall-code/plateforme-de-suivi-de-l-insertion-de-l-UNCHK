@@ -11,7 +11,6 @@ import {
 export default function DashboardAdmin() {
   const { user, logout } = useAuth();
   const [stats, setStats] = useState<any>(null);
-  const [offresEnAttente, setOffresEnAttente] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -20,12 +19,8 @@ export default function DashboardAdmin() {
 
   const chargerStats = async () => {
     try {
-      const [statsRes, offresRes] = await Promise.all([
-        api.get('/admin/stats'),
-        api.get('/admin/offres-en-attente'),
-      ]);
-      setStats(statsRes.data.data);
-      setOffresEnAttente(offresRes.data.data);
+      const response = await api.get('/admin/stats');
+      setStats(response.data.data);
     } catch (err) {
       // erreur silencieuse
     } finally {
@@ -58,10 +53,6 @@ export default function DashboardAdmin() {
           <div className="flex items-center gap-4">
             <Link to="/admin/entreprises" className="text-sm text-gray-600 hover:text-green-700 font-medium">Entreprises</Link>
             <Link to="/admin/utilisateurs" className="text-sm text-gray-600 hover:text-green-700 font-medium">Utilisateurs</Link>
-            <Link to="/admin/offres" className="text-sm text-gray-600 hover:text-green-700 font-medium flex items-center gap-1">
-              Offres{offresEnAttente.length > 0 && <span className="bg-yellow-400 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{offresEnAttente.length}</span>}
-            </Link>
-            <Link to="/admin/superviseurs" className="text-sm text-gray-600 hover:text-green-700 font-medium">Superviseurs</Link>
             <span className="text-gray-600 text-sm">{user?.email}</span>
             <span className="bg-red-100 text-red-700 text-xs font-medium px-2.5 py-1 rounded-full">admin</span>
             <button onClick={logout} className="text-sm text-red-600 hover:text-red-700 font-medium">Déconnexion</button>
@@ -186,19 +177,24 @@ export default function DashboardAdmin() {
             </div>
 
             {/* Navigation */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Link to="/admin/offres"
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-amber-300 hover:shadow-md transition block">
+                <div className="text-3xl mb-3">📋</div>
+                <h3 className="font-semibold text-gray-800 mb-1">Valider les offres</h3>
+                <p className="text-gray-500 text-sm">Publier et gérer les offres des entreprises</p>
+                {(stats?.totalOffres - stats?.offresPubliees) > 0 && (
+                  <span className="inline-block mt-2 bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                    {stats.totalOffres - stats.offresPubliees} en attente
+                  </span>
+                )}
+              </Link>
               <Link to="/admin/entreprises"
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
                 <div className="text-3xl mb-3">🏢</div>
                 <h3 className="font-semibold text-gray-800 mb-1">Gérer les entreprises</h3>
                 <p className="text-gray-500 text-sm">Valider, rejeter et gérer les comptes entreprises</p>
-                {(stats?.totalOffres - stats?.offresPubliees) > 0 && (
-                <button onClick={() => navigate('/admin/offres')}
-                  className="w-full text-left bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg px-4 py-2 text-sm text-amber-700 font-medium transition">
-                  📋 {stats.totalOffres - stats.offresPubliees} offre(s) en attente de validation →
-                </button>
-              )}
-              {stats?.entreprisesEnAttente > 0 && (
+                {stats?.entreprisesEnAttente > 0 && (
                   <span className="inline-block mt-2 bg-yellow-100 text-yellow-700 text-xs font-medium px-2.5 py-1 rounded-full">
                     {stats.entreprisesEnAttente} en attente
                   </span>
@@ -209,17 +205,6 @@ export default function DashboardAdmin() {
                 <div className="text-3xl mb-3">👥</div>
                 <h3 className="font-semibold text-gray-800 mb-1">Gérer les utilisateurs</h3>
                 <p className="text-gray-500 text-sm">Activer, désactiver et gérer tous les comptes</p>
-              </Link>
-              <Link to="/admin/offres"
-                className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">📋</div>
-                <h3 className="font-semibold text-gray-800 mb-1">Gérer les offres</h3>
-                <p className="text-gray-500 text-sm">Valider et publier les offres soumises par les entreprises</p>
-                {offresEnAttente.length > 0 && (
-                  <span className="inline-block mt-2 bg-yellow-100 text-yellow-700 text-xs font-medium px-2.5 py-1 rounded-full">
-                    {offresEnAttente.length} à valider
-                  </span>
-                )}
               </Link>
             </div>
           </>
