@@ -1,0 +1,35 @@
+# ---- Build stage ----
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copier les fichiers de dépendances
+COPY package*.json ./
+RUN npm ci
+
+# Copier le code source et compiler
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+
+# ---- Production stage ----
+FROM node:20-alpine AS production
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copier uniquement les dépendances de production
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copier les fichiers compilés et Prisma
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY prisma ./prisma
+
+# Créer le dossier uploads
+RUN mkdir -p /app/uploads
+
+EXPOSE 3001
+
+# Lancer les migrations puis démarrer le serveur
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
