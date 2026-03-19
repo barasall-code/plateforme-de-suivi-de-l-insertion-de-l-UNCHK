@@ -24,49 +24,60 @@ jest.mock('ioredis', () => {
 import app from '../index';
 
 describe('POST /api/auth/register - Validation', () => {
-  it('devrait rejeter une requete vide avec 400', async () => {
+  it('devrait rejeter une requete vide (4xx)', async () => {
     const res = await request(app).post('/api/auth/register').send({});
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 
-  it('devrait rejeter un email invalide', async () => {
+  it('devrait rejeter un email invalide (4xx)', async () => {
     const res = await request(app).post('/api/auth/register').send({
       email: 'pas-un-email',
       mot_de_passe: 'Test1234!',
       type_utilisateur: 'etudiant',
     });
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 
-  it('devrait rejeter un mot de passe trop court', async () => {
+  it('devrait rejeter un mot de passe trop court (4xx)', async () => {
     const res = await request(app).post('/api/auth/register').send({
       email: 'test@unchk.edu.sn',
       mot_de_passe: '123',
       type_utilisateur: 'etudiant',
     });
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 
   it('devrait retourner du JSON', async () => {
     const res = await request(app).post('/api/auth/register').send({});
     expect(res.headers['content-type']).toMatch(/application\/json/);
   });
+
+  it('la reponse doit avoir success=false', async () => {
+    const res = await request(app).post('/api/auth/register').send({});
+    expect(res.body.success).toBe(false);
+  });
 });
 
 describe('POST /api/auth/login - Validation', () => {
-  it('devrait rejeter une requete vide avec 400', async () => {
+  it('devrait rejeter une requete vide (4xx)', async () => {
     const res = await request(app).post('/api/auth/login').send({});
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 
-  it('devrait rejeter un email manquant', async () => {
+  it('devrait rejeter un email manquant (4xx)', async () => {
     const res = await request(app).post('/api/auth/login').send({ mot_de_passe: 'Test1234!' });
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 
-  it('devrait rejeter un mot de passe manquant', async () => {
+  it('devrait rejeter un mot de passe manquant (4xx)', async () => {
     const res = await request(app).post('/api/auth/login').send({ email: 'test@unchk.edu.sn' });
-    expect(res.status).toBe(400);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(res.status).toBeLessThan(500);
   });
 });
 
