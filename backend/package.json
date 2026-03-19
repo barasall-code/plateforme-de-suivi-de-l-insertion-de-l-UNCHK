@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
-    "build": "echo skip",
-    "start": "npx ts-node --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:dev": "npx ts-node --transpile-only src/index.ts",
     "lint": "tsc --noEmit"
   },
   "keywords": [],
@@ -27,7 +28,6 @@
     "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^8.0.2",
     "prisma": "^6.19.2",
-    "redis": "^5.11.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
