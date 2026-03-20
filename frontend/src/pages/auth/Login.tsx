@@ -50,17 +50,22 @@ export default function Login() {
 
         <div className="space-y-4">
           {[
-            { icon: '🎓', label: 'Étudiants', desc: 'Trouvez des offres et suivez vos candidatures' },
-            { icon: '🏢', label: 'Entreprises', desc: 'Publiez vos offres et recrutez les meilleurs talents' },
-            { icon: '👁️', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants' },
+            { icon: '🎓', label: 'Étudiants', desc: 'Trouvez des offres et suivez vos candidatures', to: '/register?type=etudiant' },
+            { icon: '��', label: 'Entreprises', desc: 'Publiez vos offres et recrutez les meilleurs talents', to: '/register?type=entreprise' },
+            { icon: '👁️', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants', to: '/register?type=superviseur' },
           ].map((item) => (
-            <div key={item.label} className="flex items-center gap-4 bg-green-800/40 backdrop-blur-sm rounded-xl p-4 border border-green-400/30">
-              <span className="text-2xl">{item.icon}</span>
+            <Link
+              key={item.label}
+              to={item.to}
+              className="flex items-center gap-4 bg-green-800/40 backdrop-blur-sm rounded-xl p-4 border border-green-400/30 hover:bg-green-700/50 hover:border-green-300/50 hover:scale-[1.02] transition-all duration-200 cursor-pointer group"
+            >
+              <span className="text-2xl group-hover:scale-110 transition-transform duration-200">{item.icon}</span>
               <div className="relative z-10">
-                <p className="text-green-100 font-bold">{item.label}</p>
-                <p className="text-green-200 text-sm font-medium">{item.desc}</p>
+                <p className="text-green-100 font-bold group-hover:text-white">{item.label}</p>
+                <p className="text-green-200 text-sm font-medium group-hover:text-green-100">{item.desc}</p>
               </div>
-            </div>
+              <span className="ml-auto text-green-300/60 group-hover:text-green-200 group-hover:translate-x-1 transition-all duration-200">→</span>
+            </Link>
           ))}
         </div>
       </div>
