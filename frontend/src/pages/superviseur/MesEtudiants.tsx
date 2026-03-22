@@ -32,6 +32,13 @@ export default function MesEtudiants() {
   const [modeVue, setModeVue] = useState<'supervises' | 'tous'>(searchParams.get('situation') ? 'tous' : 'supervises');
   const [derniereMaj, setDerniereMaj] = useState<Date | null>(null);
 
+  // Sync URL params → state (React Router ne remonte pas le composant sur changement de searchParams)
+  useEffect(() => {
+    const situation = searchParams.get('situation') ?? '';
+    setFiltreSituation(situation);
+    if (situation) setModeVue('tous');
+  }, [searchParams]);
+
   const chargerDonnees = useCallback(async (silent = false) => {
     if (!silent) setIsLoading(true);
     try {
@@ -78,9 +85,10 @@ export default function MesEtudiants() {
     : tousEtudiants.map(e => ({ ...e, _mode: 'global' }));
 
   const donneesFiltrees = donneesActives.filter(e => {
-    const nom = `${e.prenom} ${e.nom}`.toLowerCase();
+    const nom = `${e.prenom ?? ''} ${e.nom ?? ''}`.toLowerCase();
     const matchSearch = search === '' || nom.includes(search.toLowerCase());
-    const matchSituation = filtreSituation === '' || e.situationActuelle === filtreSituation;
+    const situation = e.situationActuelle || 'en_cours_etude';
+    const matchSituation = filtreSituation === '' || situation === filtreSituation;
     return matchSearch && matchSituation;
   });
 
@@ -198,11 +206,18 @@ export default function MesEtudiants() {
         </div>
 
         {/* Compteurs par statut */}
-        {tousEtudiants.length > 0 && (
+        {donneesActives.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
+            {filtreSituation !== '' && (
+              <button
+                onClick={() => setFiltreSituation('')}
+                className="px-3 py-1.5 rounded-full text-xs font-medium transition border bg-gray-100 border-gray-300 text-gray-600 hover:bg-gray-200">
+                ✕ Effacer filtre
+              </button>
+            )}
             {Object.entries(SITUATION_LABELS).map(([val, label]) => {
-              const source = modeVue === 'tous' ? tousEtudiants : supervisions.map(s => s.etudiant);
-              const count = source.filter((e: any) => (e.situationActuelle || 'en_cours_etude') === val).length;
+              const source = modeVue === 'tous' ? tousEtudiants : supervisions.map(s => s.etudiant).filter(Boolean);
+              const count = source.filter((e: any) => e && (e.situationActuelle || 'en_cours_etude') === val).length;
               if (count === 0) return null;
               return (
                 <button key={val}
@@ -221,6 +236,13 @@ export default function MesEtudiants() {
           <div className="text-center py-12">
             <div className="text-5xl mb-4">🎓</div>
             <p className="text-gray-500 font-medium">Aucun étudiant trouvé</p>
+            {filtreSituation !== '' && (
+              <button
+                onClick={() => setFiltreSituation('')}
+                className="mt-3 text-sm text-green-600 hover:underline">
+                Effacer le filtre « {SITUATION_LABELS[filtreSituation]} » →
+              </button>
+            )}
             {modeVue === 'supervises' && supervisions.length === 0 && (
               <p className="text-gray-400 text-sm mt-2">
                 Aucun étudiant ne vous est encore affecté.{' '}

@@ -1,6 +1,8 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore – no official @types package for multer-storage-cloudinary
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { cloudinary, isCloudinaryEnabled } from '../lib/cloudinary';
 
