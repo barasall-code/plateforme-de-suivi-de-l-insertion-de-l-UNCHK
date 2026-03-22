@@ -24,8 +24,9 @@ export default function Login() {
       else if (parsedUser?.role === 'admin') navigate('/admin/dashboard');
       else if (parsedUser?.role === 'superviseur') navigate('/superviseur/dashboard');
       else navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Email ou mot de passe incorrect');
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { message?: string } } };
+      setError(e.response?.data?.message || 'Email ou mot de passe incorrect');
     } finally {
       setIsLoading(false);
     }
