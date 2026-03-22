@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import * as adminController from '../controllers/admin.controller';
 import { authenticate, authorize } from '../middlewares/auth.middleware';
+import { cacheMiddleware } from '../middlewares/cache.middleware';
 
 const router = Router();
 
-router.get('/stats', authenticate, authorize('admin'), adminController.getStats);
+// Stats cached for 5 minutes
+router.get('/stats',          authenticate, authorize('admin'), cacheMiddleware(300), adminController.getStats);
+router.get('/stats/avancees', authenticate, authorize('admin'), cacheMiddleware(300), adminController.getStatsAvancees);
 router.get('/entreprises', authenticate, authorize('admin'), adminController.getEntreprises);
 router.put('/entreprises/:id/valider', authenticate, authorize('admin'), adminController.validerEntreprise);
 router.put('/entreprises/:id/rejeter', authenticate, authorize('admin'), adminController.rejeterEntreprise);

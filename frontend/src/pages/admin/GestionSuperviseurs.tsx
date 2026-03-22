@@ -75,6 +75,7 @@ export default function GestionSuperviseurs() {
           prenom: form.prenom,
           departement: form.departement,
           telephone: form.telephone,
+          email: form.email,
         });
         setSuccess('Superviseur mis à jour !');
       } else {
@@ -147,7 +148,7 @@ export default function GestionSuperviseurs() {
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!editingId && (
+              {!editingId ? (
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
@@ -159,6 +160,12 @@ export default function GestionSuperviseurs() {
                     <input type="password" name="motDePasse" value={form.motDePasse} onChange={handleChange} required
                       className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500" />
                   </div>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                  <input type="email" name="email" value={form.email} onChange={handleChange} required
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500" />
                 </div>
               )}
               <div className="grid grid-cols-2 gap-4">

@@ -100,6 +100,8 @@ model Utilisateur {
   emailVerifie       Boolean                       @default(false)
   verificationEmails VerificationEmail[]
 
+  @@index([typeUtilisateur])
+  @@index([estActif])
   @@map("utilisateurs")
 }
 
@@ -126,6 +128,9 @@ model Etudiant {
   supervisions             Supervision[]
   conversations            Conversation[]
 
+  @@index([filiere])
+  @@index([promotion])
+  @@index([niveauEtude])
   @@map("etudiants")
 }
 
@@ -196,6 +201,10 @@ model Offre {
   candidatures          Candidature[]
   competences           OffreCompetence[]
 
+  @@index([statut])
+  @@index([typeOffre])
+  @@index([entrepriseId])
+  @@index([dateLimiteCandidature])
   @@map("offres")
 }
 
@@ -216,6 +225,9 @@ model Candidature {
   historique               HistoriqueStatutCandidature[]
 
   @@unique([etudiantId, offreId])
+  @@index([etudiantId])
+  @@index([offreId])
+  @@index([statut])
   @@map("candidatures")
 }
 

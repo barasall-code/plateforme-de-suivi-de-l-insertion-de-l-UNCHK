@@ -26,6 +26,7 @@ import MesEtudiants from './pages/superviseur/MesEtudiants';
 import DetailEtudiant from './pages/superviseur/DetailEtudiant';
 import ProfilSuperviseur from './pages/superviseur/ProfilSuperviseur';
 import LandingPage from './pages/LandingPage';
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
 import Messagerie from './pages/messagerie/Messagerie';
 import VerifierEmail from './pages/auth/VerifierEmail';
 import EmailEnvoye from './pages/auth/EmailEnvoye';
@@ -193,6 +194,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/" element={<LandingPage />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>

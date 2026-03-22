@@ -18,6 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.19.2",
+    "@types/morgan": "^1.9.10",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
@@ -27,10 +30,14 @@
     "helmet": "^8.1.0",
     "ioredis": "^5.10.0",
     "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
     "multer": "^2.1.0",
     "multer-storage-cloudinary": "^2.2.1",
     "nodemailer": "^8.0.2",
     "prisma": "^6.19.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.19.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -53,8 +60,15 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/__tests__/**/*.test.ts"],
-    "setupFiles": ["./src/__tests__/setup.ts"],
-    "collectCoverageFrom": ["src/**/*.ts", "!src/__tests__/**"]
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ],
+    "setupFiles": [
+      "./src/__tests__/setup.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/__tests__/**"
+    ]
   }
 }

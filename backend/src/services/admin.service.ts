@@ -161,6 +161,10 @@ export async function creerSuperviseur(data: any) {
 export async function modifierSuperviseur(id: string, data: any) {
   const superviseur = await prisma.superviseur.findUnique({ where: { id } });
   if (!superviseur) throw new Error('Superviseur introuvable');
+  if (data.email) {
+    const existing = await prisma.utilisateur.findFirst({ where: { email: data.email, NOT: { id } } });
+    if (existing) throw new Error('Email deja utilise');
+  }
   return prisma.superviseur.update({
     where: { id },
     data: {
@@ -168,6 +172,7 @@ export async function modifierSuperviseur(id: string, data: any) {
       prenom: data.prenom,
       departement: data.departement ?? null,
       telephone: data.telephone ?? null,
+      ...(data.email && { utilisateur: { update: { email: data.email } } }),
     },
   });
 }
@@ -245,4 +250,139 @@ export async function getEtudiantsSansSupervision() {
     },
     orderBy: { nom: 'asc' },
   });
+}
+
+// ─── Statistiques avancées ────────────────────────────────────────────────────
+
+export interface StatsFilters {
+  promotion?: string;
+  filiere?: string;
+  niveauEtude?: string;
+  typeOffre?: string;
+  secteurActivite?: string;
+  annee?: number;
+}
+
+export async function getStatsAvancees(filters: StatsFilters = {}) {
+  const annee = filters.annee ?? new Date().getFullYear();
+  const debutAnnee = new Date(`${annee}-01-01`);
+  const finAnnee   = new Date(`${annee}-12-31T23:59:59`);
+
+  // Build Etudiant where clause
+  const etudiantWhere: Record<string, unknown> = {};
+  if (filters.promotion)   etudiantWhere.promotion   = filters.promotion;
+  if (filters.filiere)     etudiantWhere.filiere      = filters.filiere;
+  if (filters.niveauEtude) etudiantWhere.niveauEtude  = filters.niveauEtude;
+
+  const offreWhere: Record<string, unknown> = {};
+  if (filters.typeOffre) offreWhere.typeOffre = filters.typeOffre;
+  if (filters.secteurActivite) offreWhere.entreprise = { secteurActivite: filters.secteurActivite };
+
+  // ── Candidatures par mois ─────────────────────────────────────────────────
+  const candidaturesParMois = await prisma.$queryRaw<{ mois: number; nombre: bigint }[]>`
+    SELECT EXTRACT(MONTH FROM "dateCandidature")::int AS mois,
+           COUNT(*)::bigint                           AS nombre
+    FROM candidatures
+    WHERE "dateCandidature" BETWEEN ${debutAnnee} AND ${finAnnee}
+    GROUP BY mois
+    ORDER BY mois
+  `;
+
+  // ── Répartition par filière ───────────────────────────────────────────────
+  const parFiliere = await prisma.etudiant.groupBy({
+    by: ['filiere'],
+    _count: { _all: true },
+    where: Object.keys(etudiantWhere).length ? etudiantWhere : undefined,
+  });
+
+  // ── Répartition par niveau d'étude ────────────────────────────────────────
+  const parNiveau = await prisma.etudiant.groupBy({
+    by: ['niveauEtude'],
+    _count: { _all: true },
+    where: Object.keys(etudiantWhere).length ? etudiantWhere : undefined,
+  });
+
+  // ── Répartition par statut candidature ────────────────────────────────────
+  const parStatutCandidature = await prisma.candidature.groupBy({
+    by: ['statut'],
+    _count: { _all: true },
+    where: {
+      dateCandidature: { gte: debutAnnee, lte: finAnnee },
+    },
+  });
+
+  // ── Top secteurs d'activité par offres ────────────────────────────────────
+  const topSecteurs = await prisma.$queryRaw<{ secteur: string; offres: bigint; candidatures: bigint }[]>`
+    SELECT e."secteurActivite" AS secteur,
+           COUNT(DISTINCT o.id)::bigint AS offres,
+           COUNT(DISTINCT c.id)::bigint AS candidatures
+    FROM entreprises e
+    LEFT JOIN offres o ON o."entrepriseId" = e.id
+    LEFT JOIN candidatures c ON c."offreId" = o.id
+    WHERE e."secteurActivite" IS NOT NULL
+    GROUP BY e."secteurActivite"
+    ORDER BY offres DESC
+    LIMIT 10
+  `;
+
+  // ── Top offres par type ────────────────────────────────────────────────────
+  const parTypeOffre = await prisma.offre.groupBy({
+    by: ['typeOffre'],
+    _count: { _all: true },
+    where: { statut: 'publie' },
+  });
+
+  // ── Taux de conversion par étape ──────────────────────────────────────────
+  const [totalCandidatures, vues, entretiens, acceptees] = await Promise.all([
+    prisma.candidature.count({ where: { dateCandidature: { gte: debutAnnee, lte: finAnnee } } }),
+    prisma.candidature.count({ where: { statut: 'vue', dateCandidature: { gte: debutAnnee, lte: finAnnee } } }),
+    prisma.candidature.count({ where: { statut: 'entretien', dateCandidature: { gte: debutAnnee, lte: finAnnee } } }),
+    prisma.candidature.count({ where: { statut: 'acceptee', dateCandidature: { gte: debutAnnee, lte: finAnnee } } }),
+  ]);
+
+  // ── Situation des étudiants ────────────────────────────────────────────────
+  const parSituation = await prisma.etudiant.groupBy({
+    by: ['situationActuelle'],
+    _count: { _all: true },
+    where: Object.keys(etudiantWhere).length ? etudiantWhere : undefined,
+  });
+
+  // ── Évolution inscriptions par mois ───────────────────────────────────────
+  const inscriptionsParMois = await prisma.$queryRaw<{ mois: number; nombre: bigint }[]>`
+    SELECT EXTRACT(MONTH FROM u."dateCreation")::int AS mois,
+           COUNT(*)::bigint                          AS nombre
+    FROM utilisateurs u
+    WHERE u."dateCreation" BETWEEN ${debutAnnee} AND ${finAnnee}
+      AND u."typeUtilisateur" = 'etudiant'
+    GROUP BY mois
+    ORDER BY mois
+  `;
+
+  return {
+    annee,
+    filters,
+    candidaturesParMois: candidaturesParMois.map(r => ({ mois: r.mois, nombre: Number(r.nombre) })),
+    inscriptionsParMois: inscriptionsParMois.map(r => ({ mois: r.mois, nombre: Number(r.nombre) })),
+    parFiliere: [...parFiliere]
+      .sort((a, b) => ((b._count as { _all: number })._all) - ((a._count as { _all: number })._all))
+      .map(r => ({ filiere: r.filiere, nombre: (r._count as { _all: number })._all })),
+    parNiveau:  parNiveau.map(r => ({ niveau: r.niveauEtude, nombre: (r._count as { _all: number })._all })),
+    parTypeOffre: parTypeOffre.map(r => ({ type: r.typeOffre, nombre: (r._count as { _all: number })._all })),
+    parStatutCandidature: parStatutCandidature.map(r => ({ statut: r.statut, nombre: (r._count as { _all: number })._all })),
+    parSituation: parSituation.map(r => ({ situation: r.situationActuelle, nombre: (r._count as { _all: number })._all })),
+    topSecteurs: topSecteurs.map(r => ({
+      secteur: r.secteur,
+      offres: Number(r.offres),
+      candidatures: Number(r.candidatures),
+    })),
+    entonnoir: {
+      totalCandidatures,
+      vues,
+      entretiens,
+      acceptees,
+      tauxVue:       totalCandidatures > 0 ? Math.round((vues / totalCandidatures) * 100) : 0,
+      tauxEntretien: totalCandidatures > 0 ? Math.round((entretiens / totalCandidatures) * 100) : 0,
+      tauxAcceptation: totalCandidatures > 0 ? Math.round((acceptees / totalCandidatures) * 100) : 0,
+    },
+  };
 }

@@ -1,10 +1,29 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import * as adminService from '../services/admin.service';
+import { auditLog } from '../lib/logger';
 
 export async function getStats(req: AuthRequest, res: Response): Promise<void> {
   try {
     const stats = await adminService.getStats();
+    res.status(200).json({ success: true, data: stats });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function getStatsAvancees(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const { promotion, filiere, niveauEtude, typeOffre, secteurActivite, annee } = req.query;
+    const filters = {
+      promotion:      promotion      as string | undefined,
+      filiere:        filiere        as string | undefined,
+      niveauEtude:    niveauEtude    as string | undefined,
+      typeOffre:      typeOffre      as string | undefined,
+      secteurActivite: secteurActivite as string | undefined,
+      annee:          annee ? parseInt(annee as string, 10) : undefined,
+    };
+    const stats = await adminService.getStatsAvancees(filters);
     res.status(200).json({ success: true, data: stats });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -23,6 +42,7 @@ export async function getEntreprises(req: AuthRequest, res: Response): Promise<v
 export async function validerEntreprise(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.validerEntreprise(req.params.id as string);
+    auditLog('VALIDER_ENTREPRISE', req.user?.userId, `entreprise:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -32,6 +52,7 @@ export async function validerEntreprise(req: AuthRequest, res: Response): Promis
 export async function rejeterEntreprise(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.rejeterEntreprise(req.params.id as string);
+    auditLog('REJETER_ENTREPRISE', req.user?.userId, `entreprise:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -50,6 +71,7 @@ export async function getUtilisateurs(req: AuthRequest, res: Response): Promise<
 export async function toggleUtilisateur(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.toggleUtilisateur(req.params.id as string, req.user!.userId);
+    auditLog('TOGGLE_UTILISATEUR', req.user?.userId, `utilisateur:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -88,6 +110,7 @@ export async function getSuperviseurs(req: AuthRequest, res: Response): Promise<
 export async function creerSuperviseur(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.creerSuperviseur(req.body);
+    auditLog('CREER_SUPERVISEUR', req.user?.userId, `email:${req.body.email}`);
     res.status(201).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -106,6 +129,7 @@ export async function modifierSuperviseur(req: AuthRequest, res: Response): Prom
 export async function supprimerSuperviseur(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.supprimerSuperviseur(req.params.id as string);
+    auditLog('SUPPRIMER_SUPERVISEUR', req.user?.userId, `superviseur:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });

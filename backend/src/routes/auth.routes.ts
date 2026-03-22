@@ -14,11 +14,125 @@ const authLimiter = rateLimit({
 
 const router = Router();
 
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Créer un compte utilisateur
+ *     description: Enregistre un nouvel utilisateur (étudiant ou entreprise) et envoie un e-mail de vérification.
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterInput'
+ *     responses:
+ *       201:
+ *         description: Compte créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Données invalides ou email déjà utilisé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       429:
+ *         description: Trop de tentatives
+ */
 router.post('/register', authLimiter, authController.register);
-router.post('/login',    authLimiter, authController.login);
-router.post('/refresh',  authController.refresh);
-router.post('/logout',   authenticate, authController.logout);
-router.get('/me',        authenticate, authController.me);
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Se connecter
+ *     description: Authentifie un utilisateur et retourne un access token et un refresh token.
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginInput'
+ *     responses:
+ *       200:
+ *         description: Connexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       401:
+ *         description: Identifiants incorrects
+ *       429:
+ *         description: Trop de tentatives
+ */
+router.post('/login', authLimiter, authController.login);
+
+/**
+ * @swagger
+ * /auth/refresh:
+ *   post:
+ *     summary: Renouveler le token d'accès
+ *     description: Utilise un refresh token valide pour obtenir un nouvel access token.
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [refreshToken]
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Token renouvelé
+ *       401:
+ *         description: Refresh token invalide ou expiré
+ */
+router.post('/refresh', authController.refresh);
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Se déconnecter
+ *     description: Invalide le refresh token de l'utilisateur.
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Déconnexion réussie
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.post('/logout', authenticate, authController.logout);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Profil de l'utilisateur connecté
+ *     description: Retourne les informations de l'utilisateur actuellement authentifié.
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Informations de l'utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Success'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get('/me', authenticate, authController.me);
 
 
 router.get('/verifier-email', async (req, res) => {
