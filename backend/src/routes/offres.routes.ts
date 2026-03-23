@@ -36,6 +36,19 @@ router.get('/',    cacheMiddleware(120), offresController.getOffres);
 
 /**
  * @swagger
+ * /offres/mes-offres:
+ *   get:
+ *     summary: Mes offres (vue entreprise)
+ *     tags: [Offres]
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: Liste de toutes les offres de l'entreprise connectée
+ */
+router.get('/mes-offres', authenticate, authorize('entreprise'), offresController.getMesOffres);
+
+/**
+ * @swagger
  * /offres/{id}:
  *   get:
  *     summary: Détail d'une offre
