@@ -1,0 +1,401 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api, { getFileUrl } from '../../services/api';
+
+type ApiError = { response?: { data?: { message?: string } } };
+
+interface Candidature {
+  id: string;
+  statut: string;
+  dateCandidature: string;
+  lettreMotivation: string;
+  cvUrl: string;
+  documentsComplementaires?: { lettre?: string; diplome?: string } | null;
+  commentaireEntreprise?: string;
+  offre: {
+    id: string;
+    titre: string;
+    typeOffre: string;
+    localisation: string;
+  };
+  etudiant: {
+    nom: string;
+    prenom: string;
+    filiere: string;
+    niveauEtude: string;
+    cvUrl?: string;
+  };
+}
+
+type ActionType = 'acceptee' | 'refusee' | 'gerer';
+
+const STATUTS: Record<string, { label: string; color: string }> = {
+  soumise:   { label: 'Soumise',   color: 'bg-blue-100 text-blue-700' },
+  vue:       { label: 'Vue',       color: 'bg-yellow-100 text-yellow-700' },
+  entretien: { label: 'Entretien', color: 'bg-purple-100 text-purple-700' },
+  acceptee:  { label: 'Acceptée',  color: 'bg-green-100 text-green-700' },
+  refusee:   { label: 'Refusée',   color: 'bg-red-100 text-red-700' },
+};
+
+export default function MesCandidaturesEntreprise() {
+  const [candidatures, setCandidatures] = useState<Candidature[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [filtreStatut, setFiltreStatut] = useState('');
+  const [filtreOffre, setFiltreOffre] = useState('');
+  const [modal, setModal] = useState<{ candidature: Candidature; action: ActionType } | null>(null);
+  const [customStatut, setCustomStatut] = useState('');
+  const [commentaire, setCommentaire] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [erreur, setErreur] = useState('');
+
+  useEffect(() => {
+    charger();
+  }, []);
+
+  const charger = async () => {
+    try {
+      const res = await api.get('/candidatures/toutes');
+      setCandidatures(res.data.data);
+    } catch {
+      // erreur silencieuse
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const ouvrirModal = (c: Candidature, action: ActionType) => {
+    setModal({ candidature: c, action });
+    setCustomStatut(c.statut);
+    setCommentaire('');
+    setErreur('');
+  };
+
+  const handleConfirmer = async () => {
+    if (!modal) return;
+    const statut = modal.action === 'gerer' ? customStatut : modal.action;
+    if (!statut) return;
+    setIsUpdating(true);
+    setErreur('');
+    try {
+      await api.put(`/candidatures/${modal.candidature.id}/statut`, {
+        statut,
+        commentaire: commentaire || undefined,
+      });
+      const label = STATUTS[statut]?.label ?? statut;
+      setSuccess(`Candidature de ${modal.candidature.etudiant.prenom} ${modal.candidature.etudiant.nom} — "${label}" enregistré.`);
+      setModal(null);
+      await charger();
+      setTimeout(() => setSuccess(''), 4000);
+    } catch (err) {
+      setErreur((err as ApiError).response?.data?.message || 'Erreur lors de la mise à jour');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  // Offres uniques pour le filtre
+  const offresUniques = Array.from(
+    new Map(candidatures.map(c => [c.offre.id, c.offre])).values()
+  );
+
+  const stats = {
+    total:     candidatures.length,
+    nouvelles: candidatures.filter(c => c.statut === 'soumise').length,
+    entretien: candidatures.filter(c => c.statut === 'entretien').length,
+    acceptees: candidatures.filter(c => c.statut === 'acceptee').length,
+    refusees:  candidatures.filter(c => c.statut === 'refusee').length,
+  };
+
+  const liste = candidatures
+    .filter(c => !filtreStatut || c.statut === filtreStatut)
+    .filter(c => !filtreOffre || c.offre.id === filtreOffre);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar */}
+      <nav className="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+            <img src="/logo2_unchk.png" alt="UNCHK" className="h-9 w-auto" />
+          </Link>
+          <div className="hidden md:flex items-center gap-1">
+            {[
+              { to: '/entreprise/dashboard', label: '🏠 Dashboard' },
+              { to: '/entreprise/creer-offre', label: '➕ Créer offre' },
+              { to: '/entreprise/profil', label: '🏢 Mon profil' },
+            ].map(({ to, label }) => (
+              <Link key={to} to={to}
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
+                {label}
+              </Link>
+            ))}
+          </div>
+          <Link to="/entreprise/dashboard"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border-2 border-gray-200 text-sm font-semibold text-gray-700 hover:border-green-500 hover:text-green-700 hover:bg-green-50 shadow-sm transition-all duration-200 group">
+            <span className="group-hover:-translate-x-1 transition-transform duration-200">←</span>
+            Retour
+          </Link>
+        </div>
+      </nav>
+
+      <main className="max-w-5xl mx-auto px-4 py-8">
+        {/* En-tête */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-1">Toutes les candidatures</h2>
+          <p className="text-gray-500 text-sm">{stats.total} candidature{stats.total !== 1 ? 's' : ''} reçue{stats.total !== 1 ? 's' : ''} sur l'ensemble de vos offres</p>
+        </div>
+
+        {/* Message succès */}
+        {success && (
+          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 text-sm">
+            ✓ {success}
+          </div>
+        )}
+
+        {/* Stats */}
+        {stats.total > 0 && (
+          <div className="grid grid-cols-5 gap-3 mb-6">
+            {[
+              { label: 'Total',     value: stats.total,     color: 'text-gray-800',   bg: 'bg-white',     key: '' },
+              { label: 'Nouvelles', value: stats.nouvelles, color: 'text-blue-700',   bg: 'bg-blue-50',   key: 'soumise' },
+              { label: 'Entretien', value: stats.entretien, color: 'text-purple-700', bg: 'bg-purple-50', key: 'entretien' },
+              { label: 'Acceptées', value: stats.acceptees, color: 'text-green-700',  bg: 'bg-green-50',  key: 'acceptee' },
+              { label: 'Refusées',  value: stats.refusees,  color: 'text-red-700',    bg: 'bg-red-50',    key: 'refusee' },
+            ].map(s => (
+              <button key={s.key}
+                onClick={() => setFiltreStatut(filtreStatut === s.key ? '' : s.key)}
+                className={`${s.bg} rounded-xl border p-4 text-left transition hover:opacity-80 ${filtreStatut === s.key ? 'ring-2 ring-green-400' : 'border-gray-100'}`}>
+                <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Filtres */}
+        {(filtreStatut || filtreOffre || offresUniques.length > 1) && (
+          <div className="flex flex-wrap items-center gap-3 mb-6 bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+            {offresUniques.length > 1 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500 font-medium">Offre :</span>
+                <select
+                  value={filtreOffre}
+                  onChange={e => setFiltreOffre(e.target.value)}
+                  className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-green-400">
+                  <option value="">Toutes</option>
+                  {offresUniques.map(o => (
+                    <option key={o.id} value={o.id}>{o.titre}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            {(filtreStatut || filtreOffre) && (
+              <button
+                onClick={() => { setFiltreStatut(''); setFiltreOffre(''); }}
+                className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded border border-gray-200 hover:border-gray-300 transition">
+                ✕ Effacer les filtres
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Liste */}
+        {isLoading ? (
+          <div className="text-center py-12 text-gray-500">Chargement...</div>
+        ) : liste.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+            <p className="text-4xl mb-3">📭</p>
+            <p className="text-gray-500">
+              {candidatures.length === 0
+                ? 'Aucune candidature reçue pour le moment.'
+                : 'Aucune candidature ne correspond aux filtres sélectionnés.'}
+            </p>
+            {candidatures.length === 0 && (
+              <Link to="/entreprise/creer-offre"
+                className="inline-block mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg font-medium transition text-sm">
+                Créer une offre
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {liste.map((c) => (
+              <div key={c.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                {/* Bandeau offre */}
+                <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-50">
+                  <span className="text-xs font-medium text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full">
+                    {c.offre.typeOffre}
+                  </span>
+                  <Link to={`/entreprise/offres/${c.offre.id}/candidatures`}
+                    className="text-sm font-semibold text-gray-700 hover:text-blue-700 transition">
+                    {c.offre.titre}
+                  </Link>
+                  <span className="text-xs text-gray-400">• {c.offre.localisation}</span>
+                </div>
+
+                {/* Header candidat */}
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-sm font-bold text-green-700 shrink-0">
+                      {c.etudiant.prenom[0]}{c.etudiant.nom[0]}
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-800">
+                        {c.etudiant.prenom} {c.etudiant.nom}
+                      </h3>
+                      <p className="text-gray-400 text-xs">
+                        {c.etudiant.filiere} • {c.etudiant.niveauEtude}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUTS[c.statut]?.color ?? 'bg-gray-100 text-gray-600'}`}>
+                    {STATUTS[c.statut]?.label ?? c.statut}
+                  </span>
+                </div>
+
+                {/* Lettre de motivation */}
+                <div className="mb-4">
+                  <p className="text-xs text-gray-400 mb-1">Lettre de motivation</p>
+                  <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">{c.lettreMotivation}</p>
+                </div>
+
+                {/* Commentaire entreprise */}
+                {c.commentaireEntreprise && (
+                  <div className="bg-gray-50 rounded-lg px-4 py-3 mb-4">
+                    <p className="text-xs text-gray-400 mb-1">Votre commentaire</p>
+                    <p className="text-sm text-gray-700">{c.commentaireEntreprise}</p>
+                  </div>
+                )}
+
+                {/* Pied de carte */}
+                <div className="flex justify-between items-center pt-2 border-t border-gray-50">
+                  <p className="text-xs text-gray-400">
+                    Reçue le {new Date(c.dateCandidature).toLocaleDateString('fr-FR')}
+                  </p>
+                  <div className="flex items-center gap-2 flex-wrap justify-end">
+                    {c.cvUrl && (
+                      <a href={getFileUrl(c.cvUrl)} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1 rounded-lg transition">
+                        📄 CV
+                      </a>
+                    )}
+                    {c.documentsComplementaires?.lettre && (
+                      <a href={getFileUrl(c.documentsComplementaires.lettre)} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-indigo-600 hover:text-indigo-800 border border-indigo-200 px-3 py-1 rounded-lg transition">
+                        ✉ Lettre
+                      </a>
+                    )}
+                    {c.documentsComplementaires?.diplome && (
+                      <a href={getFileUrl(c.documentsComplementaires.diplome)} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-orange-600 hover:text-orange-800 border border-orange-200 px-3 py-1 rounded-lg transition">
+                        🎓 Diplôme
+                      </a>
+                    )}
+                    <Link to={`/entreprise/candidatures/${c.id}/profil`}
+                      className="text-xs text-purple-600 hover:text-purple-800 border border-purple-200 px-3 py-1 rounded-lg transition">
+                      👤 Profil
+                    </Link>
+                    <button onClick={() => ouvrirModal(c, 'gerer')}
+                      className="text-xs text-gray-600 hover:text-gray-800 border border-gray-200 px-3 py-1 rounded-lg transition">
+                      ⚙ Gérer
+                    </button>
+                    {c.statut !== 'acceptee' && c.statut !== 'refusee' && (
+                      <>
+                        <button onClick={() => ouvrirModal(c, 'acceptee')}
+                          className="text-xs font-semibold bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg transition">
+                          ✓ Accepter
+                        </button>
+                        <button onClick={() => ouvrirModal(c, 'refusee')}
+                          className="text-xs font-semibold bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-lg transition">
+                          ✕ Rejeter
+                        </button>
+                      </>
+                    )}
+                    {c.statut === 'acceptee' && (
+                      <button onClick={() => ouvrirModal(c, 'refusee')}
+                        className="text-xs text-red-500 hover:text-red-700 border border-red-200 px-3 py-1 rounded-lg transition">
+                        Annuler l'acceptation
+                      </button>
+                    )}
+                    {c.statut === 'refusee' && (
+                      <button onClick={() => ouvrirModal(c, 'acceptee')}
+                        className="text-xs text-green-600 hover:text-green-800 border border-green-200 px-3 py-1 rounded-lg transition">
+                        Reconsidérer
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+
+      {/* Modal de gestion */}
+      {modal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-1">
+              {modal.action === 'acceptee' ? '✅ Accepter la candidature' :
+               modal.action === 'refusee'  ? '❌ Rejeter la candidature'  :
+               '⚙ Gérer la candidature'}
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              {modal.candidature.etudiant.prenom} {modal.candidature.etudiant.nom} —{' '}
+              <span className="font-medium text-gray-700">{modal.candidature.offre.titre}</span>
+            </p>
+
+            {modal.action === 'gerer' && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nouveau statut</label>
+                <select
+                  value={customStatut}
+                  onChange={e => setCustomStatut(e.target.value)}
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                  {Object.entries(STATUTS).map(([key, { label }]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Commentaire <span className="text-gray-400 font-normal">(optionnel)</span>
+              </label>
+              <textarea
+                value={commentaire}
+                onChange={e => setCommentaire(e.target.value)}
+                rows={3}
+                placeholder="Message pour le candidat..."
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 resize-none" />
+            </div>
+
+            {erreur && (
+              <p className="text-red-600 text-sm mb-4 bg-red-50 px-3 py-2 rounded-lg">{erreur}</p>
+            )}
+
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setModal(null)}
+                className="px-5 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition">
+                Annuler
+              </button>
+              <button
+                onClick={handleConfirmer}
+                disabled={isUpdating}
+                className={`px-5 py-2 rounded-lg text-sm font-semibold text-white transition ${
+                  modal.action === 'refusee'
+                    ? 'bg-red-500 hover:bg-red-600 disabled:bg-red-300'
+                    : 'bg-green-600 hover:bg-green-700 disabled:bg-green-300'
+                }`}>
+                {isUpdating ? 'Enregistrement...' : 'Confirmer'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

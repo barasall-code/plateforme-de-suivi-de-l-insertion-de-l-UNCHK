@@ -35,6 +35,7 @@ import ModifierOffre from './pages/entreprise/ModifierOffre';
 import CandidaturesOffre from './pages/entreprise/CandidaturesOffre';
 import ProfilEntreprise from './pages/entreprise/ProfilEntreprise';
 import ProfilCandidat from './pages/entreprise/ProfilCandidat';
+import MesCandidaturesEntreprise from './pages/entreprise/MesCandidaturesEntreprise';
 import MonProfil from './pages/profil/MonProfil';
 import StatutProfessionnel from './pages/profil/StatutProfessionnel';
 import MesCompetences from './pages/profil/MesCompetences';
@@ -130,6 +131,11 @@ function App() {
           <Route path="/entreprise/dashboard" element={
             <ProtectedRoute roles={['entreprise']}>
               <DashboardEntreprise />
+            </ProtectedRoute>
+          } />
+          <Route path="/entreprise/candidatures" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <MesCandidaturesEntreprise />
             </ProtectedRoute>
           } />
           <Route path="/entreprise/profil" element={

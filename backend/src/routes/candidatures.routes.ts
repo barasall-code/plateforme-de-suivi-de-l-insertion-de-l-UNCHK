@@ -47,6 +47,21 @@ router.get('/mes-candidatures', authenticate, authorize('etudiant'), candidature
 
 /**
  * @swagger
+ * /candidatures/toutes:
+ *   get:
+ *     summary: Toutes les candidatures reçues (vue entreprise)
+ *     tags: [Candidatures]
+ *     security: [{ bearerAuth: [] }]
+ *     responses:
+ *       200:
+ *         description: Liste de toutes les candidatures pour toutes les offres de l'entreprise
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ */
+router.get('/toutes', authenticate, authorize('entreprise'), candidaturesController.getToutesCandidatures);
+
+/**
+ * @swagger
  * /candidatures/offre/{offreId}:
  *   get:
  *     summary: Candidatures reçues pour une offre (vue entreprise)

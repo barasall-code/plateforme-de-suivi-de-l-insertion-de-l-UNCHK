@@ -71,7 +71,7 @@ export default function DashboardEntreprise() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/entreprise/offres/creer', label: '➕ Créer offre' },
+              { to: '/entreprise/creer-offre', label: '➕ Créer offre' },
               { to: '/entreprise/candidatures', label: '📋 Candidatures' },
               { to: '/entreprise/profil', label: '🏢 Mon profil' },
             ].map(({ to, label }) => (

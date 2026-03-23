@@ -148,6 +148,41 @@ export async function retirerCandidature(id: string, etudiantUserId: string) {
   await prisma.candidature.delete({ where: { id } });
   return { message: 'Candidature retiree' };
 }
+export async function getAllCandidaturesEntreprise(entrepriseId: string) {
+  return prisma.candidature.findMany({
+    where: {
+      offre: { entrepriseId },
+    },
+    select: {
+      id: true,
+      statut: true,
+      dateCandidature: true,
+      lettreMotivation: true,
+      cvUrl: true,
+      documentsComplementaires: true,
+      commentaireEntreprise: true,
+      offre: {
+        select: {
+          id: true,
+          titre: true,
+          typeOffre: true,
+          localisation: true,
+        },
+      },
+      etudiant: {
+        select: {
+          nom: true,
+          prenom: true,
+          filiere: true,
+          niveauEtude: true,
+          cvUrl: true,
+        },
+      },
+    },
+    orderBy: { dateCandidature: 'desc' },
+  });
+}
+
 export async function getProfilCandidat(id: string, entrepriseUserId: string) {
   const candidature = await prisma.candidature.findUnique({
     where: { id },
