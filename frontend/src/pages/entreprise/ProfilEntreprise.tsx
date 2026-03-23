@@ -38,17 +38,17 @@ export default function ProfilEntreprise() {
     setError('');
     setIsSaving(true);
     try {
-      // N'envoyer que les champs acceptés par l'API (pas id, estValide, dateValidation, utilisateur...)
+      // N'envoyer que les champs acceptés par l'API — convertir null en valeurs valides
       const payload = {
-        nomEntreprise:    form.nomEntreprise,
-        secteurActivite:  form.secteurActivite,
-        description:      form.description,
-        siteWeb:          form.siteWeb,
-        tailleEntreprise: form.tailleEntreprise,
-        ville:            form.ville,
-        pays:             form.pays,
-        logoUrl:          form.logoUrl,
-        siret:            form.siret,
+        nomEntreprise:    form.nomEntreprise    || undefined,
+        secteurActivite:  form.secteurActivite  || undefined,
+        description:      form.description      ?? undefined,
+        siteWeb:          form.siteWeb          ?? '',
+        tailleEntreprise: form.tailleEntreprise || undefined,
+        ville:            form.ville            || undefined,
+        pays:             form.pays             || undefined,
+        logoUrl:          form.logoUrl          ?? '',
+        siret:            form.siret            ?? undefined,
       };
       const response = await api.put('/profil', payload);
       setProfil(response.data.data);

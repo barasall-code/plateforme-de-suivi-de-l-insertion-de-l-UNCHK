@@ -18,13 +18,13 @@ const UpdateEtudiantSchema = z.object({
 const UpdateEntrepriseSchema = z.object({
   nomEntreprise:    z.string().min(1).max(255).optional(),
   secteurActivite:  z.string().max(100).optional(),
-  description:      z.string().max(2000).optional(),
-  siteWeb:          z.string().url().optional().or(z.literal('')),
-  tailleEntreprise: z.string().max(50).optional(),
-  ville:            z.string().max(100).optional(),
-  pays:             z.string().max(100).optional(),
-  logoUrl:          z.string().url().optional().or(z.literal('')),
-  siret:            z.string().max(20).optional(),
+  description:      z.string().max(2000).nullable().optional(),
+  siteWeb:          z.string().url().or(z.literal('')).nullable().optional(),
+  tailleEntreprise: z.string().max(50).nullable().optional(),
+  ville:            z.string().max(100).nullable().optional(),
+  pays:             z.string().max(100).nullable().optional(),
+  logoUrl:          z.string().url().or(z.literal('')).nullable().optional(),
+  siret:            z.string().max(20).nullable().optional(),
 }).strict();
 
 export async function getProfilEtudiant(userId: string) {
