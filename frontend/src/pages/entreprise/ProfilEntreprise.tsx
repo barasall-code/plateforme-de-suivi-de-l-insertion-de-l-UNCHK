@@ -38,7 +38,19 @@ export default function ProfilEntreprise() {
     setError('');
     setIsSaving(true);
     try {
-      const response = await api.put('/profil', form);
+      // N'envoyer que les champs acceptés par l'API (pas id, estValide, dateValidation, utilisateur...)
+      const payload = {
+        nomEntreprise:    form.nomEntreprise,
+        secteurActivite:  form.secteurActivite,
+        description:      form.description,
+        siteWeb:          form.siteWeb,
+        tailleEntreprise: form.tailleEntreprise,
+        ville:            form.ville,
+        pays:             form.pays,
+        logoUrl:          form.logoUrl,
+        siret:            form.siret,
+      };
+      const response = await api.put('/profil', payload);
       setProfil(response.data.data);
       setSuccess('Profil mis à jour avec succès !');
       setIsEditing(false);

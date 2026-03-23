@@ -20,7 +20,7 @@ const UpdateEntrepriseSchema = z.object({
   secteurActivite:  z.string().max(100).optional(),
   description:      z.string().max(2000).optional(),
   siteWeb:          z.string().url().optional().or(z.literal('')),
-  tailleEntreprise: z.enum(['TPE', 'PME', 'ETI', 'GE']).optional(),
+  tailleEntreprise: z.string().max(50).optional(),
   ville:            z.string().max(100).optional(),
   pays:             z.string().max(100).optional(),
   logoUrl:          z.string().url().optional().or(z.literal('')),
