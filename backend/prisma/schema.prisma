@@ -191,7 +191,6 @@ model Offre {
   salaireMax            Decimal?
   localisation          String
   modeTravail           ModeTravail       @default(presentiel)
-  competencesRequises   Json?
   dateLimiteCandidature DateTime
   statut                StatutOffre       @default(brouillon)
   nombrePostes          Int               @default(1)

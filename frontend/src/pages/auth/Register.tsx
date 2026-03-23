@@ -16,6 +16,7 @@ export default function Register() {
   const [motDePasse, setMotDePasse] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [accepteCGU, setAccepteCGU] = useState(false);
 
   // Champs étudiant
   const [nom, setNom] = useState('');
@@ -47,6 +48,10 @@ export default function Register() {
     }
     if (motDePasse.length < 8) {
       setError('Le mot de passe doit contenir au moins 8 caractères');
+      return;
+    }
+    if (!accepteCGU) {
+      setError('Vous devez accepter la politique de confidentialité pour créer votre compte');
       return;
     }
 
@@ -328,8 +333,28 @@ export default function Register() {
                   </div>
                 </div>
 
-                <button type="submit" disabled={isLoading}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold py-3 rounded-xl transition mt-2">
+                {/* Acceptation politique de confidentialité — obligatoire (loi n° 2008-12) */}
+                <div className="flex items-start gap-3 bg-green-50 border border-green-200 rounded-xl p-3">
+                  <input
+                    type="checkbox"
+                    id="accepteCGU"
+                    checked={accepteCGU}
+                    onChange={e => setAccepteCGU(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 accent-green-600 cursor-pointer flex-shrink-0"
+                  />
+                  <label htmlFor="accepteCGU" className="text-xs text-gray-600 cursor-pointer leading-relaxed">
+                    J'ai lu et j'accepte la{' '}
+                    <Link to="/politique-confidentialite" target="_blank" rel="noopener noreferrer"
+                      className="text-green-700 font-semibold hover:underline">
+                      politique de confidentialité
+                    </Link>
+                    {' '}de la plateforme UNCHK. Mes données sont traitées conformément à la loi n°&nbsp;2008-12 du Sénégal.
+                  </label>
+                </div>
+
+                <button type="submit" disabled={isLoading || !accepteCGU}
+                  title={!accepteCGU ? 'Veuillez accepter la politique de confidentialité' : undefined}
+                  className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition mt-2">
                   {isLoading ? 'Création du compte...' : '🚀 Créer mon compte'}
                 </button>
               </form>

@@ -1,6 +1,14 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import * as offresService from '../services/offres.service';
+import { cacheInvalidate } from '../lib/redis';
+
+/** Invalidates the list cache and optionally a specific offre cache entry. */
+async function invalidateOffresCache(id?: string): Promise<void> {
+  const patterns = ['cache:GET:/:*'];
+  if (id) patterns.push(`cache:GET:/${id}:*`);
+  await cacheInvalidate(...patterns);
+}
 
 export async function getOffres(req: AuthRequest, res: Response): Promise<void> {
   try {
@@ -23,6 +31,7 @@ export async function getOffreById(req: AuthRequest, res: Response): Promise<voi
 export async function createOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await offresService.createOffre(req.body, req.user!.userId);
+    await invalidateOffresCache();
     res.status(201).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -32,6 +41,7 @@ export async function createOffre(req: AuthRequest, res: Response): Promise<void
 export async function updateOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await offresService.updateOffre(req.params.id as string, req.body, req.user!.userId);
+    await invalidateOffresCache(req.params.id as string);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -41,6 +51,7 @@ export async function updateOffre(req: AuthRequest, res: Response): Promise<void
 export async function deleteOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await offresService.deleteOffre(req.params.id as string, req.user!.userId);
+    await invalidateOffresCache(req.params.id as string);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -68,6 +79,7 @@ export async function getMesOffres(req: AuthRequest, res: Response): Promise<voi
 export async function soumettreOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await offresService.soumettreOffre(req.params.id as string, req.user!.userId);
+    await invalidateOffresCache(req.params.id as string);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });

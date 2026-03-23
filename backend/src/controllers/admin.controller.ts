@@ -90,6 +90,7 @@ export async function getOffresEnAttente(req: AuthRequest, res: Response): Promi
 export async function validerOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.validerOffre(req.params.id as string);
+    auditLog('VALIDER_OFFRE', req.user?.userId, `offre:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -120,6 +121,7 @@ export async function creerSuperviseur(req: AuthRequest, res: Response): Promise
 export async function modifierSuperviseur(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.modifierSuperviseur(req.params.id as string, req.body);
+    auditLog('MODIFIER_SUPERVISEUR', req.user?.userId, `superviseur:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -151,6 +153,7 @@ export async function assignerSupervision(req: AuthRequest, res: Response): Prom
   try {
     const { superviseurId, etudiantId } = req.body;
     const result = await adminService.assignerSupervision(superviseurId, etudiantId);
+    auditLog('ASSIGNER_SUPERVISION', req.user?.userId, `superviseur:${superviseurId}`, { etudiantId });
     res.status(201).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -161,6 +164,7 @@ export async function supprimerSupervision(req: AuthRequest, res: Response): Pro
   try {
     const { superviseurId, etudiantId } = req.params;
     const result = await adminService.supprimerSupervision(superviseurId as string, etudiantId as string);
+    auditLog('SUPPRIMER_SUPERVISION', req.user?.userId, `superviseur:${superviseurId}`, { etudiantId });
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
