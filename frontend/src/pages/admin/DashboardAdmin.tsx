@@ -17,6 +17,7 @@ interface AdminStats {
   totalEntreprises: number;
   totalOffres: number;
   offresPubliees: number;
+  offresEnAttente: number;
   totalCandidatures: number;
   candidaturesAcceptees: number;
   entreprisesEnAttente: number;
@@ -292,7 +293,7 @@ export default function DashboardAdmin() {
                 {/* Navigation cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
-                    { to: '/admin/offres', icon: '📋', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: (stats?.totalOffres ?? 0) - (stats?.offresPubliees ?? 0), badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
+                    { to: '/admin/offres', icon: '📋', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
                     { to: '/admin/entreprises', icon: '🏢', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },
                     { to: '/admin/utilisateurs', icon: '👥', title: 'Gérer les utilisateurs', desc: 'Activer, désactiver et gérer tous les comptes', badge: 0, badgeColor: '', borderHover: 'hover:border-blue-300' },
                     { to: '/admin/superviseurs', icon: '👁️', title: 'Gérer les superviseurs', desc: 'Créer et assigner des superviseurs pédagogiques', badge: 0, badgeColor: '', borderHover: 'hover:border-purple-300' },

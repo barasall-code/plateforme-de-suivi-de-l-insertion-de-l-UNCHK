@@ -9,6 +9,7 @@ export async function getStats() {
     totalCandidatures,
     entreprisesEnAttente,
     offresPubliees,
+    offresEnAttente,
     candidaturesAcceptees,
   ] = await Promise.all([
     prisma.etudiant.count(),
@@ -17,6 +18,7 @@ export async function getStats() {
     prisma.candidature.count(),
     prisma.entreprise.count({ where: { estValide: false } }),
     prisma.offre.count({ where: { statut: 'publie' } }),
+    prisma.offre.count({ where: { statut: 'soumis' } }),
     prisma.candidature.count({ where: { statut: 'acceptee' } }),
   ]);
 
@@ -27,6 +29,7 @@ export async function getStats() {
     totalCandidatures,
     entreprisesEnAttente,
     offresPubliees,
+    offresEnAttente,
     candidaturesAcceptees,
     tauxInsertion: totalEtudiants > 0
       ? Math.round((candidaturesAcceptees / totalEtudiants) * 100)
