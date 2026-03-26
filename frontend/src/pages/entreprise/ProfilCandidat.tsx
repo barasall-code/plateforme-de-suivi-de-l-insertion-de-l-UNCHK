@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api, { getFileUrl } from '../../services/api';
 
 interface Competence {
@@ -28,6 +28,31 @@ interface ProfilData {
 
 export default function ProfilCandidat() {
   const { candidatureId } = useParams<{ candidatureId: string }>();
+  const navigate = useNavigate();
+  const [contactLoading, setContactLoading] = useState(false);
+
+  const handleContacter = async () => {
+    if (!data) return;
+    setContactLoading(true);
+    try {
+      const etudiantId = data.etudiant?.id;
+      // L'entreprise connectée est l'utilisateur courant — récupérer son profil
+      const profilRes = await api.get('/profil');
+      const entrepriseId = profilRes.data?.data?.id;
+      if (!etudiantId || !entrepriseId) {
+        console.error('IDs manquants:', { etudiantId, entrepriseId });
+        return;
+      }
+      const res = await api.post('/messagerie/conversations', { etudiantId, entrepriseId });
+      if (res.data?.success) {
+        navigate('/messagerie', { state: { conversationId: res.data.data?.id } });
+      }
+    } catch (err) {
+      console.error('Erreur création conversation:', err);
+    } finally {
+      setContactLoading(false);
+    }
+  };
   const [data, setData] = useState<ProfilData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -114,9 +139,16 @@ export default function ProfilCandidat() {
             {etudiant.linkedinUrl && (
               <a href={etudiant.linkedinUrl} target="_blank" rel="noopener noreferrer"
                 className="border border-gray-300 text-gray-600 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition">
-                🔗 LinkedIn
+                �� LinkedIn
               </a>
             )}
+            <button
+              onClick={handleContacter}
+              disabled={contactLoading}
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-2"
+            >
+              {contactLoading ? '⏳ Connexion...' : '💬 Contacter'}
+            </button>
           </div>
         </div>
 
