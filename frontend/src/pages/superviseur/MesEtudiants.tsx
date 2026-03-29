@@ -106,9 +106,9 @@ export default function MesEtudiants() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/superviseur/etudiants', label: '🎓 Mes étudiants' },
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/superviseur/profil', label: '👤 Mon profil' },
+              { to: '/superviseur/etudiants', label: '<i className="fa-solid fa-graduation-cap"></i> Mes étudiants' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/superviseur/profil', label: '<i className="fa-solid fa-user"></i> Mon profil' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-all duration-150">
@@ -124,7 +124,7 @@ export default function MesEtudiants() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
             </button>
           </div>
         </div>
@@ -178,16 +178,16 @@ export default function MesEtudiants() {
           <button
             onClick={() => setModeVue('supervises')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${modeVue === 'supervises' ? 'bg-green-600 text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'}`}>
-            👥 Mes étudiants ({supervisions.length})
+            <i className="fa-solid fa-users"></i> Mes étudiants ({supervisions.length})
           </button>
           <button
             onClick={() => setModeVue('tous')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${modeVue === 'tous' ? 'bg-green-600 text-white' : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'}`}>
-            🌍 Tous les étudiants ({tousEtudiants.length})
+            <i className="fa-solid fa-earth-africa"></i> Tous les étudiants ({tousEtudiants.length})
           </button>
           <button onClick={() => chargerDonnees(true)}
             className="ml-auto px-4 py-2 rounded-lg text-sm font-medium bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition flex items-center gap-2">
-            🔄 Actualiser
+            <i className="fa-solid fa-rotate"></i> Actualiser
           </button>
         </div>
 
@@ -234,7 +234,7 @@ export default function MesEtudiants() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : donneesFiltrees.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-5xl mb-4">🎓</div>
+            <div className="text-5xl mb-4"><i className="fa-solid fa-graduation-cap"></i></div>
             <p className="text-gray-500 font-medium">Aucun étudiant trouvé</p>
             {filtreSituation !== '' && (
               <button

@@ -88,7 +88,7 @@ export default function CreerOffre() {
 
           {/* Section 1 - Informations générales */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">📋 Informations générales</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-file-lines"></i> Informations générales</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Titre du poste</label>
               <input type="text" name="titre" value={form.titre} onChange={handleChange}
@@ -145,7 +145,7 @@ export default function CreerOffre() {
 
           {/* Section 2 - Description */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">📝 Description du poste</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-pen-to-square"></i> Description du poste</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Description générale</label>
               <textarea name="description" value={form.description} onChange={handleChange}
@@ -164,7 +164,7 @@ export default function CreerOffre() {
 
           {/* Section 3 - Compétences requises */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">🎯 Compétences requises</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-bullseye"></i> Compétences requises</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Niveau d'étude requis</label>
               <select name="niveauRequis" value={form.niveauRequis} onChange={handleChange}
@@ -202,7 +202,7 @@ export default function CreerOffre() {
 
           {/* Section 4 - Conditions */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">💼 Conditions de travail</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-briefcase"></i> Conditions de travail</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Durée (mois)</label>

@@ -136,7 +136,7 @@ export default function DetailOffre() {
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
-          <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700">← Retour aux offres</Link>
+          <Link to="/offres" className="text-sm text-gray-600 hover:text-green-700"><><i className="fa-solid fa-arrow-left mr-1"></i> Retour</> aux offres</Link>
         </div>
       </nav>
 
@@ -187,7 +187,7 @@ export default function DetailOffre() {
             ) : (
               <button onClick={() => setShowForm(!showForm)}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition">
-                {showForm ? 'Annuler' : '📝 Postuler à cette offre'}
+                {showForm ? 'Annuler' : '<i className="fa-solid fa-pen-to-square"></i> Postuler à cette offre'}
               </button>
             )
           ) : (
@@ -219,7 +219,7 @@ export default function DetailOffre() {
                   {cvFile ? (
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✅</span>
+                        <span className="text-green-600"><i className="fa-solid fa-circle-check text-green-600"></i></span>
                         <span className="text-sm text-gray-700 font-medium">{cvFile.name}</span>
                         <span className="text-xs text-gray-400">({(cvFile.size / 1024).toFixed(0)} KB)</span>
                       </div>
@@ -228,7 +228,7 @@ export default function DetailOffre() {
                     </div>
                   ) : (
                     <label className="flex flex-col items-center cursor-pointer">
-                      <span className="text-3xl mb-2">📄</span>
+                      <span className="text-3xl mb-2"><i className="fa-solid fa-file-pdf"></i></span>
                       <span className="text-sm text-gray-600 font-medium">Cliquez pour charger votre CV</span>
                       <span className="text-xs text-gray-400 mt-1">PDF, Word — max 5MB</span>
                       <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadCv} className="hidden" />
@@ -255,7 +255,7 @@ export default function DetailOffre() {
                   {lettreFile ? (
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✅</span>
+                        <span className="text-green-600"><i className="fa-solid fa-circle-check text-green-600"></i></span>
                         <span className="text-sm text-gray-700 font-medium">{lettreFile.name}</span>
                         <span className="text-xs text-gray-400">({(lettreFile.size / 1024).toFixed(0)} KB)</span>
                       </div>
@@ -264,7 +264,7 @@ export default function DetailOffre() {
                     </div>
                   ) : (
                     <label className="flex flex-col items-center cursor-pointer">
-                      <span className="text-3xl mb-2">✉️</span>
+                      <span className="text-3xl mb-2"><i className="fa-solid fa-envelope"></i></span>
                       <span className="text-sm text-gray-600 font-medium">Cliquez pour charger votre lettre</span>
                       <span className="text-xs text-gray-400 mt-1">PDF, Word — max 5MB</span>
                       <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadLettre} className="hidden" />
@@ -282,7 +282,7 @@ export default function DetailOffre() {
                   {diplomeFile ? (
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="text-green-600">✅</span>
+                        <span className="text-green-600"><i className="fa-solid fa-circle-check text-green-600"></i></span>
                         <span className="text-sm text-gray-700 font-medium">{diplomeFile.name}</span>
                         <span className="text-xs text-gray-400">({(diplomeFile.size / 1024).toFixed(0)} KB)</span>
                       </div>
@@ -291,7 +291,7 @@ export default function DetailOffre() {
                     </div>
                   ) : (
                     <label className="flex flex-col items-center cursor-pointer">
-                      <span className="text-3xl mb-2">🎓</span>
+                      <span className="text-3xl mb-2"><i className="fa-solid fa-graduation-cap"></i></span>
                       <span className="text-sm text-gray-600 font-medium">Cliquez pour charger votre diplôme</span>
                       <span className="text-xs text-gray-400 mt-1">PDF, Image — max 5MB</span>
                       <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={handleUploadDiplome} className="hidden" />
@@ -313,7 +313,7 @@ export default function DetailOffre() {
 
               <button type="submit" disabled={isPostuling || !cvUrl || !lettreMotivation}
                 className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white font-semibold py-3 rounded-xl transition">
-                {isPostuling ? 'Envoi en cours...' : '🚀 Envoyer ma candidature'}
+                {isPostuling ? 'Envoi en cours...' : '<i className="fa-solid fa-rocket"></i> Envoyer ma candidature'}
               </button>
             </form>
           </div>

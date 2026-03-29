@@ -90,10 +90,10 @@ export default function Dashboard() {
           {/* Navigation centrale */}
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/candidatures', label: '📄 Candidatures' },
-              { to: '/competences', label: '⭐ Compétences' },
-              { to: '/statut-professionnel', label: '📊 Mon statut' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/candidatures', label: '<i className="fa-solid fa-file-pdf"></i> Candidatures' },
+              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
+              { to: '/statut-professionnel', label: '<i className="fa-solid fa-chart-bar"></i> Mon statut' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
@@ -118,7 +118,7 @@ export default function Dashboard() {
             </Link>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
               <span className="hidden sm:block">Déconnexion</span>
             </button>
           </div>
@@ -128,7 +128,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 py-8">
 <div className="flex justify-between items-start mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue {user?.email?.split('@')[0]} 👋</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-1">Bienvenue {user?.email?.split('@')[0]} <i className="fa-solid fa-hand-wave"></i></h2>
             <p className="text-gray-500">Plateforme de suivi d'insertion professionnelle de l'UNCHK</p>
           </div>
           <BoutonExport label="Exporter mon rapport" onClick={() => {
@@ -226,17 +226,17 @@ export default function Dashboard() {
             {/* Navigation rapide */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <Link to="/offres" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">📄</div>
+                <div className="text-3xl mb-3"><i className="fa-solid fa-file-pdf"></i></div>
                 <h3 className="font-semibold text-gray-800 mb-1">Offres disponibles</h3>
                 <p className="text-gray-500 text-sm">Consultez les offres de stage et d'emploi</p>
               </Link>
               <Link to="/candidatures" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">📝</div>
+                <div className="text-3xl mb-3"><i className="fa-solid fa-pen-to-square"></i></div>
                 <h3 className="font-semibold text-gray-800 mb-1">Mes candidatures</h3>
                 <p className="text-gray-500 text-sm">Suivez l'état de vos candidatures</p>
               </Link>
               <Link to="/profil" className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">👤</div>
+                <div className="text-3xl mb-3"><i className="fa-solid fa-user"></i></div>
                 <h3 className="font-semibold text-gray-800 mb-1">Mon profil</h3>
                 <p className="text-gray-500 text-sm">Gérez vos informations personnelles</p>
               </Link>
@@ -267,9 +267,9 @@ export default function Dashboard() {
                         </span>
                       </div>
                       <div className="flex gap-3 text-xs text-gray-400">
-                        <span>📍 {offre.modeTravail}</span>
-                        <span>🎓 {offre.niveauRequis}</span>
-                        <span>📅 Limite : {new Date(offre.dateLimiteCandidature).toLocaleDateString('fr-FR')}</span>
+                        <span><i className="fa-solid fa-location-dot"></i> {offre.modeTravail}</span>
+                        <span><i className="fa-solid fa-graduation-cap"></i> {offre.niveauRequis}</span>
+                        <span><i className="fa-solid fa-calendar"></i> Limite : {new Date(offre.dateLimiteCandidature).toLocaleDateString('fr-FR')}</span>
                       </div>
                     </Link>
                   ))}

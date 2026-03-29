@@ -130,10 +130,10 @@ export default function DashboardAdmin() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/admin/offres', label: '📋 Valider offres' },
-              { to: '/admin/superviseurs', label: '👁️ Superviseurs' },
-              { to: '/admin/entreprises', label: '🏢 Entreprises' },
-              { to: '/admin/utilisateurs', label: '👥 Utilisateurs' },
+              { to: '/admin/offres', label: '<i className="fa-solid fa-file-lines"></i> Valider offres' },
+              { to: '/admin/superviseurs', label: '<i className="fa-solid fa-eye"></i> Superviseurs' },
+              { to: '/admin/entreprises', label: '<i className="fa-solid fa-building"></i> Entreprises' },
+              { to: '/admin/utilisateurs', label: '<i className="fa-solid fa-users"></i> Utilisateurs' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-700 hover:bg-red-50 transition-all duration-150">
@@ -154,7 +154,7 @@ export default function DashboardAdmin() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
               <span className="hidden sm:block">Déconnexion</span>
             </button>
           </div>
@@ -201,14 +201,14 @@ export default function DashboardAdmin() {
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {[
-                { label: 'Étudiants', value: stats?.totalEtudiants, color: 'text-gray-800', bg: 'bg-white', icon: '🎓' },
-                { label: 'Entreprises', value: stats?.totalEntreprises, color: 'text-blue-600', bg: 'bg-white', icon: '🏢' },
-                { label: 'Offres publiées', value: stats?.offresPubliees, color: 'text-green-600', bg: 'bg-white', icon: '📋' },
-                { label: 'Candidatures', value: stats?.totalCandidatures, color: 'text-purple-600', bg: 'bg-white', icon: '📝' },
-                { label: 'Total offres', value: stats?.totalOffres, color: 'text-orange-500', bg: 'bg-white', icon: '📌' },
-                { label: 'En attente validation', value: stats?.entreprisesEnAttente, color: 'text-yellow-500', bg: (stats?.entreprisesEnAttente ?? 0) > 0 ? 'bg-yellow-50' : 'bg-white', icon: '⏳' },
-                { label: 'Candidatures acceptées', value: stats?.candidaturesAcceptees, color: 'text-emerald-600', bg: 'bg-white', icon: '✅' },
-                { label: 'Taux d\'insertion', value: `${stats?.tauxInsertion ?? 0}%`, color: 'text-red-600', bg: 'bg-red-50', icon: '📊' },
+                { label: 'Étudiants', value: stats?.totalEtudiants, color: 'text-gray-800', bg: 'bg-white', icon: '<i className="fa-solid fa-graduation-cap"></i>' },
+                { label: 'Entreprises', value: stats?.totalEntreprises, color: 'text-blue-600', bg: 'bg-white', icon: '<i className="fa-solid fa-building"></i>' },
+                { label: 'Offres publiées', value: stats?.offresPubliees, color: 'text-green-600', bg: 'bg-white', icon: '<i className="fa-solid fa-file-lines"></i>' },
+                { label: 'Candidatures', value: stats?.totalCandidatures, color: 'text-purple-600', bg: 'bg-white', icon: '<i className="fa-solid fa-pen-to-square"></i>' },
+                { label: 'Total offres', value: stats?.totalOffres, color: 'text-orange-500', bg: 'bg-white', icon: '<i className="fa-solid fa-thumbtack"></i>' },
+                { label: 'En attente validation', value: stats?.entreprisesEnAttente, color: 'text-yellow-500', bg: (stats?.entreprisesEnAttente ?? 0) > 0 ? 'bg-yellow-50' : 'bg-white', icon: '<i className="fa-solid fa-hourglass-half text-gray-400"></i>' },
+                { label: 'Candidatures acceptées', value: stats?.candidaturesAcceptees, color: 'text-emerald-600', bg: 'bg-white', icon: '<i className="fa-solid fa-circle-check text-green-600"></i>' },
+                { label: 'Taux d\'insertion', value: `${stats?.tauxInsertion ?? 0}%`, color: 'text-red-600', bg: 'bg-red-50', icon: '<i className="fa-solid fa-chart-bar"></i>' },
               ].map(kpi => (
                 <div key={kpi.label} className={`${kpi.bg} rounded-xl border border-gray-100 shadow-sm p-5`}>
                   <div className="flex justify-between items-start">
@@ -225,7 +225,7 @@ export default function DashboardAdmin() {
             {/* Tabs */}
             <div className="flex gap-2 mb-6">
               {[
-                { key: 'synthese', label: '📊 Synthèse globale' },
+                { key: 'synthese', label: '<i className="fa-solid fa-chart-bar"></i> Synthèse globale' },
                 { key: 'avancees', label: '🔎 Statistiques avancées' },
               ].map(tab => (
                 <button key={tab.key}
@@ -293,10 +293,10 @@ export default function DashboardAdmin() {
                 {/* Navigation cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
-                    { to: '/admin/offres', icon: '📋', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
-                    { to: '/admin/entreprises', icon: '🏢', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },
-                    { to: '/admin/utilisateurs', icon: '👥', title: 'Gérer les utilisateurs', desc: 'Activer, désactiver et gérer tous les comptes', badge: 0, badgeColor: '', borderHover: 'hover:border-blue-300' },
-                    { to: '/admin/superviseurs', icon: '👁️', title: 'Gérer les superviseurs', desc: 'Créer et assigner des superviseurs pédagogiques', badge: 0, badgeColor: '', borderHover: 'hover:border-purple-300' },
+                    { to: '/admin/offres', icon: '<i className="fa-solid fa-file-lines"></i>', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
+                    { to: '/admin/entreprises', icon: '<i className="fa-solid fa-building"></i>', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },
+                    { to: '/admin/utilisateurs', icon: '<i className="fa-solid fa-users"></i>', title: 'Gérer les utilisateurs', desc: 'Activer, désactiver et gérer tous les comptes', badge: 0, badgeColor: '', borderHover: 'hover:border-blue-300' },
+                    { to: '/admin/superviseurs', icon: '<i className="fa-solid fa-eye"></i>', title: 'Gérer les superviseurs', desc: 'Créer et assigner des superviseurs pédagogiques', badge: 0, badgeColor: '', borderHover: 'hover:border-purple-300' },
                   ].map(card => (
                     <Link key={card.to} to={card.to}
                       className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${card.borderHover} hover:shadow-md transition block`}>
@@ -357,7 +357,7 @@ export default function DashboardAdmin() {
 
                 {!avancees ? (
                   <div className="text-center py-16 text-gray-400">
-                    <div className="text-4xl mb-3">📊</div>
+                    <div className="text-4xl mb-3"><i className="fa-solid fa-chart-bar"></i></div>
                     <p>Chargement des statistiques avancées...</p>
                   </div>
                 ) : (
@@ -384,7 +384,7 @@ export default function DashboardAdmin() {
                     {/* Candidatures & inscriptions par mois */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">📅 Candidatures par mois</h3>
+                        <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-calendar"></i> Candidatures par mois</h3>
                         <ResponsiveContainer width="100%" height={220}>
                           <LineChart data={buildSerie(avancees.candidaturesParMois)}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
@@ -396,7 +396,7 @@ export default function DashboardAdmin() {
                         </ResponsiveContainer>
                       </div>
                       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">🎓 Inscriptions étudiants par mois</h3>
+                        <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-graduation-cap"></i> Inscriptions étudiants par mois</h3>
                         <ResponsiveContainer width="100%" height={220}>
                           <LineChart data={buildSerie(avancees.inscriptionsParMois)}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
@@ -412,7 +412,7 @@ export default function DashboardAdmin() {
                     {/* Par filière et par niveau */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">🎓 Répartition par filière</h3>
+                        <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-graduation-cap"></i> Répartition par filière</h3>
                         {avancees.parFiliere.length === 0 ? (
                           <p className="text-gray-400 text-sm text-center py-8">Aucune donnée</p>
                         ) : (
@@ -452,7 +452,7 @@ export default function DashboardAdmin() {
                     {/* Type d'offres & situation étudiants */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">💼 Type d'offres publiées</h3>
+                        <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-briefcase"></i> Type d'offres publiées</h3>
                         {avancees.parTypeOffre.length === 0 ? (
                           <p className="text-gray-400 text-sm text-center py-8">Aucune donnée</p>
                         ) : (
@@ -473,7 +473,7 @@ export default function DashboardAdmin() {
                         )}
                       </div>
                       <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-                        <h3 className="font-semibold text-gray-800 mb-4">🏷️ Situation des étudiants</h3>
+                        <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-tag"></i> Situation des étudiants</h3>
                         {avancees.parSituation.length === 0 ? (
                           <p className="text-gray-400 text-sm text-center py-8">Aucune donnée</p>
                         ) : (

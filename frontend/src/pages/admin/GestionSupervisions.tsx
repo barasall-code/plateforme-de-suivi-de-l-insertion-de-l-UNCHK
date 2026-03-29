@@ -143,7 +143,7 @@ export default function GestionSupervisions() {
         {/* Formulaire d'affectation */}
         {showForm && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
-            <h3 className="font-semibold text-gray-800 mb-4">🔗 Affecter un étudiant à un superviseur</h3>
+            <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-link"></i> Affecter un étudiant à un superviseur</h3>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
             )}
@@ -202,7 +202,7 @@ export default function GestionSupervisions() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : supervisionsFiltrees.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-            <p className="text-4xl mb-4">🔗</p>
+            <p className="text-4xl mb-4"><i className="fa-solid fa-link"></i></p>
             <p className="text-gray-500">
               {search ? 'Aucun résultat pour cette recherche.' : 'Aucune affectation de supervision enregistrée.'}
             </p>

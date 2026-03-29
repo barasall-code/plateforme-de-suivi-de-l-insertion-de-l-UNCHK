@@ -123,7 +123,7 @@ export default function DetailEtudiant() {
             <div className="grid grid-cols-1 gap-3">
               <div className={"flex items-center justify-between p-3 rounded-xl border " + (etudiant.cvUrl ? "border-green-200 bg-green-50" : "border-gray-100 bg-gray-50")}>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">📄</span>
+                  <span className="text-2xl"><i className="fa-solid fa-file-pdf"></i></span>
                   <div>
                     <p className="text-sm font-medium text-gray-800">Curriculum Vitae (CV)</p>
                     <p className="text-xs text-gray-500">{etudiant.cvUrl ? "Document disponible" : "Non fourni"}</p>
@@ -132,13 +132,13 @@ export default function DetailEtudiant() {
                 {etudiant.cvUrl ? (
                   <a href={getFileUrl(etudiant.cvUrl)} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg transition">
-                    👁️ Consulter
+                    <i className="fa-solid fa-eye"></i> Consulter
                   </a>
                 ) : <span className="text-xs text-gray-400 italic">Non soumis</span>}
               </div>
               <div className={"flex items-center justify-between p-3 rounded-xl border " + (etudiant.linkedinUrl ? "border-blue-200 bg-blue-50" : "border-gray-100 bg-gray-50")}>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">🔗</span>
+                  <span className="text-2xl"><i className="fa-solid fa-link"></i></span>
                   <div>
                     <p className="text-sm font-medium text-gray-800">Profil LinkedIn</p>
                     <p className="text-xs text-gray-500">{etudiant.linkedinUrl ? etudiant.linkedinUrl.substring(0, 40) : "Non renseigné"}</p>
@@ -147,7 +147,7 @@ export default function DetailEtudiant() {
                 {etudiant.linkedinUrl ? (
                   <a href={etudiant.linkedinUrl} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition">
-                    👁️ Consulter
+                    <i className="fa-solid fa-eye"></i> Consulter
                   </a>
                 ) : <span className="text-xs text-gray-400 italic">Non renseigné</span>}
               </div>
@@ -162,7 +162,7 @@ export default function DetailEtudiant() {
                 {etudiant.photoUrl ? (
                   <a href={getFileUrl(etudiant.photoUrl)} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-lg transition">
-                    👁️ Consulter
+                    <i className="fa-solid fa-eye"></i> Consulter
                   </a>
                 ) : <span className="text-xs text-gray-400 italic">Non fournie</span>}
               </div>

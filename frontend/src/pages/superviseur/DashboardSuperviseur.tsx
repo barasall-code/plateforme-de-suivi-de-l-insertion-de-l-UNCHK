@@ -98,9 +98,9 @@ export default function DashboardSuperviseur() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/superviseur/etudiants', label: '🎓 Mes étudiants' },
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/superviseur/profil', label: '👤 Mon profil' },
+              { to: '/superviseur/etudiants', label: '<i className="fa-solid fa-graduation-cap"></i> Mes étudiants' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/superviseur/profil', label: '<i className="fa-solid fa-user"></i> Mon profil' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-all duration-150">
@@ -122,7 +122,7 @@ export default function DashboardSuperviseur() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
               <span className="hidden sm:block">Déconnexion</span>
             </button>
           </div>
@@ -178,7 +178,7 @@ export default function DashboardSuperviseur() {
             {/* ── Statistiques globales de la plateforme ── */}
             <div className="mb-2">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                📊 Vue globale — Plateforme UNCHK
+                <i className="fa-solid fa-chart-bar"></i> Vue globale — Plateforme UNCHK
               </h3>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -259,14 +259,14 @@ export default function DashboardSuperviseur() {
             {/* ── Mes supervisions ── */}
             <div className="mb-2 mt-6">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                👥 Mes supervisions
+                <i className="fa-solid fa-users"></i> Mes supervisions
               </h3>
             </div>
             {stats?.totalEtudiants === 0 ? (
               <div className="mb-6 rounded-2xl overflow-hidden border border-purple-100 shadow-sm">
                 <div className="bg-gradient-to-r from-purple-600 to-purple-400 px-6 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl">🎓</span>
+                    <span className="text-3xl"><i className="fa-solid fa-graduation-cap"></i></span>
                     <div>
                       <p className="text-white font-bold text-lg">Aucun étudiant supervisé</p>
                       <p className="text-purple-100 text-sm">Commencez à suivre vos premiers étudiants</p>
@@ -279,21 +279,21 @@ export default function DashboardSuperviseur() {
                 </div>
                 <div className="bg-white px-6 py-4 grid grid-cols-3 gap-4">
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-50">
-                    <span className="text-2xl">👁️</span>
+                    <span className="text-2xl"><i className="fa-solid fa-eye"></i></span>
                     <div>
                       <p className="text-xs text-gray-500">À superviser</p>
                       <p className="font-bold text-gray-800">{stats?.totalEtudiantsInscrits ?? 0} étudiants</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50">
-                    <span className="text-2xl">📋</span>
+                    <span className="text-2xl"><i className="fa-solid fa-file-lines"></i></span>
                     <div>
                       <p className="text-xs text-gray-500">Candidatures total</p>
                       <p className="font-bold text-gray-800">{stats?.totalCandidaturesInscrits ?? 0}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-green-50">
-                    <span className="text-2xl">✅</span>
+                    <span className="text-2xl"><i className="fa-solid fa-circle-check text-green-600"></i></span>
                     <div>
                       <p className="text-xs text-gray-500">Taux insertion global</p>
                       <p className="font-bold text-green-700">{stats?.tauxInsertionGlobal ?? 0}%</p>
@@ -447,7 +447,7 @@ export default function DashboardSuperviseur() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link to="/superviseur/etudiants"
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">👥</div>
+                <div className="text-3xl mb-3"><i className="fa-solid fa-users"></i></div>
                 <h3 className="font-semibold text-gray-800 mb-1">Mes étudiants</h3>
                 <p className="text-gray-500 text-sm">Suivez le parcours d'insertion de vos étudiants</p>
                 <div className="flex flex-wrap gap-2 mt-2">
@@ -463,7 +463,7 @@ export default function DashboardSuperviseur() {
               </Link>
               <Link to="/offres"
                 className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:border-green-300 hover:shadow-md transition block">
-                <div className="text-3xl mb-3">📋</div>
+                <div className="text-3xl mb-3"><i className="fa-solid fa-file-lines"></i></div>
                 <h3 className="font-semibold text-gray-800 mb-1">Offres disponibles</h3>
                 <p className="text-gray-500 text-sm">Consultez les offres de stage et d'emploi</p>
               </Link>

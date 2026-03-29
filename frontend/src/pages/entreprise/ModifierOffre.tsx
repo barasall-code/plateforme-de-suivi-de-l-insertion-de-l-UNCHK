@@ -125,7 +125,7 @@ export default function ModifierOffre() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Section 1 - Informations générales */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">📋 Informations générales</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-file-lines"></i> Informations générales</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Titre du poste</label>
               <input type="text" name="titre" value={form.titre} onChange={handleChange}
@@ -182,7 +182,7 @@ export default function ModifierOffre() {
 
           {/* Section 2 - Description */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">📝 Description du poste</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-pen-to-square"></i> Description du poste</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Description générale</label>
               <textarea name="description" value={form.description} onChange={handleChange}
@@ -194,7 +194,7 @@ export default function ModifierOffre() {
 
           {/* Section 3 - Compétences */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3">🎯 Compétences & Conditions</h3>
+            <h3 className="font-semibold text-gray-800 text-lg border-b pb-3"><i className="fa-solid fa-bullseye"></i> Compétences & Conditions</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Niveau d'étude requis</label>
               <select name="niveauRequis" value={form.niveauRequis} onChange={handleChange}

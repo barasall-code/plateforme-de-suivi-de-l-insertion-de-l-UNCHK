@@ -114,7 +114,7 @@ export default function GestionOffres() {
                 ? 'bg-yellow-500 text-white shadow-sm'
                 : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
             }`}>
-            ⏳ À valider
+            <i className="fa-solid fa-hourglass-half text-gray-400"></i> À valider
             {offresEnAttente.length > 0 && (
               <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                 tab === 'attente' ? 'bg-white text-yellow-600' : 'bg-yellow-100 text-yellow-700'
@@ -130,7 +130,7 @@ export default function GestionOffres() {
                 ? 'bg-green-600 text-white shadow-sm'
                 : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
             }`}>
-            ✅ Publiées ({offresPubliees.length})
+            <i className="fa-solid fa-circle-check text-green-600"></i> Publiées ({offresPubliees.length})
           </button>
         </div>
 
@@ -139,7 +139,7 @@ export default function GestionOffres() {
         ) : tab === 'attente' ? (
           offresEnAttente.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-              <p className="text-5xl mb-4">✅</p>
+              <p className="text-5xl mb-4"><i className="fa-solid fa-circle-check text-green-600"></i></p>
               <p className="text-gray-500 font-medium">Aucune offre en attente de validation.</p>
               <p className="text-gray-400 text-sm mt-1">Toutes les offres soumises ont été traitées.</p>
             </div>
@@ -156,7 +156,7 @@ export default function GestionOffres() {
                         </span>
                       </div>
                       <p className="text-gray-500 text-sm">
-                        🏢 {offre.entreprise.nomEntreprise} • 📍 {offre.localisation} • 📁 {offre.domaine}
+                        <i className="fa-solid fa-building"></i> {offre.entreprise.nomEntreprise} • <i className="fa-solid fa-location-dot"></i> {offre.localisation} • 📁 {offre.domaine}
                       </p>
                     </div>
                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ml-4 ${typeColors[offre.typeOffre] || 'bg-gray-100 text-gray-600'}`}>
@@ -211,7 +211,7 @@ export default function GestionOffres() {
                         </span>
                       </div>
                       <p className="text-gray-500 text-sm">
-                        🏢 {offre.entreprise.nomEntreprise} • 📍 {offre.localisation}
+                        <i className="fa-solid fa-building"></i> {offre.entreprise.nomEntreprise} • <i className="fa-solid fa-location-dot"></i> {offre.localisation}
                       </p>
                     </div>
                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ml-4 ${typeColors[offre.typeOffre] || 'bg-gray-100 text-gray-600'}`}>

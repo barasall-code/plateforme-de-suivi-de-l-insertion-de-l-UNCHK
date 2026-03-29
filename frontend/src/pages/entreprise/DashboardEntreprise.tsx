@@ -71,9 +71,9 @@ export default function DashboardEntreprise() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/entreprise/creer-offre', label: '➕ Créer offre' },
-              { to: '/entreprise/candidatures', label: '📋 Candidatures' },
-              { to: '/entreprise/profil', label: '🏢 Mon profil' },
+              { to: '/entreprise/creer-offre', label: '<><i className="fa-solid fa-plus mr-1"></i> Créer offre</>' },
+              { to: '/entreprise/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
+              { to: '/entreprise/profil', label: '<><i className="fa-solid fa-building mr-1"></i> Mon profil</>' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
@@ -96,7 +96,7 @@ export default function DashboardEntreprise() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
               <span className="hidden sm:block">Déconnexion</span>
             </button>
           </div>
@@ -172,7 +172,7 @@ export default function DashboardEntreprise() {
                       </button>
                     )}
                     {offre.statut === 'soumis' && (
-                      <span className="text-xs text-yellow-600 font-medium">⏳ En attente de validation</span>
+                      <span className="text-xs text-yellow-600 font-medium"><i className="fa-solid fa-hourglass-half text-gray-400"></i> En attente de validation</span>
                     )}
                     {offre.statut !== 'publie' && offre.statut !== 'ferme' && (
                       <Link to={`/entreprise/offres/${offre.id}/modifier`}

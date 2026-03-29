@@ -85,7 +85,7 @@ export default function ProfilCandidat() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-10 w-auto" /></Link>
           <button onClick={() => window.history.back()} className="text-sm text-gray-600 hover:text-green-700">
-            ← Retour aux candidatures
+            <><i className="fa-solid fa-arrow-left mr-1"></i> Retour</> aux candidatures
           </button>
         </div>
       </nav>
@@ -133,7 +133,7 @@ export default function ProfilCandidat() {
             {etudiant.cvUrl && (
               <a href={getFileUrl(etudiant.cvUrl)} target="_blank" rel="noopener noreferrer"
                 className="bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-                📄 Voir CV
+                <><i className="fa-solid fa-file-pdf mr-1"></i> Voir CV</>
               </a>
             )}
             {etudiant.linkedinUrl && (
@@ -147,7 +147,7 @@ export default function ProfilCandidat() {
               disabled={contactLoading}
               className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-2"
             >
-              {contactLoading ? '⏳ Connexion...' : '💬 Contacter'}
+              {contactLoading ? '<i className="fa-solid fa-hourglass-half text-gray-400"></i> Connexion...' : '<><i className="fa-solid fa-comment-dots mr-1"></i> Contacter</>'}
             </button>
           </div>
         </div>

@@ -127,11 +127,11 @@ useEffect(() => {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/candidatures', label: '📋 Candidatures' },
-              { to: '/competences', label: '⭐ Compétences' },
-              { to: '/profil', label: '👤 Profil' },
-              { to: '/messagerie', label: '💬 Messages' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
+              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
+              { to: '/profil', label: '<><i className="fa-solid fa-user mr-1"></i> Profil</>' },
+              { to: '/messagerie', label: '<><i className="fa-solid fa-comments mr-1"></i> Messages</>' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
@@ -147,7 +147,7 @@ useEffect(() => {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
             </button>
           </div>
         </div>
@@ -167,7 +167,7 @@ useEffect(() => {
               <div className="text-center py-8 text-gray-400 text-sm">Chargement...</div>
             ) : conversations.length === 0 ? (
               <div className="text-center py-8 px-4">
-                <p className="text-3xl mb-2">💬</p>
+                <p className="text-3xl mb-2"><i className="fa-solid fa-comments"></i></p>
                 <p className="text-gray-500 text-sm">Aucune conversation</p>
                 {user?.role === 'etudiant' && (
                   <p className="text-gray-400 text-xs mt-2">Postulez à une offre pour démarrer une conversation</p>
@@ -198,7 +198,7 @@ useEffect(() => {
           {!convActive ? (
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center">
-                <p className="text-5xl mb-4">💬</p>
+                <p className="text-5xl mb-4"><i className="fa-solid fa-comments"></i></p>
                 <p className="text-gray-500 font-medium">Sélectionnez une conversation</p>
                 <p className="text-gray-400 text-sm mt-1">ou démarrez-en une nouvelle</p>
               </div>
@@ -224,7 +224,7 @@ useEffect(() => {
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-3xl mb-2">👋</p>
+                    <p className="text-3xl mb-2"><i className="fa-solid fa-hand-wave"></i></p>
                     <p className="text-gray-400 text-sm">Démarrez la conversation !</p>
                   </div>
                 ) : (
@@ -259,7 +259,7 @@ useEffect(() => {
                     className="flex-1 border border-gray-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm" />
                   <button type="submit" disabled={isSending || !contenu.trim()}
                     className="bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white px-5 py-2.5 rounded-xl transition font-medium text-sm flex items-center gap-2">
-                    {isSending ? '⏳' : '📤'} Envoyer
+                    {isSending ? '<i className="fa-solid fa-hourglass-half text-gray-400"></i>' : '<i className="fa-solid fa-paper-plane"></i>'} Envoyer
                   </button>
                 </form>
               </div>

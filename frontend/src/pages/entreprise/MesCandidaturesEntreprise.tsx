@@ -121,9 +121,9 @@ export default function MesCandidaturesEntreprise() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/entreprise/dashboard', label: '🏠 Dashboard' },
-              { to: '/entreprise/creer-offre', label: '➕ Créer offre' },
-              { to: '/entreprise/profil', label: '🏢 Mon profil' },
+              { to: '/entreprise/dashboard', label: '<i className="fa-solid fa-house"></i> Dashboard' },
+              { to: '/entreprise/creer-offre', label: '<><i className="fa-solid fa-plus mr-1"></i> Créer offre</>' },
+              { to: '/entreprise/profil', label: '<><i className="fa-solid fa-building mr-1"></i> Mon profil</>' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
@@ -205,7 +205,7 @@ export default function MesCandidaturesEntreprise() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : liste.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"><i className="fa-solid fa-inbox"></i></p>
             <p className="text-gray-500">
               {candidatures.length === 0
                 ? 'Aucune candidature reçue pour le moment.'
@@ -277,28 +277,28 @@ export default function MesCandidaturesEntreprise() {
                     {c.cvUrl && (
                       <a href={getFileUrl(c.cvUrl)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1 rounded-lg transition">
-                        📄 CV
+                        <i className="fa-solid fa-file-pdf"></i> CV
                       </a>
                     )}
                     {c.documentsComplementaires?.lettre && (
                       <a href={getFileUrl(c.documentsComplementaires.lettre)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-indigo-600 hover:text-indigo-800 border border-indigo-200 px-3 py-1 rounded-lg transition">
-                        ✉ Lettre
+                        <i className="fa-solid fa-envelope"></i> Lettre
                       </a>
                     )}
                     {c.documentsComplementaires?.diplome && (
                       <a href={getFileUrl(c.documentsComplementaires.diplome)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-orange-600 hover:text-orange-800 border border-orange-200 px-3 py-1 rounded-lg transition">
-                        🎓 Diplôme
+                        <i className="fa-solid fa-graduation-cap"></i> Diplôme
                       </a>
                     )}
                     <Link to={`/entreprise/candidatures/${c.id}/profil`}
                       className="text-xs text-purple-600 hover:text-purple-800 border border-purple-200 px-3 py-1 rounded-lg transition">
-                      👤 Profil
+                      <><i className="fa-solid fa-user mr-1"></i> Profil</>
                     </Link>
                     <button onClick={() => ouvrirModal(c, 'gerer')}
                       className="text-xs text-gray-600 hover:text-gray-800 border border-gray-200 px-3 py-1 rounded-lg transition">
-                      ⚙ Gérer
+                      <i className="fa-solid fa-gear"></i> Gérer
                     </button>
                     {c.statut !== 'acceptee' && c.statut !== 'refusee' && (
                       <>
@@ -337,9 +337,9 @@ export default function MesCandidaturesEntreprise() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
             <h3 className="text-lg font-bold text-gray-800 mb-1">
-              {modal.action === 'acceptee' ? '✅ Accepter la candidature' :
-               modal.action === 'refusee'  ? '❌ Rejeter la candidature'  :
-               '⚙ Gérer la candidature'}
+              {modal.action === 'acceptee' ? '<i className="fa-solid fa-circle-check text-green-600"></i> Accepter la candidature' :
+               modal.action === 'refusee'  ? '<i className="fa-solid fa-circle-xmark text-red-500"></i> Rejeter la candidature'  :
+               '<i className="fa-solid fa-gear"></i> Gérer la candidature'}
             </h3>
             <p className="text-sm text-gray-500 mb-4">
               {modal.candidature.etudiant.prenom} {modal.candidature.etudiant.nom} —{' '}

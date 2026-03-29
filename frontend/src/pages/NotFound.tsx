@@ -15,7 +15,7 @@ export default function NotFound() {
       </div>
       <div className="flex flex-col sm:flex-row gap-4">
         <Link to="/" className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-xl transition text-center">
-          ← Retour à l'accueil
+          <><i className="fa-solid fa-arrow-left mr-1"></i> Retour</> à l'accueil
         </Link>
         <Link to="/login" className="border border-green-700 text-green-400 hover:bg-green-900/30 font-semibold px-8 py-3 rounded-xl transition text-center">
           Se connecter

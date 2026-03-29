@@ -25,7 +25,7 @@ export default function PolitiqueConfidentialite() {
         {/* En-tête */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">🔒</span>
+            <span className="text-3xl"><i className="fa-solid fa-lock"></i></span>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Politique de Confidentialité</h1>
               <p className="text-gray-500 text-sm mt-1">Dernière mise à jour : 1er janvier 2026</p>
@@ -116,7 +116,7 @@ export default function PolitiqueConfidentialite() {
             <div className="space-y-4">
               {[
                 {
-                  role: '🎓 Étudiants',
+                  role: '<i className="fa-solid fa-graduation-cap"></i> Étudiants',
                   color: 'blue',
                   items: [
                     'Informations d\'identité : nom, prénom, date de naissance, numéro étudiant',
@@ -128,7 +128,7 @@ export default function PolitiqueConfidentialite() {
                   ]
                 },
                 {
-                  role: '🏢 Entreprises',
+                  role: '<i className="fa-solid fa-building"></i> Entreprises',
                   color: 'green',
                   items: [
                     'Informations d\'identification : raison sociale, SIRET/NINEA',
@@ -138,7 +138,7 @@ export default function PolitiqueConfidentialite() {
                   ]
                 },
                 {
-                  role: '👁️ Superviseurs',
+                  role: '<i className="fa-solid fa-eye"></i> Superviseurs',
                   color: 'purple',
                   items: [
                     'Identité : nom, prénom, département de rattachement',
@@ -173,12 +173,12 @@ export default function PolitiqueConfidentialite() {
             </p>
             <div className="space-y-3">
               {[
-                { icon: '✅', title: 'Gestion des comptes utilisateurs', desc: 'Création, authentification, sécurisation et administration des comptes sur la plateforme.' },
-                { icon: '📋', title: 'Mise en relation stage/emploi', desc: 'Permettre aux étudiants de candidater aux offres et aux entreprises de recevoir les candidatures.' },
-                { icon: '📊', title: 'Suivi de l\'insertion professionnelle', desc: 'Produire des statistiques agrégées et anonymisées sur l\'insertion des diplômés de l\'UNCHK.' },
-                { icon: '🔔', title: 'Notifications et communications', desc: 'Envoyer des alertes relatives à l\'état des candidatures, des offres et des activités de la plateforme.' },
-                { icon: '👁️', title: 'Supervision pédagogique', desc: 'Permettre aux superviseurs de suivre le parcours d\'insertion de leurs étudiants.' },
-                { icon: '⚙️', title: 'Administration et sécurité', desc: 'Modération de la plateforme, détection des fraudes et audit de sécurité.' },
+                { icon: '<i className="fa-solid fa-circle-check text-green-600"></i>', title: 'Gestion des comptes utilisateurs', desc: 'Création, authentification, sécurisation et administration des comptes sur la plateforme.' },
+                { icon: '<i className="fa-solid fa-file-lines"></i>', title: 'Mise en relation stage/emploi', desc: 'Permettre aux étudiants de candidater aux offres et aux entreprises de recevoir les candidatures.' },
+                { icon: '<i className="fa-solid fa-chart-bar"></i>', title: 'Suivi de l\'insertion professionnelle', desc: 'Produire des statistiques agrégées et anonymisées sur l\'insertion des diplômés de l\'UNCHK.' },
+                { icon: '<i className="fa-solid fa-bell"></i>', title: 'Notifications et communications', desc: 'Envoyer des alertes relatives à l\'état des candidatures, des offres et des activités de la plateforme.' },
+                { icon: '<i className="fa-solid fa-eye"></i>', title: 'Supervision pédagogique', desc: 'Permettre aux superviseurs de suivre le parcours d\'insertion de leurs étudiants.' },
+                { icon: '<i className="fa-solid fa-gear"></i>️', title: 'Administration et sécurité', desc: 'Modération de la plateforme, détection des fraudes et audit de sécurité.' },
               ].map(f => (
                 <div key={f.title} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                   <span className="text-xl flex-shrink-0">{f.icon}</span>
@@ -280,7 +280,7 @@ export default function PolitiqueConfidentialite() {
                 { dest: 'Prestataires techniques (hébergement)', access: 'Accès technique encadré par des contrats de confidentialité' },
               ].map(d => (
                 <div key={d.dest} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <span className="text-gray-400 mt-1 flex-shrink-0">👤</span>
+                  <span className="text-gray-400 mt-1 flex-shrink-0"><i className="fa-solid fa-user"></i></span>
                   <div>
                     <p className="font-medium text-gray-800 text-sm">{d.dest}</p>
                     <p className="text-gray-500 text-xs mt-0.5">{d.access}</p>
@@ -290,7 +290,7 @@ export default function PolitiqueConfidentialite() {
             </div>
             <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-xl p-4">
               <p className="text-yellow-800 text-sm">
-                <strong>⚠️ Transferts internationaux :</strong> Aucun transfert de données personnelles n'est effectué vers des pays
+                <strong><i className="fa-solid fa-triangle-exclamation text-yellow-500"></i> Transferts internationaux :</strong> Aucun transfert de données personnelles n'est effectué vers des pays
                 tiers sans garanties adéquates conformément à l'article 47 de la loi 2008-12.
               </p>
             </div>
@@ -308,15 +308,15 @@ export default function PolitiqueConfidentialite() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 {
-                  icon: '👁️', right: 'Droit d\'accès (art. 43)',
+                  icon: '<i className="fa-solid fa-eye"></i>', right: 'Droit d\'accès (art. 43)',
                   desc: 'Vous pouvez obtenir confirmation que des données vous concernant sont traitées et en obtenir une copie.'
                 },
                 {
-                  icon: '✏️', right: 'Droit de rectification (art. 44)',
+                  icon: '<i className="fa-solid fa-pen"></i>', right: 'Droit de rectification (art. 44)',
                   desc: 'Vous pouvez demander la correction de vos données inexactes ou incomplètes depuis votre profil.'
                 },
                 {
-                  icon: '🗑️', right: 'Droit à l\'effacement (art. 45)',
+                  icon: '<i className="fa-solid fa-trash"></i>', right: 'Droit à l\'effacement (art. 45)',
                   desc: 'Vous pouvez demander la suppression de vos données dans les cas prévus par la loi.'
                 },
                 {
@@ -324,7 +324,7 @@ export default function PolitiqueConfidentialite() {
                   desc: 'Vous pouvez vous opposer au traitement de vos données pour des motifs légitimes.'
                 },
                 {
-                  icon: '🔒', right: 'Droit à la limitation (art. 47)',
+                  icon: '<i className="fa-solid fa-lock"></i>', right: 'Droit à la limitation (art. 47)',
                   desc: 'Vous pouvez demander la suspension temporaire du traitement de vos données.'
                 },
                 {
@@ -362,12 +362,12 @@ export default function PolitiqueConfidentialite() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 { icon: '🔐', measure: 'Chiffrement des mots de passe', detail: 'Hachage bcrypt (12 rounds) — aucun mot de passe en clair' },
-                { icon: '🛡️', measure: 'Authentification JWT sécurisée', detail: 'Tokens signés, expiration automatique, refresh tokens rotatifs' },
-                { icon: '🌐', measure: 'Transport chiffré (HTTPS/TLS)', detail: 'Toutes les communications sont chiffrées en transit' },
+                { icon: '<i className="fa-solid fa-shield"></i>️', measure: 'Authentification JWT sécurisée', detail: 'Tokens signés, expiration automatique, refresh tokens rotatifs' },
+                { icon: '<i className="fa-solid fa-globe"></i>', measure: 'Transport chiffré (HTTPS/TLS)', detail: 'Toutes les communications sont chiffrées en transit' },
                 { icon: '🏗️', measure: 'Headers de sécurité HTTP', detail: 'Helmet.js : CSP, HSTS, X-Frame-Options, XSS Protection' },
                 { icon: '🚧', measure: 'Protection CORS stricte', detail: 'Origines autorisées explicitement configurées' },
-                { icon: '📋', measure: 'Journaux d\'audit', detail: 'Enregistrement des actions sensibles pour détection d\'incidents' },
-                { icon: '🔍', measure: 'Validation des entrées', detail: 'Zod schema validation côté serveur — protection injection' },
+                { icon: '<i className="fa-solid fa-file-lines"></i>', measure: 'Journaux d\'audit', detail: 'Enregistrement des actions sensibles pour détection d\'incidents' },
+                { icon: '<i className="fa-solid fa-magnifying-glass"></i>', measure: 'Validation des entrées', detail: 'Zod schema validation côté serveur — protection injection' },
                 { icon: '⏱️', measure: 'Rate limiting', detail: 'Limitation du nombre de requêtes pour prévenir les attaques' },
               ].map(m => (
                 <div key={m.measure} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
@@ -460,7 +460,7 @@ export default function PolitiqueConfidentialite() {
                 <div className="space-y-2 text-sm text-gray-600">
                   <p className="font-medium text-gray-700">Commission de Protection des Données Personnelles (CDP)</p>
                   <p>📧 <a href="mailto:cdp@justice.sn" className="text-blue-700 hover:underline">cdp@justice.sn</a></p>
-                  <p>🌐 <a href="https://cdp.sn" className="text-blue-700 hover:underline" target="_blank" rel="noopener noreferrer">cdp.sn</a></p>
+                  <p><i className="fa-solid fa-globe"></i> <a href="https://cdp.sn" className="text-blue-700 hover:underline" target="_blank" rel="noopener noreferrer">cdp.sn</a></p>
                   <p className="text-gray-500 text-xs mt-2">
                     Vous avez le droit de déposer une plainte auprès de la CDP si vous estimez que vos droits ne sont pas respectés.
                   </p>
@@ -476,7 +476,7 @@ export default function PolitiqueConfidentialite() {
             © 2026 Université Numérique Cheikh Hamidou Kane — Politique de confidentialité conforme à la Loi n° 2008-12
           </p>
           <div className="flex justify-center gap-6 mt-3">
-            <Link to="/" className="text-sm text-green-700 hover:underline">← Retour à l'accueil</Link>
+            <Link to="/" className="text-sm text-green-700 hover:underline"><><i className="fa-solid fa-arrow-left mr-1"></i> Retour</> à l'accueil</Link>
             <Link to="/login" className="text-sm text-green-700 hover:underline">Se connecter</Link>
           </div>
         </div>

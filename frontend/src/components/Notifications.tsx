@@ -72,7 +72,7 @@ export default function Notifications() {
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-600 hover:text-green-700 transition"
       >
-        🔔
+        <i className="fa-solid fa-bell"></i>
         {nonLues > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
             {nonLues > 9 ? '9+' : nonLues}

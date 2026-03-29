@@ -122,7 +122,7 @@ export default function BoutonExport({ onClick, label = 'Exporter PDF', small = 
   return (
     <button onClick={onClick}
       className={`flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition ${small ? 'px-3 py-1.5 text-xs' : 'px-5 py-2.5 text-sm'}`}>
-      📄 {label}
+      <i className="fa-solid fa-file-pdf"></i> {label}
     </button>
   );
 }

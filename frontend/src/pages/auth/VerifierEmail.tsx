@@ -19,8 +19,8 @@ export default function VerifierEmail() {
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
         <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: bg }}>
           {statut === 'chargement' && <div className="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />}
-          {statut === 'succes' && <span className="text-3xl">✅</span>}
-          {statut === 'erreur' && <span className="text-3xl">❌</span>}
+          {statut === 'succes' && <span className="text-3xl"><i className="fa-solid fa-circle-check text-green-600"></i></span>}
+          {statut === 'erreur' && <span className="text-3xl"><i className="fa-solid fa-circle-xmark text-red-500"></i></span>}
         </div>
         {statut === 'chargement' && <p className="text-gray-500">Vérification en cours...</p>}
         {statut === 'succes' && <><h2 className="text-xl font-bold text-green-700 mb-2">Email vérifié !</h2><p className="text-gray-600">Redirection en cours...</p></>}

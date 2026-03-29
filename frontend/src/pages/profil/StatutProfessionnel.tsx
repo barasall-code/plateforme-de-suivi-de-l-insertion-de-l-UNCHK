@@ -159,12 +159,12 @@ export default function StatutProfessionnel() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/candidatures', label: '📋 Candidatures' },
-              { to: '/competences', label: '⭐ Compétences' },
-              { to: '/profil', label: '👤 Profil' },
-              { to: '/messagerie', label: '💬 Messages' },
-              { to: '/statut-professionnel', label: '📊 Mon statut' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
+              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
+              { to: '/profil', label: '<><i className="fa-solid fa-user mr-1"></i> Profil</>' },
+              { to: '/messagerie', label: '<><i className="fa-solid fa-comments mr-1"></i> Messages</>' },
+              { to: '/statut-professionnel', label: '<i className="fa-solid fa-chart-bar"></i> Mon statut' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
@@ -180,7 +180,7 @@ export default function StatutProfessionnel() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@ export default function StatutProfessionnel() {
         {showForm && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
             <h3 className="font-semibold text-gray-800 mb-6">
-              {editingId ? '✏️ Modifier la déclaration' : '📝 Nouvelle déclaration'}
+              {editingId ? '<><i className="fa-solid fa-pen mr-1"></i> Modifier</> la déclaration' : '<i className="fa-solid fa-pen-to-square"></i> Nouvelle déclaration'}
             </h3>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
@@ -313,7 +313,7 @@ export default function StatutProfessionnel() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : statuts.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-            <p className="text-4xl mb-4">💼</p>
+            <p className="text-4xl mb-4"><i className="fa-solid fa-briefcase"></i></p>
             <p className="text-gray-500">Aucune déclaration enregistrée.</p>
             <p className="text-sm text-gray-400 mt-1">Déclarez votre situation pour que votre superviseur puisse suivre votre insertion.</p>
           </div>

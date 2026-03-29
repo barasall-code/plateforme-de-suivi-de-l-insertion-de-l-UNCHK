@@ -83,7 +83,7 @@ export default function ProfilSuperviseur() {
           {!isEditing && (
             <button onClick={() => setIsEditing(true)}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-              ✏️ Modifier
+              <><i className="fa-solid fa-pen mr-1"></i> Modifier</>
             </button>
           )}
         </div>

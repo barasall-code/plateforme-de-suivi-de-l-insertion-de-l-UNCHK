@@ -51,9 +51,9 @@ export default function Login() {
 
         <div className="space-y-4">
           {[
-            { icon: '🎓', label: 'Étudiants', desc: 'Trouvez des offres et suivez vos candidatures', to: '/register?type=etudiant' },
+            { icon: '<i className="fa-solid fa-graduation-cap"></i>', label: 'Étudiants', desc: 'Trouvez des offres et suivez vos candidatures', to: '/register?type=etudiant' },
             { icon: '��', label: 'Entreprises', desc: 'Publiez vos offres et recrutez les meilleurs talents', to: '/register?type=entreprise' },
-            { icon: '👁️', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants', to: '/register?type=superviseur' },
+            { icon: '<i className="fa-solid fa-eye"></i>', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants', to: '/register?type=superviseur' },
           ].map((item) => (
             <Link
               key={item.label}
@@ -82,12 +82,12 @@ export default function Login() {
             <img src="/logo_unchk.png" alt="UNCHK" className="h-10 w-auto" />
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Bienvenue 👋</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Bienvenue <i className="fa-solid fa-hand-wave"></i></h2>
           <p className="text-gray-500 mb-8">Connectez-vous à votre espace</p>
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 flex items-center gap-2">
-              <span>⚠️</span> {error}
+              <span><i className="fa-solid fa-triangle-exclamation text-yellow-500"></i></span> {error}
             </div>
           )}
 
@@ -123,7 +123,7 @@ export default function Login() {
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-                  {showPassword ? '🙈' : '👁️'}
+                  {showPassword ? '🙈' : '<i className="fa-solid fa-eye"></i>'}
                 </button>
               </div>
             </div>

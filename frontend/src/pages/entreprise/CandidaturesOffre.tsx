@@ -165,7 +165,7 @@ export default function CandidaturesOffre() {
           <div className="text-center py-12 text-gray-500">Chargement...</div>
         ) : liste.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-            <p className="text-4xl mb-3">📭</p>
+            <p className="text-4xl mb-3"><i className="fa-solid fa-inbox"></i></p>
             <p className="text-gray-500">
               {filtreStatut ? `Aucune candidature avec le statut "${STATUTS[filtreStatut]?.label}".` : 'Aucune candidature reçue pour cette offre.'}
             </p>
@@ -218,28 +218,28 @@ export default function CandidaturesOffre() {
                     {c.cvUrl && (
                       <a href={getFileUrl(c.cvUrl)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-blue-600 hover:text-blue-800 border border-blue-200 px-3 py-1 rounded-lg transition">
-                        📄 CV
+                        <i className="fa-solid fa-file-pdf"></i> CV
                       </a>
                     )}
                     {c.documentsComplementaires?.lettre && (
                       <a href={getFileUrl(c.documentsComplementaires.lettre)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-indigo-600 hover:text-indigo-800 border border-indigo-200 px-3 py-1 rounded-lg transition">
-                        ✉ Lettre
+                        <i className="fa-solid fa-envelope"></i> Lettre
                       </a>
                     )}
                     {c.documentsComplementaires?.diplome && (
                       <a href={getFileUrl(c.documentsComplementaires.diplome)} target="_blank" rel="noopener noreferrer"
                         className="text-xs text-orange-600 hover:text-orange-800 border border-orange-200 px-3 py-1 rounded-lg transition">
-                        🎓 Diplôme
+                        <i className="fa-solid fa-graduation-cap"></i> Diplôme
                       </a>
                     )}
                     <Link to={`/entreprise/candidatures/${c.id}/profil`}
                       className="text-xs text-purple-600 hover:text-purple-800 border border-purple-200 px-3 py-1 rounded-lg transition">
-                      👤 Profil
+                      <><i className="fa-solid fa-user mr-1"></i> Profil</>
                     </Link>
                     <button onClick={() => ouvrirModal(c, 'gerer')}
                       className="text-xs text-gray-600 hover:text-gray-800 border border-gray-200 px-3 py-1 rounded-lg transition">
-                      ⚙ Gérer
+                      <i className="fa-solid fa-gear"></i> Gérer
                     </button>
 
                     {/* Actions principales */}
@@ -288,7 +288,7 @@ export default function CandidaturesOffre() {
               <h3 className="font-semibold text-gray-800">
                 {modal.action === 'acceptee' && '✓ Accepter la candidature'}
                 {modal.action === 'refusee'  && '✕ Rejeter la candidature'}
-                {modal.action === 'gerer'    && '⚙ Gérer la candidature'}
+                {modal.action === 'gerer'    && '<i className="fa-solid fa-gear"></i> Gérer la candidature'}
               </h3>
               <p className="text-sm text-gray-500 mt-0.5">
                 {modal.candidature.etudiant.prenom} {modal.candidature.etudiant.nom} —{' '}

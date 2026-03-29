@@ -9,7 +9,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
     if (this.state.error) {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-8 text-center">
-          <div className="text-5xl mb-4">⚠️</div>
+          <div className="text-5xl mb-4"><i className="fa-solid fa-triangle-exclamation text-yellow-500"></i></div>
           <h1 className="text-xl font-bold text-gray-800 mb-2">Une erreur est survenue</h1>
           <p className="text-gray-500 text-sm mb-6 max-w-md">{(this.state.error as Error).message}</p>
           <button onClick={() => { this.setState({ error: null }); window.location.reload(); }}

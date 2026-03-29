@@ -127,10 +127,10 @@ export default function MonProfil() {
   };
 
   const getFileIcon = (url: string) => {
-    if (!url) return '📄';
+    if (!url) return '<i className="fa-solid fa-file-pdf"></i>';
     if (url.endsWith('.pdf')) return '📕';
     if (url.endsWith('.doc') || url.endsWith('.docx')) return '📘';
-    return '📄';
+    return '<i className="fa-solid fa-file-pdf"></i>';
   };
 
   const getFileName = (url: string) => {
@@ -149,12 +149,12 @@ export default function MonProfil() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '💼 Offres' },
-              { to: '/candidatures', label: '📋 Candidatures' },
-              { to: '/competences', label: '⭐ Compétences' },
-              { to: '/profil', label: '👤 Profil' },
-              { to: '/messagerie', label: '💬 Messages' },
-              { to: '/statut-professionnel', label: '📊 Mon statut' },
+              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
+              { to: '/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
+              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
+              { to: '/profil', label: '<><i className="fa-solid fa-user mr-1"></i> Profil</>' },
+              { to: '/messagerie', label: '<><i className="fa-solid fa-comments mr-1"></i> Messages</>' },
+              { to: '/statut-professionnel', label: '<i className="fa-solid fa-chart-bar"></i> Mon statut' },
             ].map(({ to, label }) => (
               <Link key={to} to={to}
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
@@ -170,7 +170,7 @@ export default function MonProfil() {
             </div>
             <button onClick={logout}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-500 hover:text-red-700 hover:bg-red-50 transition-all">
-              <span>↗</span>
+              <span><i className="fa-solid fa-arrow-up-right-from-square"></i></span>
             </button>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function MonProfil() {
           {!isEditing && (
             <button onClick={() => setIsEditing(true)}
               className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2.5 rounded-lg transition">
-              ✏️ Modifier
+              <><i className="fa-solid fa-pen mr-1"></i> Modifier</>
             </button>
           )}
         </div>
@@ -211,7 +211,7 @@ export default function MonProfil() {
                 </div>
               )}
               <label className="absolute -bottom-1 -right-1 bg-green-600 hover:bg-green-700 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer transition text-xs">
-                {uploadingPhoto ? '⏳' : '📷'}
+                {uploadingPhoto ? '<i className="fa-solid fa-hourglass-half text-gray-400"></i>' : '📷'}
                 <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
               </label>
             </div>
@@ -237,7 +237,7 @@ export default function MonProfil() {
             {/* CV */}
             <div className={`border-2 rounded-xl p-4 ${profil?.cvUrl ? 'border-green-300 bg-green-50' : 'border-dashed border-gray-300'}`}>
               <div className="text-center mb-3">
-                <span className="text-3xl">{profil?.cvUrl ? getFileIcon(profil.cvUrl) : '📄'}</span>
+                <span className="text-3xl">{profil?.cvUrl ? getFileIcon(profil.cvUrl) : '<i className="fa-solid fa-file-pdf"></i>'}</span>
                 <p className="text-sm font-medium text-gray-700 mt-1">CV</p>
               </div>
               {profil?.cvUrl ? (
@@ -247,16 +247,16 @@ export default function MonProfil() {
                   </p>
                   <a href={getFileUrl(profil.cvUrl)} target="_blank" rel="noopener noreferrer"
                     className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-1.5 rounded-lg transition">
-                    👁️ Voir le CV
+                    <i className="fa-solid fa-eye"></i> Voir le CV
                   </a>
                   <label className="block w-full text-center border border-gray-300 text-gray-600 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50 cursor-pointer transition">
-                    🔄 Remplacer
+                    <i className="fa-solid fa-rotate"></i> Remplacer
                     <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadCv} className="hidden" />
                   </label>
                 </div>
               ) : (
                 <label className="block w-full text-center bg-green-600 hover:bg-green-700 text-white text-xs font-medium py-2 rounded-lg cursor-pointer transition">
-                  {uploadingCv ? '⏳ Upload...' : '⬆️ Charger CV'}
+                  {uploadingCv ? '<i className="fa-solid fa-hourglass-half text-gray-400"></i> Upload...' : '⬆️ Charger CV'}
                   <input type="file" accept=".pdf,.doc,.docx" onChange={handleUploadCv} className="hidden" />
                 </label>
               )}
@@ -265,7 +265,7 @@ export default function MonProfil() {
             {/* Lettre de motivation */}
             <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
               <div className="text-center mb-3">
-                <span className="text-3xl">✉️</span>
+                <span className="text-3xl"><i className="fa-solid fa-envelope"></i></span>
                 <p className="text-sm font-medium text-gray-700 mt-1">Lettre de motivation</p>
               </div>
               <p className="text-xs text-gray-400 text-center mb-3">Jointe lors des candidatures</p>
@@ -277,7 +277,7 @@ export default function MonProfil() {
             {/* Diplôme */}
             <div className="border-2 border-dashed border-gray-300 rounded-xl p-4">
               <div className="text-center mb-3">
-                <span className="text-3xl">🎓</span>
+                <span className="text-3xl"><i className="fa-solid fa-graduation-cap"></i></span>
                 <p className="text-sm font-medium text-gray-700 mt-1">Diplôme</p>
               </div>
               <p className="text-xs text-gray-400 text-center mb-3">Joint lors des candidatures</p>
@@ -300,16 +300,16 @@ export default function MonProfil() {
                 <div className="space-y-2">
                   <a href={getFileUrl(profil.photoUrl)} target="_blank" rel="noopener noreferrer"
                     className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium py-1.5 rounded-lg transition">
-                    👁️ Voir la photo
+                    <i className="fa-solid fa-eye"></i> Voir la photo
                   </a>
                   <label className="block w-full text-center border border-gray-300 text-gray-600 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50 cursor-pointer transition">
-                    🔄 Changer
+                    <i className="fa-solid fa-rotate"></i> Changer
                     <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
                   </label>
                 </div>
               ) : (
                 <label className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium py-2 rounded-lg cursor-pointer transition">
-                  {uploadingPhoto ? '⏳ Upload...' : '📷 Ajouter photo'}
+                  {uploadingPhoto ? '<i className="fa-solid fa-hourglass-half text-gray-400"></i> Upload...' : '📷 Ajouter photo'}
                   <input type="file" accept="image/*" onChange={handleUploadPhoto} className="hidden" />
                 </label>
               )}
@@ -321,13 +321,13 @@ export default function MonProfil() {
             {profil?.cvUrl && (
               <a href={`http://localhost:3001${profil.cvUrl}`} target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-                📄 Voir mon CV
+                <i className="fa-solid fa-file-pdf"></i> Voir mon CV
               </a>
             )}
             {profil?.linkedinUrl && (
               <a href={profil.linkedinUrl} target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 border border-gray-300 text-gray-600 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-50 transition">
-                🔗 LinkedIn
+                <><i className="fa-brands fa-linkedin mr-1"></i> LinkedIn</>
               </a>
             )}
           </div>
@@ -335,7 +335,7 @@ export default function MonProfil() {
 
         {/* Informations personnelles */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h3 className="font-semibold text-gray-800 mb-4">👤 Informations personnelles</h3>
+          <h3 className="font-semibold text-gray-800 mb-4"><i className="fa-solid fa-user"></i> Informations personnelles</h3>
 
           {!isEditing ? (
             <div className="grid grid-cols-2 gap-4">
