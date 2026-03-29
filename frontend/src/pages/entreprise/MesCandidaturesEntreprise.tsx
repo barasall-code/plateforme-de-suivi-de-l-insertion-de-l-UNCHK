@@ -121,14 +121,12 @@ export default function MesCandidaturesEntreprise() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/entreprise/dashboard', label: '<i className="fa-solid fa-house"></i> Dashboard' },
-              { to: '/entreprise/creer-offre', label: '<><i className="fa-solid fa-plus mr-1"></i> Créer offre</>' },
-              { to: '/entreprise/profil', label: '<><i className="fa-solid fa-building mr-1"></i> Mon profil</>' },
-            ].map(({ to, label }) => (
+              { to: '/entreprise/dashboard', label: 'Dashboard', icon: 'fa-solid fa-house' },
+              { to: '/entreprise/creer-offre', label: 'Créer offre', icon: 'fa-solid fa-plus' },
+              { to: '/entreprise/profil', label: 'Mon profil', icon: 'fa-solid fa-building' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
-                {label}
-              </Link>
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">{icon && <i className={icon}></i>} {label}</Link>
             ))}
           </div>
           <Link to="/entreprise/dashboard"
@@ -337,9 +335,9 @@ export default function MesCandidaturesEntreprise() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
             <h3 className="text-lg font-bold text-gray-800 mb-1">
-              {modal.action === 'acceptee' ? '<i className="fa-solid fa-circle-check text-green-600"></i> Accepter la candidature' :
-               modal.action === 'refusee'  ? '<i className="fa-solid fa-circle-xmark text-red-500"></i> Rejeter la candidature'  :
-               '<i className="fa-solid fa-gear"></i> Gérer la candidature'}
+              {modal.action === 'acceptee' ? <><i className="fa-solid fa-circle-check text-green-600"></i> Accepter la candidature</> :
+               modal.action === 'refusee'  ? <><i className="fa-solid fa-circle-xmark text-red-500"></i> Rejeter la candidature</>  :
+               <><i className="fa-solid fa-gear"></i> Gérer la candidature</>}
             </h3>
             <p className="text-sm text-gray-500 mb-4">
               {modal.candidature.etudiant.prenom} {modal.candidature.etudiant.nom} —{' '}

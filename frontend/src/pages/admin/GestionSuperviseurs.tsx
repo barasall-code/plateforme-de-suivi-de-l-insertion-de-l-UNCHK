@@ -142,7 +142,7 @@ export default function GestionSuperviseurs() {
         {showForm && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
             <h3 className="font-semibold text-gray-800 mb-6">
-              {editingId ? '<><i className="fa-solid fa-pen mr-1"></i> Modifier</> le superviseur' : '<i className="fa-solid fa-plus"></i> Créer un superviseur'}
+              {editingId ? <><i className="fa-solid fa-pen mr-1"></i> Modifier le superviseur</> : <><i className="fa-solid fa-plus"></i> Créer un superviseur</>}
             </h3>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>

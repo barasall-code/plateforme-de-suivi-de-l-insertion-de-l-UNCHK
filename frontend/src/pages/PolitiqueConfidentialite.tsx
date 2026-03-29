@@ -116,7 +116,7 @@ export default function PolitiqueConfidentialite() {
             <div className="space-y-4">
               {[
                 {
-                  role: '<i className="fa-solid fa-graduation-cap"></i> Étudiants',
+                  role: 'Étudiants', icon: 'fa-solid fa-graduation-cap',
                   color: 'blue',
                   items: [
                     'Informations d\'identité : nom, prénom, date de naissance, numéro étudiant',
@@ -128,7 +128,7 @@ export default function PolitiqueConfidentialite() {
                   ]
                 },
                 {
-                  role: '<i className="fa-solid fa-building"></i> Entreprises',
+                  role: 'Entreprises', icon: 'fa-solid fa-building',
                   color: 'green',
                   items: [
                     'Informations d\'identification : raison sociale, SIRET/NINEA',
@@ -138,7 +138,7 @@ export default function PolitiqueConfidentialite() {
                   ]
                 },
                 {
-                  role: '<i className="fa-solid fa-eye"></i> Superviseurs',
+                  role: 'Superviseurs', icon: 'fa-solid fa-eye',
                   color: 'purple',
                   items: [
                     'Identité : nom, prénom, département de rattachement',
@@ -173,12 +173,12 @@ export default function PolitiqueConfidentialite() {
             </p>
             <div className="space-y-3">
               {[
-                { icon: '<i className="fa-solid fa-circle-check text-green-600"></i>', title: 'Gestion des comptes utilisateurs', desc: 'Création, authentification, sécurisation et administration des comptes sur la plateforme.' },
-                { icon: '<i className="fa-solid fa-file-lines"></i>', title: 'Mise en relation stage/emploi', desc: 'Permettre aux étudiants de candidater aux offres et aux entreprises de recevoir les candidatures.' },
-                { icon: '<i className="fa-solid fa-chart-bar"></i>', title: 'Suivi de l\'insertion professionnelle', desc: 'Produire des statistiques agrégées et anonymisées sur l\'insertion des diplômés de l\'UNCHK.' },
-                { icon: '<i className="fa-solid fa-bell"></i>', title: 'Notifications et communications', desc: 'Envoyer des alertes relatives à l\'état des candidatures, des offres et des activités de la plateforme.' },
-                { icon: '<i className="fa-solid fa-eye"></i>', title: 'Supervision pédagogique', desc: 'Permettre aux superviseurs de suivre le parcours d\'insertion de leurs étudiants.' },
-                { icon: '<i className="fa-solid fa-gear"></i>️', title: 'Administration et sécurité', desc: 'Modération de la plateforme, détection des fraudes et audit de sécurité.' },
+                { icon: 'fa-solid fa-circle-check text-green-600', title: 'Gestion des comptes utilisateurs', desc: 'Création, authentification, sécurisation et administration des comptes sur la plateforme.' },
+                { icon: 'fa-solid fa-file-lines', title: 'Mise en relation stage/emploi', desc: 'Permettre aux étudiants de candidater aux offres et aux entreprises de recevoir les candidatures.' },
+                { icon: 'fa-solid fa-chart-bar', title: 'Suivi de l\'insertion professionnelle', desc: 'Produire des statistiques agrégées et anonymisées sur l\'insertion des diplômés de l\'UNCHK.' },
+                { icon: 'fa-solid fa-bell', title: 'Notifications et communications', desc: 'Envoyer des alertes relatives à l\'état des candidatures, des offres et des activités de la plateforme.' },
+                { icon: 'fa-solid fa-eye', title: 'Supervision pédagogique', desc: 'Permettre aux superviseurs de suivre le parcours d\'insertion de leurs étudiants.' },
+                { icon: 'fa-solid fa-gear', title: 'Administration et sécurité', desc: 'Modération de la plateforme, détection des fraudes et audit de sécurité.' },
               ].map(f => (
                 <div key={f.title} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                   <span className="text-xl flex-shrink-0">{f.icon}</span>
@@ -308,15 +308,15 @@ export default function PolitiqueConfidentialite() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 {
-                  icon: '<i className="fa-solid fa-eye"></i>', right: 'Droit d\'accès (art. 43)',
+                  icon: 'fa-solid fa-eye', right: 'Droit d\'accès (art. 43)',
                   desc: 'Vous pouvez obtenir confirmation que des données vous concernant sont traitées et en obtenir une copie.'
                 },
                 {
-                  icon: '<i className="fa-solid fa-pen"></i>', right: 'Droit de rectification (art. 44)',
+                  icon: 'fa-solid fa-pen', right: 'Droit de rectification (art. 44)',
                   desc: 'Vous pouvez demander la correction de vos données inexactes ou incomplètes depuis votre profil.'
                 },
                 {
-                  icon: '<i className="fa-solid fa-trash"></i>', right: 'Droit à l\'effacement (art. 45)',
+                  icon: 'fa-solid fa-trash', right: 'Droit à l\'effacement (art. 45)',
                   desc: 'Vous pouvez demander la suppression de vos données dans les cas prévus par la loi.'
                 },
                 {
@@ -324,7 +324,7 @@ export default function PolitiqueConfidentialite() {
                   desc: 'Vous pouvez vous opposer au traitement de vos données pour des motifs légitimes.'
                 },
                 {
-                  icon: '<i className="fa-solid fa-lock"></i>', right: 'Droit à la limitation (art. 47)',
+                  icon: 'fa-solid fa-lock', right: 'Droit à la limitation (art. 47)',
                   desc: 'Vous pouvez demander la suspension temporaire du traitement de vos données.'
                 },
                 {
@@ -362,12 +362,12 @@ export default function PolitiqueConfidentialite() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 { icon: '🔐', measure: 'Chiffrement des mots de passe', detail: 'Hachage bcrypt (12 rounds) — aucun mot de passe en clair' },
-                { icon: '<i className="fa-solid fa-shield"></i>️', measure: 'Authentification JWT sécurisée', detail: 'Tokens signés, expiration automatique, refresh tokens rotatifs' },
-                { icon: '<i className="fa-solid fa-globe"></i>', measure: 'Transport chiffré (HTTPS/TLS)', detail: 'Toutes les communications sont chiffrées en transit' },
+                { icon: 'fa-solid fa-shield', measure: 'Authentification JWT sécurisée', detail: 'Tokens signés, expiration automatique, refresh tokens rotatifs' },
+                { icon: 'fa-solid fa-globe', measure: 'Transport chiffré (HTTPS/TLS)', detail: 'Toutes les communications sont chiffrées en transit' },
                 { icon: '🏗️', measure: 'Headers de sécurité HTTP', detail: 'Helmet.js : CSP, HSTS, X-Frame-Options, XSS Protection' },
                 { icon: '🚧', measure: 'Protection CORS stricte', detail: 'Origines autorisées explicitement configurées' },
-                { icon: '<i className="fa-solid fa-file-lines"></i>', measure: 'Journaux d\'audit', detail: 'Enregistrement des actions sensibles pour détection d\'incidents' },
-                { icon: '<i className="fa-solid fa-magnifying-glass"></i>', measure: 'Validation des entrées', detail: 'Zod schema validation côté serveur — protection injection' },
+                { icon: 'fa-solid fa-file-lines', measure: 'Journaux d\'audit', detail: 'Enregistrement des actions sensibles pour détection d\'incidents' },
+                { icon: 'fa-solid fa-magnifying-glass', measure: 'Validation des entrées', detail: 'Zod schema validation côté serveur — protection injection' },
                 { icon: '⏱️', measure: 'Rate limiting', detail: 'Limitation du nombre de requêtes pour prévenir les attaques' },
               ].map(m => (
                 <div key={m.measure} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">

@@ -159,17 +159,15 @@ export default function StatutProfessionnel() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
-              { to: '/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
-              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
-              { to: '/profil', label: '<><i className="fa-solid fa-user mr-1"></i> Profil</>' },
-              { to: '/messagerie', label: '<><i className="fa-solid fa-comments mr-1"></i> Messages</>' },
-              { to: '/statut-professionnel', label: '<i className="fa-solid fa-chart-bar"></i> Mon statut' },
-            ].map(({ to, label }) => (
+              { to: '/offres', label: 'Offres', icon: 'fa-solid fa-briefcase' },
+              { to: '/candidatures', label: 'Candidatures', icon: 'fa-solid fa-file-lines' },
+              { to: '/competences', label: 'Compétences', icon: 'fa-solid fa-star' },
+              { to: '/profil', label: 'Profil', icon: 'fa-solid fa-user' },
+              { to: '/messagerie', label: 'Messages', icon: 'fa-solid fa-comments' },
+              { to: '/statut-professionnel', label: 'Mon statut', icon: 'fa-solid fa-chart-bar' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
-                {label}
-              </Link>
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">{icon && <i className={icon}></i>} {label}</Link>
             ))}
           </div>
           <div className="flex items-center gap-2">
@@ -208,7 +206,7 @@ export default function StatutProfessionnel() {
         {showForm && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
             <h3 className="font-semibold text-gray-800 mb-6">
-              {editingId ? '<><i className="fa-solid fa-pen mr-1"></i> Modifier</> la déclaration' : '<i className="fa-solid fa-pen-to-square"></i> Nouvelle déclaration'}
+              {editingId ? <><i className="fa-solid fa-pen mr-1"></i> Modifier la déclaration</> : <><i className="fa-solid fa-pen-to-square"></i> Nouvelle déclaration</>}
             </h3>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>

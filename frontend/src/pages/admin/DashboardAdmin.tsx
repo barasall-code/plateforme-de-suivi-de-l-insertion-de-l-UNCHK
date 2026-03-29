@@ -130,13 +130,14 @@ export default function DashboardAdmin() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/admin/offres', label: '<i className="fa-solid fa-file-lines"></i> Valider offres' },
-              { to: '/admin/superviseurs', label: '<i className="fa-solid fa-eye"></i> Superviseurs' },
-              { to: '/admin/entreprises', label: '<i className="fa-solid fa-building"></i> Entreprises' },
-              { to: '/admin/utilisateurs', label: '<i className="fa-solid fa-users"></i> Utilisateurs' },
-            ].map(({ to, label }) => (
+              { to: '/admin/offres', label: 'Valider offres', icon: 'fa-solid fa-file-lines' },
+              { to: '/admin/superviseurs', label: 'Superviseurs', icon: 'fa-solid fa-eye' },
+              { to: '/admin/entreprises', label: 'Entreprises', icon: 'fa-solid fa-building' },
+              { to: '/admin/utilisateurs', label: 'Utilisateurs', icon: 'fa-solid fa-users' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-700 hover:bg-red-50 transition-all duration-150">
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-700 hover:bg-red-50 transition-all duration-150 flex items-center gap-1">
+                {icon && <i className={icon}></i>}
                 {label}
               </Link>
             ))}
@@ -201,14 +202,14 @@ export default function DashboardAdmin() {
             {/* KPI Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               {[
-                { label: 'Étudiants', value: stats?.totalEtudiants, color: 'text-gray-800', bg: 'bg-white', icon: '<i className="fa-solid fa-graduation-cap"></i>' },
-                { label: 'Entreprises', value: stats?.totalEntreprises, color: 'text-blue-600', bg: 'bg-white', icon: '<i className="fa-solid fa-building"></i>' },
-                { label: 'Offres publiées', value: stats?.offresPubliees, color: 'text-green-600', bg: 'bg-white', icon: '<i className="fa-solid fa-file-lines"></i>' },
-                { label: 'Candidatures', value: stats?.totalCandidatures, color: 'text-purple-600', bg: 'bg-white', icon: '<i className="fa-solid fa-pen-to-square"></i>' },
-                { label: 'Total offres', value: stats?.totalOffres, color: 'text-orange-500', bg: 'bg-white', icon: '<i className="fa-solid fa-thumbtack"></i>' },
-                { label: 'En attente validation', value: stats?.entreprisesEnAttente, color: 'text-yellow-500', bg: (stats?.entreprisesEnAttente ?? 0) > 0 ? 'bg-yellow-50' : 'bg-white', icon: '<i className="fa-solid fa-hourglass-half text-gray-400"></i>' },
-                { label: 'Candidatures acceptées', value: stats?.candidaturesAcceptees, color: 'text-emerald-600', bg: 'bg-white', icon: '<i className="fa-solid fa-circle-check text-green-600"></i>' },
-                { label: 'Taux d\'insertion', value: `${stats?.tauxInsertion ?? 0}%`, color: 'text-red-600', bg: 'bg-red-50', icon: '<i className="fa-solid fa-chart-bar"></i>' },
+                { label: 'Étudiants', value: stats?.totalEtudiants, color: 'text-gray-800', bg: 'bg-white', icon: 'fa-solid fa-graduation-cap' },
+                { label: 'Entreprises', value: stats?.totalEntreprises, color: 'text-blue-600', bg: 'bg-white', icon: 'fa-solid fa-building' },
+                { label: 'Offres publiées', value: stats?.offresPubliees, color: 'text-green-600', bg: 'bg-white', icon: 'fa-solid fa-file-lines' },
+                { label: 'Candidatures', value: stats?.totalCandidatures, color: 'text-purple-600', bg: 'bg-white', icon: 'fa-solid fa-pen-to-square' },
+                { label: 'Total offres', value: stats?.totalOffres, color: 'text-orange-500', bg: 'bg-white', icon: 'fa-solid fa-thumbtack' },
+                { label: 'En attente validation', value: stats?.entreprisesEnAttente, color: 'text-yellow-500', bg: (stats?.entreprisesEnAttente ?? 0) > 0 ? 'bg-yellow-50' : 'bg-white', icon: 'fa-solid fa-hourglass-half' },
+                { label: 'Candidatures acceptées', value: stats?.candidaturesAcceptees, color: 'text-emerald-600', bg: 'bg-white', icon: 'fa-solid fa-circle-check' },
+                { label: 'Taux d\'insertion', value: `${stats?.tauxInsertion ?? 0}%`, color: 'text-red-600', bg: 'bg-red-50', icon: 'fa-solid fa-chart-bar' },
               ].map(kpi => (
                 <div key={kpi.label} className={`${kpi.bg} rounded-xl border border-gray-100 shadow-sm p-5`}>
                   <div className="flex justify-between items-start">
@@ -216,7 +217,7 @@ export default function DashboardAdmin() {
                       <p className={`text-3xl font-bold ${kpi.color}`}>{kpi.value}</p>
                       <p className="text-gray-500 text-xs mt-1">{kpi.label}</p>
                     </div>
-                    <span className="text-2xl opacity-60">{kpi.icon}</span>
+                    <span className="text-2xl opacity-60"><i className={kpi.icon}></i></span>
                   </div>
                 </div>
               ))}
@@ -225,7 +226,7 @@ export default function DashboardAdmin() {
             {/* Tabs */}
             <div className="flex gap-2 mb-6">
               {[
-                { key: 'synthese', label: '<i className="fa-solid fa-chart-bar"></i> Synthèse globale' },
+                { key: 'synthese', label: 'Synthèse globale', icon: 'fa-solid fa-chart-bar' },
                 { key: 'avancees', label: '🔎 Statistiques avancées' },
               ].map(tab => (
                 <button key={tab.key}
@@ -235,7 +236,7 @@ export default function DashboardAdmin() {
                       ? 'bg-red-600 text-white shadow-sm'
                       : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
                   }`}>
-                  {tab.label}
+                  <><i className={tab.icon}></i><span className="ml-1">{tab.label}</span></>
                 </button>
               ))}
             </div>
@@ -293,14 +294,14 @@ export default function DashboardAdmin() {
                 {/* Navigation cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
-                    { to: '/admin/offres', icon: '<i className="fa-solid fa-file-lines"></i>', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
-                    { to: '/admin/entreprises', icon: '<i className="fa-solid fa-building"></i>', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },
-                    { to: '/admin/utilisateurs', icon: '<i className="fa-solid fa-users"></i>', title: 'Gérer les utilisateurs', desc: 'Activer, désactiver et gérer tous les comptes', badge: 0, badgeColor: '', borderHover: 'hover:border-blue-300' },
-                    { to: '/admin/superviseurs', icon: '<i className="fa-solid fa-eye"></i>', title: 'Gérer les superviseurs', desc: 'Créer et assigner des superviseurs pédagogiques', badge: 0, badgeColor: '', borderHover: 'hover:border-purple-300' },
+                    { to: '/admin/offres', icon: 'fa-solid fa-file-lines', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
+                    { to: '/admin/entreprises', icon: 'fa-solid fa-building', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },
+                    { to: '/admin/utilisateurs', icon: 'fa-solid fa-users', title: 'Gérer les utilisateurs', desc: 'Activer, désactiver et gérer tous les comptes', badge: 0, badgeColor: '', borderHover: 'hover:border-blue-300' },
+                    { to: '/admin/superviseurs', icon: 'fa-solid fa-eye', title: 'Gérer les superviseurs', desc: 'Créer et assigner des superviseurs pédagogiques', badge: 0, badgeColor: '', borderHover: 'hover:border-purple-300' },
                   ].map(card => (
                     <Link key={card.to} to={card.to}
                       className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${card.borderHover} hover:shadow-md transition block`}>
-                      <div className="text-3xl mb-3">{card.icon}</div>
+                      <div className="text-3xl mb-3"><i className={card.icon}></i></div>
                       <h3 className="font-semibold text-gray-800 mb-1">{card.title}</h3>
                       <p className="text-gray-500 text-sm">{card.desc}</p>
                       {card.badge > 0 && (
@@ -374,7 +375,7 @@ export default function DashboardAdmin() {
                         ].map(item => (
                           <div key={item.label} className={`${item.color} rounded-xl p-4 text-center`}>
                             <p className="text-3xl font-bold">{item.value}</p>
-                            <p className="text-xs font-medium mt-1">{item.label}</p>
+                            <p className="text-xs font-medium mt-1"><><i className={item.icon}></i><span className="ml-1">{item.label}</span></></p>
                             <p className="text-sm font-bold mt-1">{item.pct}%</p>
                           </div>
                         ))}

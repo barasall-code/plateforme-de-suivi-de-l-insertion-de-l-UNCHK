@@ -187,7 +187,7 @@ export default function DetailOffre() {
             ) : (
               <button onClick={() => setShowForm(!showForm)}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl transition">
-                {showForm ? 'Annuler' : '<i className="fa-solid fa-pen-to-square"></i> Postuler à cette offre'}
+                {showForm ? 'Annuler' : <><i className="fa-solid fa-pen-to-square"></i> Postuler à cette offre</>}
               </button>
             )
           ) : (
@@ -313,7 +313,7 @@ export default function DetailOffre() {
 
               <button type="submit" disabled={isPostuling || !cvUrl || !lettreMotivation}
                 className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white font-semibold py-3 rounded-xl transition">
-                {isPostuling ? 'Envoi en cours...' : '<i className="fa-solid fa-rocket"></i> Envoyer ma candidature'}
+                {isPostuling ? 'Envoi en cours...' : <><i className="fa-solid fa-rocket"></i> Envoyer ma candidature</>}
               </button>
             </form>
           </div>

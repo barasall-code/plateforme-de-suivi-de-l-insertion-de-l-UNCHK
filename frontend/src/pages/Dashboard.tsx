@@ -90,15 +90,15 @@ export default function Dashboard() {
           {/* Navigation centrale */}
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
-              { to: '/candidatures', label: '<i className="fa-solid fa-file-pdf"></i> Candidatures' },
-              { to: '/competences', label: '<><i className="fa-solid fa-star mr-1"></i> Compétences</>' },
-              { to: '/statut-professionnel', label: '<i className="fa-solid fa-chart-bar"></i> Mon statut' },
-            ].map(({ to, label }) => (
+              { to: '/offres', label: 'Offres', icon: 'fa-solid fa-briefcase' },
+              { to: '/candidatures', label: 'Candidatures', icon: 'fa-solid fa-file-pdf' },
+              { to: '/competences', label: 'Compétences', icon: 'fa-solid fa-star' },
+              { to: '/profil', label: 'Profil', icon: 'fa-solid fa-user' },
+              { to: '/messagerie', label: 'Messages', icon: 'fa-solid fa-comments' },
+              { to: '/statut-professionnel', label: 'Mon statut', icon: 'fa-solid fa-chart-bar' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">
-                {label}
-              </Link>
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-all duration-150">{icon && <i className={icon}></i>} {label}</Link>
             ))}
           </div>
 

@@ -71,14 +71,12 @@ export default function DashboardEntreprise() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/entreprise/creer-offre', label: '<><i className="fa-solid fa-plus mr-1"></i> Créer offre</>' },
-              { to: '/entreprise/candidatures', label: '<><i className="fa-solid fa-file-lines mr-1"></i> Candidatures</>' },
-              { to: '/entreprise/profil', label: '<><i className="fa-solid fa-building mr-1"></i> Mon profil</>' },
-            ].map(({ to, label }) => (
+              { to: '/entreprise/creer-offre', label: 'Créer offre', icon: 'fa-solid fa-plus' },
+              { to: '/entreprise/candidatures', label: 'Candidatures', icon: 'fa-solid fa-file-lines' },
+              { to: '/entreprise/profil', label: 'Mon profil', icon: 'fa-solid fa-building' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">
-                {label}
-              </Link>
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-all duration-150">{icon && <i className={icon}></i>} {label}</Link>
             ))}
           </div>
           <div className="flex items-center gap-2">

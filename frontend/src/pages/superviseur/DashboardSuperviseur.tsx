@@ -98,14 +98,12 @@ export default function DashboardSuperviseur() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {[
-              { to: '/superviseur/etudiants', label: '<i className="fa-solid fa-graduation-cap"></i> Mes étudiants' },
-              { to: '/offres', label: '<><i className="fa-solid fa-briefcase mr-1"></i> Offres</>' },
-              { to: '/superviseur/profil', label: '<i className="fa-solid fa-user"></i> Mon profil' },
-            ].map(({ to, label }) => (
+              { to: '/superviseur/etudiants', label: 'Mes étudiants', icon: 'fa-solid fa-graduation-cap' },
+              { to: '/offres', label: 'Offres', icon: 'fa-solid fa-briefcase' },
+              { to: '/superviseur/profil', label: 'Mon profil', icon: 'fa-solid fa-user' },
+            ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-all duration-150">
-                {label}
-              </Link>
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-purple-700 hover:bg-purple-50 transition-all duration-150">{icon && <i className={icon}></i>} {label}</Link>
             ))}
           </div>
           <div className="flex items-center gap-2">

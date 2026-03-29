@@ -288,7 +288,7 @@ export default function CandidaturesOffre() {
               <h3 className="font-semibold text-gray-800">
                 {modal.action === 'acceptee' && '✓ Accepter la candidature'}
                 {modal.action === 'refusee'  && '✕ Rejeter la candidature'}
-                {modal.action === 'gerer'    && '<i className="fa-solid fa-gear"></i> Gérer la candidature'}
+                {modal.action === 'gerer'    && <><i className="fa-solid fa-gear"></i> Gérer la candidature</>}
               </h3>
               <p className="text-sm text-gray-500 mt-0.5">
                 {modal.candidature.etudiant.prenom} {modal.candidature.etudiant.nom} —{' '}
