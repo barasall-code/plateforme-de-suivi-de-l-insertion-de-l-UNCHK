@@ -27,6 +27,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
 import DashboardDiplome from './pages/diplome/DashboardDiplome';
+import DashboardDirection from './pages/direction/DashboardDirection';
 import ListeOffres from './pages/offres/ListeOffres';
 import DetailOffre from './pages/offres/DetailOffre';
 import MesCandidatures from './pages/candidatures/MesCandidatures';
@@ -130,6 +131,11 @@ function App() {
           } />
 
           {/* Routes entreprise */}
+          <Route path="/direction/dashboard" element={
+            <ProtectedRoute roles={['admin']}>
+              <DashboardDirection />
+            </ProtectedRoute>
+          } />
           <Route path="/diplome/dashboard" element={
             <ProtectedRoute roles={['diplome']}>
               <DashboardDiplome />
