@@ -26,6 +26,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
+import DashboardDiplome from './pages/diplome/DashboardDiplome';
 import ListeOffres from './pages/offres/ListeOffres';
 import DetailOffre from './pages/offres/DetailOffre';
 import MesCandidatures from './pages/candidatures/MesCandidatures';
@@ -64,6 +65,7 @@ function ProtectedRoute({ children, roles }: { children: React.ReactNode; roles?
     if (user.role === 'entreprise') return <Navigate to="/entreprise/dashboard" replace />;
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
     if (user.role === 'superviseur') return <Navigate to="/superviseur/dashboard" replace />;
+    if (user.role === 'diplome') return <Navigate to="/diplome/dashboard" replace />;
     return <Navigate to="/dashboard" replace />;
   }
   return <>{children}</>;
@@ -92,42 +94,47 @@ function App() {
 
           {/* Routes étudiant */}
           <Route path="/dashboard" element={
-            <ProtectedRoute roles={['etudiant']}>
+            <ProtectedRoute roles={['etudiant', 'diplome']}>
               <Dashboard />
             </ProtectedRoute>
           } />
           <Route path="/offres" element={
-            <ProtectedRoute roles={['etudiant', 'superviseur']}>
+            <ProtectedRoute roles={['etudiant', 'diplome', 'superviseur']}>
               <ListeOffres />
             </ProtectedRoute>
           } />
           <Route path="/offres/:id" element={
-            <ProtectedRoute roles={['etudiant', 'superviseur', 'admin']}>
+            <ProtectedRoute roles={['etudiant', 'diplome', 'superviseur', 'admin']}>
               <DetailOffre />
             </ProtectedRoute>
           } />
           <Route path="/candidatures" element={
-            <ProtectedRoute roles={['etudiant']}>
+            <ProtectedRoute roles={['etudiant', 'diplome']}>
               <MesCandidatures />
             </ProtectedRoute>
           } />
           <Route path="/profil" element={
-            <ProtectedRoute roles={['etudiant']}>
+            <ProtectedRoute roles={['etudiant', 'diplome']}>
               <MonProfil />
             </ProtectedRoute>
           } />
           <Route path="/statut-professionnel" element={
-            <ProtectedRoute roles={['etudiant']}>
+            <ProtectedRoute roles={['etudiant', 'diplome']}>
               <StatutProfessionnel />
             </ProtectedRoute>
           } />
           <Route path="/competences" element={
-            <ProtectedRoute roles={['etudiant']}>
+            <ProtectedRoute roles={['etudiant', 'diplome']}>
               <MesCompetences />
             </ProtectedRoute>
           } />
 
           {/* Routes entreprise */}
+          <Route path="/diplome/dashboard" element={
+            <ProtectedRoute roles={['diplome']}>
+              <DashboardDiplome />
+            </ProtectedRoute>
+          } />
           <Route path="/entreprise/dashboard" element={
             <ProtectedRoute roles={['entreprise']}>
               <DashboardEntreprise />
@@ -219,7 +226,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/messagerie" element={
-            <ProtectedRoute roles={['etudiant', 'entreprise']}>
+            <ProtectedRoute roles={['etudiant', 'diplome', 'entreprise']}>
               <Messagerie />
             </ProtectedRoute>
           } />

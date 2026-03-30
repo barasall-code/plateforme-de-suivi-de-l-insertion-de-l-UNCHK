@@ -321,3 +321,5 @@ router.post('/supervisions', authenticate, authorize('admin'), adminController.a
 router.delete('/supervisions/:superviseurId/:etudiantId', authenticate, authorize('admin'), adminController.supprimerSupervision);
 
 export default router;
+// Marquer un étudiant comme diplômé
+router.put('/utilisateurs/:id/diplomer', authenticate, authorize('admin'), adminController.marquerDiplome);

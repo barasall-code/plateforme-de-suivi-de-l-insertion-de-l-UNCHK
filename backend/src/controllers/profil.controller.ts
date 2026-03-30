@@ -5,7 +5,7 @@ import * as profilService from '../services/profil.service';
 export async function getProfil(req: AuthRequest, res: Response): Promise<void> {
   try {
     let profil;
-    if (req.user!.role === 'etudiant') {
+    if (req.user!.role === 'etudiant' || req.user!.role === 'diplome') {
       profil = await profilService.getProfilEtudiant(req.user!.userId);
     } else if (req.user!.role === 'entreprise') {
       profil = await profilService.getProfilEntreprise(req.user!.userId);
@@ -22,7 +22,7 @@ export async function getProfil(req: AuthRequest, res: Response): Promise<void> 
 export async function updateProfil(req: AuthRequest, res: Response): Promise<void> {
   try {
     let profil;
-    if (req.user!.role === 'etudiant') {
+    if (req.user!.role === 'etudiant' || req.user!.role === 'diplome') {
       profil = await profilService.updateProfilEtudiant(req.user!.userId, req.body);
     } else if (req.user!.role === 'entreprise') {
       profil = await profilService.updateProfilEntreprise(req.user!.userId, req.body);

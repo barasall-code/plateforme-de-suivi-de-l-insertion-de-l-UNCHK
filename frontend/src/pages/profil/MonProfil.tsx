@@ -5,19 +5,29 @@ import api, { getFileUrl } from '../../services/api';
 import Notifications from '../../components/Notifications';
 
 const SITUATION_LABELS: Record<string, string> = {
-  en_cours_etude:     "En cours d'\u00e9tude",
-  sous_contrat_stage: 'Sous contrat stage',
-  sous_contrat_cdd:   'Sous contrat CDD',
-  sous_contrat_cdi:   'Sous contrat CDI',
-  chomeur:            'Ch\u00f4meur',
+  en_cours_etude:          "En cours d'études",
+  en_stage:                'En stage de formation',
+  sous_contrat_cdi:        'Emploi CDI',
+  sous_contrat_cdd:        'Emploi CDD',
+  sous_contrat_stage:      'Stage professionnel',
+  freelance:               'Freelance / Indépendant',
+  entrepreneur:            "Entrepreneur / Créateur d'entreprise",
+  en_formation_continue:   "Poursuite d'études / Formation continue",
+  en_recherche_emploi:            'Ch\u00f4meur',
 };
 
 const SITUATION_COLORS: Record<string, string> = {
   en_cours_etude:     'bg-blue-100 text-blue-700',
-  sous_contrat_stage: 'bg-purple-100 text-purple-700',
-  sous_contrat_cdd:   'bg-yellow-100 text-yellow-700',
-  sous_contrat_cdi:   'bg-green-100 text-green-700',
-  chomeur:            'bg-red-100 text-red-700',
+  en_stage:              'bg-purple-100 text-purple-700',
+  sous_contrat_cdi:      'bg-green-100 text-green-700',
+  sous_contrat_cdd:      'bg-yellow-100 text-yellow-700',
+  sous_contrat_stage:    'bg-indigo-100 text-indigo-700',
+  freelance:             'bg-cyan-100 text-cyan-700',
+  entrepreneur:          'bg-orange-100 text-orange-700',
+  en_formation_continue: 'bg-teal-100 text-teal-700',
+  en_recherche_emploi:   'bg-red-100 text-red-700',
+  expatrie:              'bg-pink-100 text-pink-700',
+  sans_activite:         'bg-gray-100 text-gray-700',
 };
 
 export default function MonProfil() {
@@ -409,11 +419,18 @@ export default function MonProfil() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Statut actuel</label>
                 <select name="situationActuelle" value={form.situationActuelle || 'en_cours_etude'} onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500">
-                  <option value="en_cours_etude">En cours d'étude</option>
-                  <option value="sous_contrat_stage">Sous contrat stage</option>
-                  <option value="sous_contrat_cdd">Sous contrat CDD</option>
-                  <option value="sous_contrat_cdi">Sous contrat CDI</option>
-                  <option value="chomeur">Chômeur</option>
+                  <option value="en_cours_etude">En cours d'études</option>
+                  <option value="en_stage">En stage de formation</option>
+                  <option value="sous_contrat_cdi">Emploi CDI</option>
+                  <option value="sous_contrat_cdd">Emploi CDD</option>
+                  <option value="sous_contrat_stage">Stage professionnel</option>
+                  <option value="freelance">Freelance / Indépendant</option>
+                  <option value="entrepreneur">Entrepreneur / Créateur d'entreprise</option>
+                  <option value="en_formation_continue">Poursuite d'études / Formation continue</option>
+                  <option value="en_recherche_emploi">En recherche d'emploi</option>
+                  <option value="expatrie">En emploi à l'étranger</option>
+                  <option value="sans_activite">Sans activité déclarée</option>
+                  <option value="en_recherche_emploi">Chômeur</option>
                 </select>
               </div>
               <div className="flex gap-4 pt-2">

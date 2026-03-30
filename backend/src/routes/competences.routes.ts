@@ -54,7 +54,7 @@ router.post('/', authenticate, authorize('admin'), controller.createCompetence);
  *       200:
  *         description: Compétences de l'étudiant connecté avec niveaux
  */
-router.get('/mes-competences', authenticate, authorize('etudiant'), controller.getMesCompetences);
+router.get('/mes-competences', authenticate, authorize('etudiant', 'diplome'), controller.getMesCompetences);
 
 /**
  * @swagger
@@ -77,7 +77,7 @@ router.get('/mes-competences', authenticate, authorize('etudiant'), controller.g
  *       201:
  *         description: Compétence ajoutée
  */
-router.post('/mes-competences', authenticate, authorize('etudiant'), controller.ajouterCompetence);
+router.post('/mes-competences', authenticate, authorize('etudiant', 'diplome'), controller.ajouterCompetence);
 
 /**
  * @swagger
@@ -104,7 +104,7 @@ router.post('/mes-competences', authenticate, authorize('etudiant'), controller.
  *       200:
  *         description: Niveau mis à jour
  */
-router.put('/mes-competences/:competenceId', authenticate, authorize('etudiant'), controller.modifierNiveau);
+router.put('/mes-competences/:competenceId', authenticate, authorize('etudiant', 'diplome'), controller.modifierNiveau);
 
 /**
  * @swagger
@@ -122,6 +122,6 @@ router.put('/mes-competences/:competenceId', authenticate, authorize('etudiant')
  *       200:
  *         description: Compétence retirée du profil
  */
-router.delete('/mes-competences/:competenceId', authenticate, authorize('etudiant'), controller.supprimerCompetence);
+router.delete('/mes-competences/:competenceId', authenticate, authorize('etudiant', 'diplome'), controller.supprimerCompetence);
 
 export default router;

@@ -248,9 +248,12 @@ export default function StatutProfessionnel() {
                       <option value="">— Sélectionner —</option>
                       <option value="CDI">CDI</option>
                       <option value="CDD">CDD</option>
-                      <option value="Stage">Stage</option>
+                      <option value="Stage">Stage professionnel</option>
                       <option value="Alternance">Alternance</option>
-                      <option value="Freelance">Freelance</option>
+                      <option value="Freelance">Freelance / Indépendant</option>
+                      <option value="Entrepreneuriat">Entrepreneuriat</option>
+                      <option value="Formation continue">Formation continue</option>
+                      <option value="Expatrie">Emploi à l'étranger</option>
                     </select>
                   </div>
                   <div>

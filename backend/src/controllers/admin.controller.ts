@@ -179,3 +179,18 @@ export async function getEtudiantsSansSupervision(req: AuthRequest, res: Respons
     res.status(400).json({ success: false, message: error.message });
   }
 }
+export async function marquerDiplome(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+    const user = await prisma.utilisateur.findUnique({ where: { id } });
+    if (!user) { res.status(404).json({ success: false, message: 'Utilisateur non trouvé' }); return; }
+    if (user.typeUtilisateur !== 'etudiant') { res.status(400).json({ success: false, message: 'Cet utilisateur n\'est pas un étudiant' }); return; }
+    const updated = await prisma.utilisateur.update({
+      where: { id },
+      data: { typeUtilisateur: 'diplome' }
+    });
+    res.json({ success: true, message: 'Étudiant marqué comme diplômé', data: { id: updated.id, typeUtilisateur: updated.typeUtilisateur } });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}

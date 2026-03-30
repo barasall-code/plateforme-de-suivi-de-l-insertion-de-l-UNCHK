@@ -6,7 +6,7 @@ export default function GestionUtilisateurs() {
   const [utilisateurs, setUtilisateurs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [filtre, setFiltre] = useState<'tous' | 'etudiant' | 'entreprise' | 'admin'>('tous');
+  const [filtre, setFiltre] = useState<'tous' | 'etudiant' | 'diplome' | 'entreprise' | 'admin'>('tous');
 
   useEffect(() => {
     chargerUtilisateurs();
@@ -23,6 +23,16 @@ export default function GestionUtilisateurs() {
     }
   };
 
+  const handleDiplomer = async (id: string) => {
+    if (!window.confirm('Marquer cet étudiant comme diplômé ? Son espace passera en mode diplômé.')) return;
+    try {
+      await api.put(`/admin/utilisateurs/${id}/diplomer`);
+      setUtilisateurs(prev => prev.map(u => u.id === id ? { ...u, typeUtilisateur: 'diplome' } : u));
+    } catch (err: any) {
+      alert('Erreur: ' + (err.response?.data?.message || err.message));
+    }
+  };
+
   const handleToggle = async (id: string) => {
     try {
       await api.put(`/admin/utilisateurs/${id}/toggle`);
@@ -34,6 +44,7 @@ export default function GestionUtilisateurs() {
 
   const roleColors: Record<string, string> = {
     etudiant: 'bg-blue-100 text-blue-700',
+    diplome: 'bg-purple-100 text-purple-700',
     entreprise: 'bg-green-100 text-green-700',
     admin: 'bg-red-100 text-red-700',
     superviseur: 'bg-purple-100 text-purple-700',
@@ -81,7 +92,7 @@ export default function GestionUtilisateurs() {
         </div>
 
         <div className="flex gap-3 mb-6">
-          {(['tous', 'etudiant', 'entreprise', 'admin'] as const).map((f) => (
+          {(['tous', 'etudiant', 'diplome', 'entreprise', 'admin'] as const).map((f) => (
             <button key={f} onClick={() => setFiltre(f)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filtre === f ? 'bg-green-600 text-white' : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
@@ -125,6 +136,13 @@ export default function GestionUtilisateurs() {
                       {new Date(u.dateCreation).toLocaleDateString('fr-FR')}
                     </td>
                     <td className="px-6 py-4">
+                      {u.typeUtilisateur === 'etudiant' && (
+                        <button onClick={() => handleDiplomer(u.id)}
+                          className="text-xs bg-purple-100 hover:bg-purple-200 text-purple-700 font-medium px-3 py-1.5 rounded-lg transition flex items-center gap-1"
+                          title="Marquer comme diplômé">
+                          <i className="fa-solid fa-user-graduate"></i> Diplômer
+                        </button>
+                      )}
                       <button onClick={() => handleToggle(u.id)}
                         className={`text-xs font-medium px-3 py-1.5 rounded-lg transition ${
                           u.estActif

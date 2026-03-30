@@ -23,6 +23,7 @@ export default function Login() {
       if (parsedUser?.role === 'entreprise') navigate('/entreprise/dashboard');
       else if (parsedUser?.role === 'admin') navigate('/admin/dashboard');
       else if (parsedUser?.role === 'superviseur') navigate('/superviseur/dashboard');
+      else if (parsedUser?.role === 'diplome') navigate('/diplome/dashboard');
       else navigate('/dashboard');
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
@@ -158,6 +159,7 @@ export default function Login() {
             <div className="space-y-2">
               {[
                 { role: 'Étudiant', email: 'bara.sall@unchk.edu.sn', color: 'bg-blue-50 text-blue-700' },
+                { role: 'Diplômé', email: 'diplome.test@gmail.com', color: 'bg-purple-50 text-purple-700' },
                 { role: 'Entreprise', email: 'entreprise@test.sn', color: 'bg-green-50 text-green-700' },
                 { role: 'Admin', email: 'admin@unchk.sn', color: 'bg-red-50 text-red-700' },
                 { role: 'Superviseur', email: 'superviseur@unchk.edu.sn', color: 'bg-purple-50 text-purple-700' },

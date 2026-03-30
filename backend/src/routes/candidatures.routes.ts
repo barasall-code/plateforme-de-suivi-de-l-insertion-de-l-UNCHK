@@ -30,7 +30,7 @@ const router = Router();
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post('/', authenticate, authorize('etudiant'), candidaturesController.postuler);
+router.post('/', authenticate, authorize('etudiant', 'diplome'), candidaturesController.postuler);
 
 /**
  * @swagger
@@ -43,7 +43,7 @@ router.post('/', authenticate, authorize('etudiant'), candidaturesController.pos
  *       200:
  *         description: Liste des candidatures de l'étudiant connecté
  */
-router.get('/mes-candidatures', authenticate, authorize('etudiant'), candidaturesController.getMesCandidatures);
+router.get('/mes-candidatures', authenticate, authorize('etudiant', 'diplome'), candidaturesController.getMesCandidatures);
 
 /**
  * @swagger
@@ -144,6 +144,6 @@ router.put('/:id/statut', authenticate, authorize('entreprise'), candidaturesCon
  *       403:
  *         description: Non propriétaire de la candidature
  */
-router.delete('/:id', authenticate, authorize('etudiant'), candidaturesController.retirerCandidature);
+router.delete('/:id', authenticate, authorize('etudiant', 'diplome'), candidaturesController.retirerCandidature);
 
 export default router;

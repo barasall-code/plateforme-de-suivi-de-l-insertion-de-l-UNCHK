@@ -25,7 +25,7 @@ const router = Router();
  *       200:
  *         description: Conversation (existante ou créée)
  */
-router.post('/conversations', authenticate, authorize('etudiant', 'entreprise'), messagerieController.getOuCreerConversation);
+router.post('/conversations', authenticate, authorize('etudiant', 'diplome', 'entreprise'), messagerieController.getOuCreerConversation);
 
 /**
  * @swagger
@@ -38,7 +38,7 @@ router.post('/conversations', authenticate, authorize('etudiant', 'entreprise'),
  *       200:
  *         description: Liste des conversations avec dernier message et nombre de non-lus
  */
-router.get('/conversations', authenticate, authorize('etudiant', 'entreprise'), messagerieController.getMesConversations);
+router.get('/conversations', authenticate, authorize('etudiant', 'diplome', 'entreprise'), messagerieController.getMesConversations);
 
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.get('/conversations', authenticate, authorize('etudiant', 'entreprise'), 
  *       403:
  *         description: Non participant à cette conversation
  */
-router.get('/conversations/:conversationId/messages', authenticate, authorize('etudiant', 'entreprise'), messagerieController.getMessages);
+router.get('/conversations/:conversationId/messages', authenticate, authorize('etudiant', 'diplome', 'entreprise'), messagerieController.getMessages);
 
 /**
  * @swagger
@@ -85,7 +85,7 @@ router.get('/conversations/:conversationId/messages', authenticate, authorize('e
  *       201:
  *         description: Message envoyé
  */
-router.post('/conversations/:conversationId/messages', authenticate, authorize('etudiant', 'entreprise'), messagerieController.envoyerMessage);
+router.post('/conversations/:conversationId/messages', authenticate, authorize('etudiant', 'diplome', 'entreprise'), messagerieController.envoyerMessage);
 
 /**
  * @swagger

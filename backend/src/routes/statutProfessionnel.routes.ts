@@ -15,7 +15,7 @@ const router = Router();
  *       200:
  *         description: Historique des déclarations de l'étudiant connecté
  */
-router.get('/', authenticate, authorize('etudiant'), controller.getMesStatuts);
+router.get('/', authenticate, authorize('etudiant', 'diplome'), controller.getMesStatuts);
 
 /**
  * @swagger
@@ -43,7 +43,7 @@ router.get('/', authenticate, authorize('etudiant'), controller.getMesStatuts);
  *       201:
  *         description: Situation déclarée
  */
-router.post('/', authenticate, authorize('etudiant'), controller.declarer);
+router.post('/', authenticate, authorize('etudiant', 'diplome'), controller.declarer);
 
 /**
  * @swagger
@@ -61,7 +61,7 @@ router.post('/', authenticate, authorize('etudiant'), controller.declarer);
  *       200:
  *         description: Déclaration mise à jour
  */
-router.put('/:id', authenticate, authorize('etudiant'), controller.modifier);
+router.put('/:id', authenticate, authorize('etudiant', 'diplome'), controller.modifier);
 
 /**
  * @swagger
@@ -79,7 +79,7 @@ router.put('/:id', authenticate, authorize('etudiant'), controller.modifier);
  *       200:
  *         description: Déclaration supprimée
  */
-router.delete('/:id', authenticate, authorize('etudiant'), controller.supprimer);
+router.delete('/:id', authenticate, authorize('etudiant', 'diplome'), controller.supprimer);
 
 /**
  * @swagger
