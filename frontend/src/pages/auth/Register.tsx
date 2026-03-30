@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../services/api';
 
-type Role = 'etudiant' | 'entreprise';
+type Role = 'etudiant' | 'diplome' | 'entreprise';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export default function Register() {
     setIsLoading(true);
     try {
       const data: any = { email, motDePasse, typeUtilisateur: role };
-      if (role === 'etudiant') {
+      if (role === 'etudiant' || role === 'diplome') {
         data.nom = nom;
         data.prenom = prenom;
         data.filiere = filiere;
@@ -102,6 +102,7 @@ export default function Register() {
           <div className="space-y-4">
             {[
               { icon: 'fa-solid fa-graduation-cap', label: 'Étudiant', desc: 'Postulez aux offres de stage et d\'emploi' },
+              { icon: 'fa-solid fa-user-graduate', label: 'Diplômé', desc: 'Déclarez votre situation professionnelle post-diplôme' },
               { icon: 'fa-solid fa-building', label: 'Entreprise', desc: 'Publiez vos offres et trouvez des talents' },
             ].map((item) => (
               <div key=<i className={item.label}></i> className={`flex items-center gap-4 rounded-xl p-4 transition ${
@@ -173,6 +174,17 @@ export default function Register() {
                   </div>
                 </button>
 
+                <button onClick={() => handleSelectRole('diplome')}
+                  className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 text-left ${role === 'diplome' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-300 hover:bg-purple-50/50'}`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 ${role === 'diplome' ? 'bg-purple-100' : 'bg-gray-100'}`}>
+                    <i className="fa-solid fa-user-graduate"></i>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800 text-lg">Je suis diplômé</p>
+                    <p className="text-gray-500 text-sm">Déclarez votre situation professionnelle post-diplôme</p>
+                  </div>
+                  <span className="ml-auto text-gray-400">→</span>
+                </button>
                 <button onClick={() => handleSelectRole('entreprise')}
                   className="w-full border-2 border-gray-200 hover:border-green-500 rounded-xl p-5 text-left transition group">
                   <div className="flex items-center gap-4">
@@ -204,13 +216,13 @@ export default function Register() {
                 <><i className="fa-solid fa-arrow-left mr-1"></i> Retour</>
               </button>
               <h2 className="text-2xl font-bold text-gray-800 mb-1">
-                {role === 'etudiant' ? <><i className="fa-solid fa-graduation-cap"></i> Compte étudiant</> : <><i className="fa-solid fa-building"></i> Compte entreprise</>}
+                {role === 'etudiant' ? <><i className="fa-solid fa-graduation-cap"></i> Compte étudiant</> : role === 'diplome' ? <><i className="fa-solid fa-user-graduate"></i> Compte diplômé</> : <><i className="fa-solid fa-building"></i> Compte entreprise</>}
               </h2>
               <p className="text-gray-500 mb-6">Remplissez vos informations</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Champs étudiant */}
-                {role === 'etudiant' && (
+                {(role === 'etudiant' || role === 'diplome') && (
                   <>
                     <div className="grid grid-cols-2 gap-3">
                       <div>

@@ -9,6 +9,7 @@ datasource db {
 
 enum TypeUtilisateur {
   etudiant
+  diplome
   entreprise
   admin
   superviseur
@@ -74,11 +75,21 @@ enum CategorieCompetence {
 }
 
 enum SituationEtudiant {
-  en_cours_etude
-  sous_contrat_stage
-  sous_contrat_cdd
-  sous_contrat_cdi
-  chomeur
+  // Statuts étudiants actifs
+  en_cours_etude          // En cours d'études à l'UNCHK
+  en_stage                // En stage de formation
+  // Statuts diplômés - emploi
+  sous_contrat_cdi        // Emploi CDI
+  sous_contrat_cdd        // Emploi CDD
+  sous_contrat_stage      // Stage professionnel post-diplôme
+  freelance               // Travailleur indépendant / freelance
+  entrepreneur            // Entrepreneur / créateur d'entreprise
+  // Statuts diplômés - formation
+  en_formation_continue   // Poursuite d'études / Master / Doctorat
+  // Statuts diplômés - recherche / autres
+  en_recherche_emploi     // En recherche active d'emploi
+  expatrie                // Travaille à l'étranger
+  sans_activite           // Sans activité déclarée
 }
 
 model Utilisateur {

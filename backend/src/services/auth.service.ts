@@ -31,10 +31,11 @@ function makeTokens(userId: string, email: string, role: string) {
 export async function register(dto: RegisterDto): Promise<AuthResponse> {
   const existing = await prisma.utilisateur.findUnique({ where: { email: dto.email } });
 
-  // Vérification email institutionnel pour étudiants et superviseurs
+  // Vérification email institutionnel pour étudiants actifs et superviseurs
   if (dto.typeUtilisateur === 'etudiant' && !dto.email.endsWith('@unchk.edu.sn')) {
     throw new Error('Les étudiants doivent utiliser leur adresse institutionnelle (@unchk.edu.sn)');
   }
+  // Les diplômés peuvent s'inscrire avec tout email (ils ne sont plus étudiants actifs)
   if (dto.typeUtilisateur === 'superviseur' && !dto.email.endsWith('@unchk.edu.sn') && !dto.email.endsWith('@unchk.sn')) {
     throw new Error('Les superviseurs doivent utiliser leur adresse institutionnelle (@unchk.edu.sn ou @unchk.sn)');
   }
@@ -50,7 +51,7 @@ export async function register(dto: RegisterDto): Promise<AuthResponse> {
         email:           dto.email,
         motDePasseHash:  hash,
         typeUtilisateur: dto.typeUtilisateur,
-        ...(dto.typeUtilisateur === 'etudiant' && {
+        ...(( dto.typeUtilisateur === 'etudiant' || dto.typeUtilisateur === 'diplome') && {
           etudiant: {
             create: {
               nom:            dto.nom    || '',

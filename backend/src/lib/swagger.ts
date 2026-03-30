@@ -72,7 +72,7 @@ Cette API respecte la Loi n° 2008-12 du 25 janvier 2008 sur la Protection des D
           properties: {
             id: { type: 'string', format: 'uuid' },
             email: { type: 'string', format: 'email' },
-            typeUtilisateur: { type: 'string', enum: ['etudiant', 'entreprise', 'admin', 'superviseur'] },
+            typeUtilisateur: { type: 'string', enum: ['etudiant', 'diplome', 'entreprise', 'admin', 'superviseur'] },
             estActif: { type: 'boolean' },
             dateCreation: { type: 'string', format: 'date-time' },
           },
@@ -128,7 +128,7 @@ Cette API respecte la Loi n° 2008-12 du 25 janvier 2008 sur la Protection des D
           properties: {
             email: { type: 'string', format: 'email' },
             motDePasse: { type: 'string', minLength: 8 },
-            typeUtilisateur: { type: 'string', enum: ['etudiant', 'entreprise'] },
+            typeUtilisateur: { type: 'string', enum: ['etudiant', 'diplome', 'entreprise'] },
             nom: { type: 'string' },
             prenom: { type: 'string' },
             nomEntreprise: { type: 'string' },

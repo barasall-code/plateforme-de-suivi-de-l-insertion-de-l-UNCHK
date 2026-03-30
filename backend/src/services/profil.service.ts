@@ -12,7 +12,7 @@ const UpdateEtudiantSchema = z.object({
   linkedinUrl:      z.string().url().optional().or(z.literal('')),
   photoUrl:         z.string().url().optional().or(z.literal('')),
   dateNaissance:    z.string().optional(),
-  situationActuelle: z.enum(['en_cours_etude', 'sous_contrat_stage', 'sous_contrat_cdd', 'sous_contrat_cdi', 'chomeur']).optional(),
+  situationActuelle: z.enum(['en_cours_etude', 'en_stage', 'sous_contrat_cdi', 'sous_contrat_cdd', 'sous_contrat_stage', 'freelance', 'entrepreneur', 'en_formation_continue', 'en_recherche_emploi', 'expatrie', 'sans_activite']).optional(),
 }).strict();
 
 const UpdateEntrepriseSchema = z.object({

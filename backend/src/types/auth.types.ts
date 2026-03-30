@@ -7,7 +7,7 @@ export interface JwtPayload {
 export interface RegisterDto {
   email: string;
   motDePasse: string;
-  typeUtilisateur: 'etudiant' | 'entreprise' | 'admin' | 'superviseur';
+  typeUtilisateur: 'etudiant' | 'diplome' | 'entreprise' | 'admin' | 'superviseur';
   nom?: string;
   prenom?: string;
   numeroEtudiant?: string;

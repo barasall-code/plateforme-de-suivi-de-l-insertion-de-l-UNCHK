@@ -52,6 +52,7 @@ export default function Login() {
         <div className="space-y-4">
           {[
             { icon: 'fa-solid fa-graduation-cap', label: 'Étudiants', desc: 'Trouvez des offres et suivez vos candidatures', to: '/register?type=etudiant' },
+            { icon: 'fa-solid fa-user-graduate', label: 'Diplômés', desc: 'Déclarez votre situation professionnelle post-diplôme', to: '/register?type=diplome' },
             { icon: 'fa-solid fa-building', label: 'Entreprises', desc: 'Publiez vos offres et recrutez les meilleurs talents', to: '/register?type=entreprise' },
             { icon: 'fa-solid fa-eye', label: 'Superviseurs', desc: 'Suivez l\'insertion de vos étudiants', to: '/register?type=superviseur' },
           ].map((item) => (

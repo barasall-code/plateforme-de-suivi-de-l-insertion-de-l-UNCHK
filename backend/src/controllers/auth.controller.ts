@@ -6,7 +6,7 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 const RegisterSchema = z.object({
   email:           z.string().email('Email invalide'),
   motDePasse:      z.string().min(8, 'Minimum 8 caracteres').max(100),
-  typeUtilisateur: z.enum(['etudiant', 'entreprise', 'admin', 'superviseur']),
+  typeUtilisateur: z.enum(['etudiant', 'diplome', 'entreprise', 'admin', 'superviseur']),
   nom:             z.string().min(1).optional(),
   prenom:          z.string().min(1).optional(),
   filiere:         z.string().optional(),
@@ -18,7 +18,7 @@ const RegisterSchema = z.object({
   secteurActivite: z.string().optional(),
   ville:           z.string().optional(),
   siteWeb:         z.string().optional(),
-  situationActuelle: z.enum(['en_cours_etude', 'sous_contrat_stage', 'sous_contrat_cdd', 'sous_contrat_cdi', 'chomeur']).optional(),
+  situationActuelle: z.enum(['en_cours_etude', 'en_stage', 'sous_contrat_cdi', 'sous_contrat_cdd', 'sous_contrat_stage', 'freelance', 'entrepreneur', 'en_formation_continue', 'en_recherche_emploi', 'expatrie', 'sans_activite']).optional(),
 });
 
 const LoginSchema = z.object({
