@@ -26,6 +26,7 @@ import superviseurRoutes from './routes/superviseur.routes';
 import uploadRoutes from './routes/upload.routes';
 import messagerieRoutes from './routes/messagerie.routes';
 import statutProfessionnelRoutes from './routes/statutProfessionnel.routes';
+import entrepriseRoutes from './routes/entreprise.routes';
 import competencesRoutes from './routes/competences.routes';
 
 const app = express();
@@ -87,6 +88,7 @@ app.use('/api/superviseur',   superviseurRoutes);
 app.use('/api/upload',        uploadRoutes);
 app.use('/api/messagerie',           messagerieRoutes);
 app.use('/api/statut-professionnel', statutProfessionnelRoutes);
+app.use('/api/entreprise', entrepriseRoutes);
 app.use('/api/competences',          competencesRoutes);
 
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
