@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import * as adminService from '../services/admin.service';
 import { auditLog } from '../lib/logger';
+import { prisma } from '../lib/prisma';
 
 export async function getStats(req: AuthRequest, res: Response): Promise<void> {
   try {
@@ -181,7 +182,7 @@ export async function getEtudiantsSansSupervision(req: AuthRequest, res: Respons
 }
 export async function marquerDiplome(req: AuthRequest, res: Response): Promise<void> {
   try {
-    const { id } = req.params;
+    const id = String(req.params.id);
     const user = await prisma.utilisateur.findUnique({ where: { id } });
     if (!user) { res.status(404).json({ success: false, message: 'Utilisateur non trouvé' }); return; }
     if (user.typeUtilisateur !== 'etudiant') { res.status(400).json({ success: false, message: 'Cet utilisateur n\'est pas un étudiant' }); return; }

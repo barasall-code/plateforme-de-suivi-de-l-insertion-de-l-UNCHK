@@ -39,7 +39,9 @@ echo.
 echo [OK] Les deux serveurs sont en cours de demarrage.
 echo.
 echo  Ouvrez votre navigateur sur : http://localhost:5173
-echo  Admin : admin@unchk.sn / Admin@1234
+
+/echo  Admin : admin@unchk.sn / Admin@1234
+
 echo.
 echo  Fermez les fenetres "UNCHK Backend" et "UNCHK Frontend" pour arreter.
 echo.

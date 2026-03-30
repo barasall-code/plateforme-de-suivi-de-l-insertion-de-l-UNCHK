@@ -15,6 +15,7 @@ export interface RegisterDto {
   niveauEtude?: string;
   promotion?: string;
   telephone?: string;
+  situationActuelle?: 'en_cours_etude' | 'en_stage' | 'sous_contrat_cdi' | 'sous_contrat_cdd' | 'sous_contrat_stage' | 'freelance' | 'entrepreneur' | 'en_formation_continue' | 'en_recherche_emploi' | 'expatrie' | 'sans_activite';
   nomEntreprise?: string;
   secteurActivite?: string;
   ville?: string;
