@@ -16,6 +16,27 @@ const SITUATION_LABELS: Record<string, string> = {
   en_recherche_emploi:            'Ch\u00f4meur',
 };
 
+// Options selon le rôle
+const OPTIONS_ETUDIANT = [
+  { value: 'en_cours_etude',   label: "En cours d'études" },
+  { value: 'en_stage',         label: 'En stage de formation' },
+  { value: 'sous_contrat_cdi', label: 'Emploi CDI' },
+  { value: 'sous_contrat_cdd', label: 'Emploi CDD' },
+  { value: 'en_recherche_emploi', label: "En recherche d'emploi" },
+];
+
+const OPTIONS_DIPLOME = [
+  { value: 'sous_contrat_cdi',      label: 'Emploi CDI' },
+  { value: 'sous_contrat_cdd',      label: 'Emploi CDD' },
+  { value: 'sous_contrat_stage',    label: 'Stage professionnel' },
+  { value: 'freelance',             label: 'Freelance / Indépendant' },
+  { value: 'entrepreneur',          label: "Entrepreneur / Créateur d'entreprise" },
+  { value: 'en_formation_continue', label: "Poursuite d'études / Formation continue" },
+  { value: 'en_recherche_emploi',   label: "En recherche d'emploi" },
+  { value: 'expatrie',              label: "En emploi à l'étranger" },
+  { value: 'sans_activite',         label: 'Sans activité déclarée' },
+];
+
 const SITUATION_COLORS: Record<string, string> = {
   en_cours_etude:     'bg-blue-100 text-blue-700',
   en_stage:              'bg-purple-100 text-purple-700',
@@ -39,6 +60,8 @@ export default function MonProfil() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [form, setForm] = useState<any>({});
+  const userRole = JSON.parse(localStorage.getItem('user') || '{}').role || 'etudiant';
+  const situationOptions = userRole === 'diplome' ? OPTIONS_DIPLOME : OPTIONS_ETUDIANT;
 
   // Upload états
   const [uploadingCv, setUploadingCv] = useState(false);
@@ -417,20 +440,10 @@ export default function MonProfil() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Statut actuel</label>
-                <select name="situationActuelle" value={form.situationActuelle || 'en_cours_etude'} onChange={handleChange}
+                <select name="situationActuelle" value={form.situationActuelle || (userRole === 'diplome' ? 'en_recherche_emploi' : 'en_cours_etude')} onChange={handleChange}
                   className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500">
-                  <option value="en_cours_etude">En cours d'études</option>
-                  <option value="en_stage">En stage de formation</option>
-                  <option value="sous_contrat_cdi">Emploi CDI</option>
-                  <option value="sous_contrat_cdd">Emploi CDD</option>
-                  <option value="sous_contrat_stage">Stage professionnel</option>
-                  <option value="freelance">Freelance / Indépendant</option>
-                  <option value="entrepreneur">Entrepreneur / Créateur d'entreprise</option>
-                  <option value="en_formation_continue">Poursuite d'études / Formation continue</option>
-                  <option value="en_recherche_emploi">En recherche d'emploi</option>
-                  <option value="expatrie">En emploi à l'étranger</option>
-                  <option value="sans_activite">Sans activité déclarée</option>
-                  <option value="en_recherche_emploi">Chômeur</option>
+                  {situationOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  
                 </select>
               </div>
               <div className="flex gap-4 pt-2">
