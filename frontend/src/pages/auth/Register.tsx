@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import api from '../../services/api';
 
 type Role = 'etudiant' | 'diplome' | 'entreprise';
@@ -7,7 +7,16 @@ type Role = 'etudiant' | 'diplome' | 'entreprise';
 export default function Register() {
   const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2>(1);
+  const [searchParams] = useSearchParams();
   const [role, setRole] = useState<Role | null>(null);
+
+  useEffect(() => {
+    const typeParam = searchParams.get('type') as Role | null;
+    if (typeParam && ['etudiant', 'diplome', 'entreprise'].includes(typeParam)) {
+      setRole(typeParam);
+      setStep(2);
+    }
+  }, [searchParams]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
