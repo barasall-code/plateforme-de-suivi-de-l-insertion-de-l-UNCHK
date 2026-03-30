@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import { exportRapportInstitutionnel } from '../../utils/exportStats';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
@@ -87,10 +88,10 @@ export default function DashboardDirection() {
             </p>
           </div>
           <button
-            onClick={() => window.print()}
+            onClick={() => exportRapportInstitutionnel(stats, avancees)}
             className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-            <i className="fa-solid fa-file-pdf"></i>
-            Exporter rapport
+            <i className="fa-solid fa-file-csv"></i>
+            Exporter CSV
           </button>
         </div>
 

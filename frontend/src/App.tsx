@@ -28,6 +28,9 @@ import Register from './pages/auth/Register';
 import Dashboard from './pages/Dashboard';
 import DashboardDiplome from './pages/diplome/DashboardDiplome';
 import DashboardDirection from './pages/direction/DashboardDirection';
+import RechercheProfiles from './pages/entreprise/RechercheProfiles';
+import MarqueEmployeur from './pages/entreprise/MarqueEmployeur';
+import IndicateursPedagogiques from './pages/superviseur/IndicateursPedagogiques';
 import ListeOffres from './pages/offres/ListeOffres';
 import DetailOffre from './pages/offres/DetailOffre';
 import MesCandidatures from './pages/candidatures/MesCandidatures';
@@ -134,6 +137,21 @@ function App() {
           <Route path="/direction/dashboard" element={
             <ProtectedRoute roles={['admin']}>
               <DashboardDirection />
+            </ProtectedRoute>
+          } />
+          <Route path="/entreprise/profils" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <RechercheProfiles />
+            </ProtectedRoute>
+          } />
+          <Route path="/entreprise/marque" element={
+            <ProtectedRoute roles={['entreprise']}>
+              <MarqueEmployeur />
+            </ProtectedRoute>
+          } />
+          <Route path="/superviseur/indicateurs" element={
+            <ProtectedRoute roles={['superviseur', 'admin']}>
+              <IndicateursPedagogiques />
             </ProtectedRoute>
           } />
           <Route path="/diplome/dashboard" element={

@@ -100,6 +100,7 @@ export default function DashboardSuperviseur() {
             {[
               { to: '/superviseur/etudiants', label: 'Mes étudiants', icon: 'fa-solid fa-graduation-cap' },
               { to: '/offres', label: 'Offres', icon: 'fa-solid fa-briefcase' },
+              { to: '/superviseur/indicateurs', label: 'Indicateurs', icon: 'fa-solid fa-chart-bar' },
               { to: '/superviseur/profil', label: 'Mon profil', icon: 'fa-solid fa-user' },
             ].map(({ to, label, icon }) => (
               <Link key={to} to={to}
