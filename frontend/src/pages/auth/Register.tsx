@@ -102,27 +102,45 @@ export default function Register() {
         </div>
 
         <div>
-          <h1 className="text-4xl font-bold text-white mb-6 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            Rejoignez la<br />communauté<br />UNCHK
+          <h1 className="text-4xl font-bold text-white mb-4 leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            {role === 'etudiant'   ? <>Espace<br />Étudiant<br />UNCHK</> :
+             role === 'diplome'    ? <>Espace<br />Diplômé<br />UNCHK</> :
+             role === 'entreprise' ? <>Espace<br />Entreprise<br />UNCHK</> :
+             <>Rejoignez la<br />communauté<br />UNCHK</>}
           </h1>
-          <p className="text-white text-lg mb-10 font-semibold drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
-            Créez votre compte et accédez à toutes les opportunités professionnelles.
+          <p className="text-white text-base mb-6 font-semibold drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+            {role === 'etudiant'   ? "Accédez aux offres de stage et d'emploi et suivez vos candidatures." :
+             role === 'diplome'    ? "Déclarez votre situation professionnelle et restez connecté au réseau UNCHK." :
+             role === 'entreprise' ? "Publiez vos offres, gérez vos candidatures et recrutez les meilleurs talents." :
+             "Créez votre compte et accédez à toutes les opportunités professionnelles."}
           </p>
-
-          <div className="space-y-4">
-            {[
-              { icon: 'fa-solid fa-graduation-cap', label: 'Étudiant', desc: 'Postulez aux offres de stage et d\'emploi' },
-              { icon: 'fa-solid fa-user-graduate', label: 'Diplômé', desc: 'Déclarez votre situation professionnelle post-diplôme' },
-              { icon: 'fa-solid fa-building', label: 'Entreprise', desc: 'Publiez vos offres et trouvez des talents' },
-            ].map((item) => (
-              <div key=<i className={item.label}></i> className={`flex items-center gap-4 rounded-xl p-4 transition ${
-                role === item.label.toLowerCase() ? 'bg-black/50 border border-white/40' : 'bg-black/40 border border-white/20'
-              }`}>
-                <span className="text-2xl"><i className={item.icon}></i></span>
-                <div>
-                  <p className="text-white font-semibold"><i className={item.label}></i></p>
-                  <p className="text-white text-sm font-medium">{item.desc}</p>
-                </div>
+          <div className="space-y-3">
+            {(role === 'etudiant' ? [
+              { icon: 'fa-solid fa-briefcase',   desc: "Consultez des centaines d'offres de stage et d'emploi" },
+              { icon: 'fa-solid fa-paper-plane', desc: "Postulez en ligne en quelques clics" },
+              { icon: 'fa-solid fa-chart-line',  desc: "Suivez l'état de vos candidatures en temps réel" },
+              { icon: 'fa-solid fa-star',        desc: "Valorisez vos compétences et votre profil" },
+              { icon: 'fa-solid fa-bell',        desc: "Recevez des alertes pour chaque nouvelle offre" },
+            ] : role === 'diplome' ? [
+              { icon: 'fa-solid fa-chart-bar',      desc: "Déclarez votre situation professionnelle post-diplôme" },
+              { icon: 'fa-solid fa-briefcase',      desc: "Accédez aux offres CDI, CDD et Freelance" },
+              { icon: 'fa-solid fa-network-wired',  desc: "Restez connecté au réseau des diplômés UNCHK" },
+              { icon: 'fa-solid fa-user',           desc: "Complétez votre profil pour vous démarquer" },
+              { icon: 'fa-solid fa-graduation-cap', desc: "Contribuez aux statistiques d'insertion de l'UNCHK" },
+            ] : role === 'entreprise' ? [
+              { icon: 'fa-solid fa-bullhorn',    desc: "Publiez vos offres de stage et d'emploi" },
+              { icon: 'fa-solid fa-users',       desc: "Accédez aux profils des étudiants et diplômés UNCHK" },
+              { icon: 'fa-solid fa-file-lines',  desc: "Gérez vos candidatures depuis un tableau de bord dédié" },
+              { icon: 'fa-solid fa-comments',    desc: "Communiquez directement avec les candidats" },
+              { icon: 'fa-solid fa-handshake',   desc: "Construisez des partenariats durables avec l'UNCHK" },
+            ] : [
+              { icon: 'fa-solid fa-graduation-cap', desc: "Étudiants — Postulez aux offres de stage et d'emploi" },
+              { icon: 'fa-solid fa-user-graduate',  desc: "Diplômés — Déclarez votre situation professionnelle" },
+              { icon: 'fa-solid fa-building',       desc: "Entreprises — Publiez vos offres et recrutez" },
+            ]).map((item, i) => (
+              <div key={i} className="flex items-center gap-3 bg-black/40 backdrop-blur-sm rounded-xl p-3 border border-white/20">
+                <span className="text-lg text-green-300 w-7 text-center"><i className={item.icon}></i></span>
+                <p className="text-white text-sm font-medium">{item.desc}</p>
               </div>
             ))}
           </div>
