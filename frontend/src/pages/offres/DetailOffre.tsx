@@ -179,7 +179,7 @@ export default function DetailOffre() {
             <p className="text-gray-600 leading-relaxed">{offre.description}</p>
           </div>
 
-          {user?.role === 'etudiant' ? (
+          {(user?.role === 'etudiant' || user?.role === 'diplome') ? (
             success ? (
               <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl">
                 {success}
@@ -192,13 +192,13 @@ export default function DetailOffre() {
             )
           ) : (
             <div className="bg-blue-50 border border-blue-100 text-blue-600 px-4 py-3 rounded-xl text-sm">
-              ℹ️ Connectez-vous en tant qu'étudiant pour postuler à cette offre.
+              ℹ️ Connectez-vous en tant qu'étudiant ou diplômé pour postuler à cette offre.
             </div>
           )}
         </div>
 
         {/* Formulaire candidature */}
-        {showForm && user?.role === 'etudiant' && (
+        {showForm && (user?.role === 'etudiant' || user?.role === 'diplome') && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
             <h3 className="text-xl font-bold text-gray-800 mb-6">Votre candidature</h3>
 

@@ -3,6 +3,7 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 import * as adminService from '../services/admin.service';
 import { auditLog } from '../lib/logger';
 import { prisma } from '../lib/prisma';
+import { getNonRepondants as fetchNonRepondants, relancerManuellement } from '../jobs/relance.job';
 
 export async function getStats(req: AuthRequest, res: Response): Promise<void> {
   try {
@@ -191,6 +192,51 @@ export async function marquerDiplome(req: AuthRequest, res: Response): Promise<v
       data: { typeUtilisateur: 'diplome' }
     });
     res.json({ success: true, message: 'Étudiant marqué comme diplômé', data: { id: updated.id, typeUtilisateur: updated.typeUtilisateur } });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function getNonRepondants(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const nonRepondants = await fetchNonRepondants();
+    res.json({ success: true, data: nonRepondants, total: nonRepondants.length });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function relancerDiplomes(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const result = await relancerManuellement();
+    res.json({ success: true, message: (result.count) + ' diplômé(s) relancé(s)', data: result });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function signalerStatut(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const id = req.params.id as string;
+    const { motif } = req.body;
+    const statut = await prisma.statutProfessionnel.update({
+      where: { id },
+      data: { estValide: false }
+    });
+    res.json({ success: true, message: 'Déclaration signalée comme douteuse', data: statut });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+}
+
+export async function validerStatut(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    const id = req.params.id as string;
+    const statut = await prisma.statutProfessionnel.update({
+      where: { id },
+      data: { estValide: true, idValidateur: req.user!.userId, dateValidation: new Date() }
+    });
+    res.json({ success: true, message: 'Déclaration validée', data: statut });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }

@@ -8,6 +8,7 @@ import path from 'path';
 import logger from './lib/logger';
 import { swaggerSpec } from './lib/swagger';
 import { startPurgeJobs } from './jobs/purge.job';
+import { startRelanceJob } from './jobs/relance.job';
 
 dotenv.config();
 
@@ -113,6 +114,7 @@ const server = app.listen(PORT, () => {
   // Démarrage des tâches cron de purge (tokens et emails expirés)
   if (process.env.NODE_ENV !== 'test') {
     startPurgeJobs();
+  startRelanceJob();
   }
 });
 

@@ -294,6 +294,7 @@ export default function DashboardAdmin() {
                 {/* Navigation cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
+                    { to: '/admin/relances', icon: 'fa-solid fa-bell', title: 'Relances diplômés', desc: 'Gérer les non-répondants et envoyer des relances', badge: 0, badgeColor: '', borderHover: 'hover:border-orange-300' },
                     { to: '/direction/dashboard', icon: 'fa-solid fa-chart-pie', title: 'Pilotage direction', desc: "Tableau de bord stratégique pour la direction de l'UNCHK", badge: 0, badgeColor: '', borderHover: 'hover:border-green-300' },
                     { to: '/admin/offres', icon: 'fa-solid fa-file-lines', title: 'Valider les offres', desc: 'Publier et gérer les offres des entreprises', badge: stats?.offresEnAttente ?? 0, badgeColor: 'bg-amber-100 text-amber-700', borderHover: 'hover:border-amber-300' },
                     { to: '/admin/entreprises', icon: 'fa-solid fa-building', title: 'Gérer les entreprises', desc: 'Valider, rejeter et gérer les comptes entreprises', badge: stats?.entreprisesEnAttente ?? 0, badgeColor: 'bg-yellow-100 text-yellow-700', borderHover: 'hover:border-yellow-300' },

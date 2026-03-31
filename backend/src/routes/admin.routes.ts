@@ -320,6 +320,15 @@ router.post('/supervisions', authenticate, authorize('admin'), adminController.a
  */
 router.delete('/supervisions/:superviseurId/:etudiantId', authenticate, authorize('admin'), adminController.supprimerSupervision);
 
-export default router;
 // Marquer un étudiant comme diplômé
 router.put('/utilisateurs/:id/diplomer', authenticate, authorize('admin'), adminController.marquerDiplome);
+
+// Non-répondants et relance
+router.get('/diplomes/non-repondants', authenticate, authorize('admin'), adminController.getNonRepondants);
+router.post('/diplomes/relancer', authenticate, authorize('admin'), adminController.relancerDiplomes);
+
+// Flag déclaration douteuse
+router.put('/statuts/:id/signaler', authenticate, authorize('admin'), adminController.signalerStatut);
+router.put('/statuts/:id/valider', authenticate, authorize('admin'), adminController.validerStatut);
+
+export default router;
