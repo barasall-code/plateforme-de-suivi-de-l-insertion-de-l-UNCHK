@@ -10,8 +10,8 @@ export default function IndicateursPedagogiques() {
 
   useEffect(() => {
     Promise.all([
-      api.get('/admin/stats/avancees'),
-      api.get('/superviseur/mes-etudiants'),
+      api.get('/superviseur/stats'),
+      api.get('/superviseur/etudiants'),
     ]).then(([s, e]) => {
       setStats(s.data?.data);
       setEtudiants(e.data?.data || []);
@@ -21,14 +21,20 @@ export default function IndicateursPedagogiques() {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><i className="fa-solid fa-spinner fa-spin text-3xl text-purple-600"></i></div>;
 
   // Calcul indicateurs pédagogiques
-  const parFiliere = stats?.parFiliere?.filter((f: any) => f.filiere) || [];
-  const parNiveau = stats?.parNiveau || [];
-  const parTypeOffre = stats?.parTypeOffre || [];
-  const total = etudiants.length;
+  const SITUATION_LABELS_FR: Record<string, string> = {
+    en_cours_etude: 'En études', en_stage: 'En stage', sous_contrat_cdi: 'CDI',
+    sous_contrat_cdd: 'CDD', sous_contrat_stage: 'Stage pro', freelance: 'Freelance',
+    entrepreneur: 'Entrepreneur', en_formation_continue: 'Formation', 
+    en_recherche_emploi: 'Recherche', expatrie: 'Expatrié', sans_activite: 'Inactif'
+  };
+  const parFiliere = Object.entries(stats?.parSituationActuelle || {}).map(([k,v]) => ({filiere: SITUATION_LABELS_FR[k] || k, nombre: v})).filter(x => (x.nombre as number) > 0);
+  const parNiveau = stats?.parNiveauEtude ? Object.entries(stats.parNiveauEtude).filter(([k,v]) => (v as number) > 0).map(([k,v]) => ({niveau: k, nombre: v})) : [];
+  const parTypeOffre = stats?.parTypeContrat ? Object.entries(stats.parTypeContrat).filter(([k,v]) => (v as number) > 0).map(([k,v]) => ({type: k, nombre: v})) : [];
+  const total = stats?.totalEtudiants || etudiants.length;
   const inserés = etudiants.filter((e: any) =>
     e.etudiant?.situationActuelle && e.etudiant.situationActuelle !== 'en_cours_etude' && e.etudiant.situationActuelle !== 'en_recherche_emploi'
   ).length;
-  const tauxInsertion = total > 0 ? Math.round(inserés / total * 100) : 0;
+  const tauxInsertion = stats?.tauxInsertion || 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -156,7 +162,7 @@ export default function IndicateursPedagogiques() {
                 {etudiants.slice(0, 6).map((e: any) => {
                   const LABELS: Record<string, string> = {
                     en_cours_etude: 'En études', en_stage: 'En stage',
-                    sous_contrat_cdi: 'CDI', sous_contrat_cdd: 'CDD',
+                    sous_contrat_cdi: 'CDI', sous_contrat_cdd: 'CDD', sous_contrat_stage: 'Stage pro',
                     en_recherche_emploi: 'En recherche', freelance: 'Freelance',
                   };
                   const sit = e.etudiant?.situationActuelle;
