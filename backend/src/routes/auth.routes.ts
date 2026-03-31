@@ -6,7 +6,7 @@ import { prisma } from '../lib/prisma';
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100,
   message: { success: false, message: 'Trop de tentatives. Reessayez dans 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
