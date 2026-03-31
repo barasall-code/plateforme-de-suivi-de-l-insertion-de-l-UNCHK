@@ -29,6 +29,7 @@ import Dashboard from './pages/Dashboard';
 import DashboardDiplome from './pages/diplome/DashboardDiplome';
 import DashboardDirection from './pages/direction/DashboardDirection';
 import GestionRelances from './pages/admin/GestionRelances';
+import GestionDeclarations from './pages/admin/GestionDeclarations';
 import RechercheProfiles from './pages/entreprise/RechercheProfiles';
 import MarqueEmployeur from './pages/entreprise/MarqueEmployeur';
 import IndicateursPedagogiques from './pages/superviseur/IndicateursPedagogiques';
@@ -135,6 +136,11 @@ function App() {
           } />
 
           {/* Routes entreprise */}
+          <Route path="/admin/declarations" element={
+            <ProtectedRoute roles={['admin']}>
+              <GestionDeclarations />
+            </ProtectedRoute>
+          } />
           <Route path="/admin/relances" element={
             <ProtectedRoute roles={['admin']}>
               <GestionRelances />

@@ -328,6 +328,21 @@ router.get('/diplomes/non-repondants', authenticate, authorize('admin'), adminCo
 router.post('/diplomes/relancer', authenticate, authorize('admin'), adminController.relancerDiplomes);
 
 // Flag déclaration douteuse
+router.get('/statuts-professionnels', authenticate, authorize('admin'), async (req, res) => {
+  try {
+    const { prisma } = await import('../lib/prisma');
+    const statuts = await prisma.statutProfessionnel.findMany({
+      include: {
+        etudiant: { select: { id: true, nom: true, prenom: true, filiere: true } }
+      },
+      orderBy: { dateDeclaration: 'desc' }
+    });
+    res.json({ success: true, data: statuts });
+  } catch (e: any) {
+    res.status(400).json({ success: false, message: e.message });
+  }
+});
+
 router.put('/statuts/:id/signaler', authenticate, authorize('admin'), adminController.signalerStatut);
 router.put('/statuts/:id/valider', authenticate, authorize('admin'), adminController.validerStatut);
 

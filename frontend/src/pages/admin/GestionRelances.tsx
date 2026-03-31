@@ -34,22 +34,16 @@ export default function GestionRelances() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b sticky top-0 z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link to="/admin/dashboard" className="text-gray-400 hover:text-gray-600">
-              <i className="fa-solid fa-arrow-left"></i>
-            </Link>
-            <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-9 w-auto" /></Link>
-          </div>
-          <h1 className="font-bold text-gray-800">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link to="/"><img src="/logo2_unchk.png" alt="UNCHK" className="h-9 w-auto" /></Link>
+          <h1 className="font-bold text-gray-800 text-base">
             <i className="fa-solid fa-bell mr-2 text-orange-500"></i>
             Gestion des relances — Diplômés
           </h1>
-          <div className="flex items-center gap-3">
-            <Link to="/admin/utilisateurs" className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
-              <i className="fa-solid fa-users"></i> Utilisateurs
-            </Link>
-          </div>
+          <button onClick={() => window.history.back()}
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition">
+            <i className="fa-solid fa-arrow-left"></i> Retour
+          </button>
         </div>
       </header>
 
