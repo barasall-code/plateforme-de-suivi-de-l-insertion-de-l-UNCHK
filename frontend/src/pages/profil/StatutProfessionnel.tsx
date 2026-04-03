@@ -208,6 +208,10 @@ export default function StatutProfessionnel() {
             <h3 className="font-semibold text-gray-800 mb-6">
               {editingId ? <><i className="fa-solid fa-pen mr-1"></i> Modifier la déclaration</> : <><i className="fa-solid fa-pen-to-square"></i> Nouvelle déclaration</>}
             </h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-700">
+              <i className="fa-solid fa-circle-info mr-2"></i>
+              Déclarez votre situation professionnelle actuelle. Ces informations sont confidentielles et permettent à l'UNCHK de suivre l'insertion de ses diplômés.
+            </div>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
             )}

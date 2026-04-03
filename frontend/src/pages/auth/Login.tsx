@@ -27,7 +27,18 @@ export default function Login() {
       else navigate('/dashboard');
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
-      setError(e.response?.data?.message || 'Email ou mot de passe incorrect');
+      const msg = e.response?.data?.message || '';
+      if (msg.includes('mot de passe') || msg.includes('incorrect') || e.response?.status === 401) {
+        setError('Mot de passe incorrect. Vérifiez votre saisie et réessayez.');
+      } else if (msg.includes('actif') || msg.includes('desactive')) {
+        setError('Votre compte a été désactivé. Contactez l\'administrateur UNCHK.');
+      } else if (msg.includes('email') || msg.includes('introuvable')) {
+        setError('Aucun compte trouvé avec cet email. Vérifiez l\'adresse ou créez un compte.');
+      } else if (e.response?.status === 429) {
+        setError('Trop de tentatives de connexion. Veuillez patienter quelques minutes.');
+      } else {
+        setError('Connexion impossible. Vérifiez vos identifiants et réessayez.');
+      }
     } finally {
       setIsLoading(false);
     }
