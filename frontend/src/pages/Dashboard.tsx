@@ -88,6 +88,11 @@ export default function Dashboard() {
           </Link>
 
           {/* Navigation centrale */}
+          {/* Menu hamburger mobile */}
+          <button className="md:hidden flex items-center p-2 rounded-lg text-gray-600 hover:bg-gray-100"
+            onClick={() => setMenuOpen(!menuOpen)}>
+            <i className={`fa-solid ${menuOpen ? 'fa-xmark' : 'fa-bars'} text-lg`}></i>
+          </button>
           <div className="hidden md:flex items-center gap-1">
             {[
               { to: '/offres', label: 'Offres', icon: 'fa-solid fa-briefcase' },
