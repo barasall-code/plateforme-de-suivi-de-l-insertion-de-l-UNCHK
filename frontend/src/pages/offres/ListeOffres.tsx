@@ -31,8 +31,12 @@ export default function ListeOffres() {
     typeOffre: '',
     modeTravail: '',
     niveauRequis: '',
+    secteur: '',
+    localisation: '',
   });
   const [showFiltres, setShowFiltres] = useState(false);
+  const [alerteSauvegardee, setAlerteSauvegardee] = useState(false);
+  const [alerteMessage, setAlerteMessage] = useState('');
 
   useEffect(() => {
     chargerOffres();
@@ -46,6 +50,8 @@ export default function ListeOffres() {
       if (filtres.typeOffre) params.append('typeOffre', filtres.typeOffre);
       if (filtres.modeTravail) params.append('modeTravail', filtres.modeTravail);
       if (filtres.niveauRequis) params.append('niveauRequis', filtres.niveauRequis);
+      if (filtres.secteur) params.append('secteur', filtres.secteur);
+      if (filtres.localisation) params.append('localisation', filtres.localisation);
       if (search) params.append('search', search);
       const response = await api.get(`/offres?${params.toString()}`);
       setOffres(response.data.data.offres);
@@ -61,6 +67,34 @@ export default function ListeOffres() {
   const handleSearch = () => {
     setPage(1);
     chargerOffres();
+  };
+
+  const sauvegarderAlerte = async () => {
+    const criteres = Object.entries(filtres).filter(([,v]) => v !== '').map(([k,v]) => k + '=' + v).join('&');
+    if (!criteres && !recherche) {
+      setAlerteMessage('⚠️ Définissez au moins un critère avant de sauvegarder une alerte.');
+      setTimeout(() => setAlerteMessage(''), 3000);
+      return;
+    }
+    try {
+      const token = localStorage.getItem('accessToken');
+      await fetch('http://localhost:3001/api/notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({
+          titre: '🔔 Alerte offres sauvegardée',
+          message: 'Vous serez notifié des nouvelles offres correspondant à vos critères : ' + (recherche ? 'mot-clé=' + recherche + ' ' : '') + criteres,
+          typeNotification: 'offre',
+          lienAction: '/offres?' + (recherche ? 'q=' + recherche + '&' : '') + criteres
+        })
+      });
+      setAlerteSauvegardee(true);
+      setAlerteMessage('✅ Alerte sauvegardée ! Vous serez notifié des nouvelles offres correspondantes.');
+      setTimeout(() => { setAlerteMessage(''); setAlerteSauvegardee(false); }, 4000);
+    } catch {
+      setAlerteMessage("❌ Erreur lors de la sauvegarde de l'alerte.");
+      setTimeout(() => setAlerteMessage(''), 3000);
+    }
   };
 
   const handleFiltreChange = (key: string, value: string) => {
@@ -157,7 +191,8 @@ export default function ListeOffres() {
 
         {/* Filtres */}
         {showFiltres && (
-          <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6 grid grid-cols-3 gap-4">
+          <div className="mb-6">
+          <div className="bg-white rounded-xl border border-gray-200 p-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Type d'offre</label>
               <select value={filtres.typeOffre} onChange={(e) => handleFiltreChange('typeOffre', e.target.value)}
@@ -190,6 +225,52 @@ export default function ListeOffres() {
                 <option value="doctorat">Doctorat</option>
               </select>
             </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Secteur</label>
+              <select value={filtres.secteur} onChange={(e) => handleFiltreChange('secteur', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Tous secteurs</option>
+                <option value="Informatique">Informatique</option>
+                <option value="Data">Data / IA</option>
+                <option value="Design">Design / UX</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Finance">Finance</option>
+                <option value="RH">Ressources humaines</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Localisation</label>
+              <select value={filtres.localisation} onChange={(e) => handleFiltreChange('localisation', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+                <option value="">Toutes villes</option>
+                <option value="Dakar">Dakar</option>
+                <option value="Thiès">Thiès</option>
+                <option value="Saint-Louis">Saint-Louis</option>
+                <option value="Touba">Touba</option>
+                <option value="Kaolack">Kaolack</option>
+                <option value="Ziguinchor">Ziguinchor</option>
+                <option value="Bambey">Bambey</option>
+                <option value="International">International</option>
+              </select>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 mt-3">
+            <button onClick={resetFiltres}
+              className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
+              <i className="fa-solid fa-rotate-right"></i> Réinitialiser
+            </button>
+            <button onClick={sauvegarderAlerte}
+              className="flex items-center gap-2 text-sm bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded-lg transition font-medium">
+              <i className="fa-solid fa-bell"></i> Créer une alerte
+            </button>
+          </div>
+          {alerteMessage && (
+            <div className={`mt-3 px-4 py-3 rounded-lg text-sm font-medium ${alerteMessage.startsWith('✅') ? 'bg-green-50 text-green-700 border border-green-200' : alerteMessage.startsWith('⚠️') ? 'bg-yellow-50 text-yellow-700 border border-yellow-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+              {alerteMessage}
+            </div>
+          )}
           </div>
         )}
 
