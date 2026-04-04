@@ -254,6 +254,11 @@ model StatutProfessionnel {
   dateFin           DateTime?
   secteurActivite   String?
   ville             String?
+  typePosteRecherche String?
+  disponibilite      String?
+  nomFormation       String?
+  etablissement      String?
+  niveauVise         String?
   pays              String?
   justificatifUrl   String?
   estValide         Boolean                 @default(false)

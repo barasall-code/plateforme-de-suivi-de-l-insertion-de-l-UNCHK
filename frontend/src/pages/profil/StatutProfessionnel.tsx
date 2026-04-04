@@ -299,6 +299,82 @@ export default function StatutProfessionnel() {
                 </div>
               </div>
 
+              {/* ── Champs dédiés "En recherche d'emploi" ── */}
+              {form.typeStatut === 'en_recherche' && (
+                <div className="border border-yellow-200 bg-yellow-50 rounded-xl p-4 mt-2">
+                  <p className="text-sm font-semibold text-yellow-700 mb-3">
+                    <i className="fa-solid fa-magnifying-glass mr-2"></i>
+                    Détails de votre recherche d'emploi
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Type de poste recherché</label>
+                      <select name="typePosteRecherche" value={form.typePosteRecherche} onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white">
+                        <option value="">Sélectionner...</option>
+                        <option value="developpeur">Développeur / Ingénieur logiciel</option>
+                        <option value="data">Data Analyst / Data Scientist</option>
+                        <option value="gestion">Gestionnaire / Comptable</option>
+                        <option value="marketing">Marketing / Communication</option>
+                        <option value="rh">Ressources humaines</option>
+                        <option value="commercial">Commercial / Business développement</option>
+                        <option value="enseignant">Enseignant / Formateur</option>
+                        <option value="ingenieur">Ingénieur (autre)</option>
+                        <option value="autre">Autre</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Disponibilité</label>
+                      <select name="disponibilite" value={form.disponibilite} onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-white">
+                        <option value="">Sélectionner...</option>
+                        <option value="immediate">Immédiate</option>
+                        <option value="1_mois">Dans 1 mois</option>
+                        <option value="3_mois">Dans 3 mois</option>
+                        <option value="6_mois">Dans 6 mois</option>
+                        <option value="non_definie">Non définie</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── Champs dédiés "En formation" ── */}
+              {form.typeStatut === 'en_formation' && (
+                <div className="border border-blue-200 bg-blue-50 rounded-xl p-4 mt-2">
+                  <p className="text-sm font-semibold text-blue-700 mb-3">
+                    <i className="fa-solid fa-graduation-cap mr-2"></i>
+                    Détails de votre formation
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Intitulé de la formation *</label>
+                      <input type="text" name="nomFormation" value={form.nomFormation} onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Ex: Master en Intelligence Artificielle" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Établissement *</label>
+                      <input type="text" name="etablissement" value={form.etablissement} onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Ex: UNCHK, UCAD, École Polytechnique..." />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Niveau visé</label>
+                      <select name="niveauVise" value={form.niveauVise} onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        <option value="">Sélectionner...</option>
+                        <option value="licence">Licence (Bac+3)</option>
+                        <option value="master">Master (Bac+5)</option>
+                        <option value="doctorat">Doctorat (Bac+8)</option>
+                        <option value="certification">Certification professionnelle</option>
+                        <option value="formation_courte">Formation courte</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-3 pt-2">
                 <button type="submit" disabled={isSaving}
                   className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white font-medium py-2.5 rounded-lg transition">
