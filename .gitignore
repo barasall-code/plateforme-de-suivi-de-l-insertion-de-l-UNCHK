@@ -5,3 +5,6 @@ dist/
 uploads/
 *.log
 .DS_Store
+backend/prisma/seed-admin.ts
+backend/prisma/seed-demo.ts
+backend/prisma/update-admin.ts
