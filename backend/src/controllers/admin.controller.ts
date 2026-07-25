@@ -4,6 +4,7 @@ import * as adminService from '../services/admin.service';
 import { auditLog } from '../lib/logger';
 import { prisma } from '../lib/prisma';
 import { getNonRepondants as fetchNonRepondants, relancerManuellement } from '../jobs/relance.job';
+import { cacheInvalidate } from '../lib/redis';
 
 export async function getStats(req: AuthRequest, res: Response): Promise<void> {
   try {
@@ -44,6 +45,7 @@ export async function getEntreprises(req: AuthRequest, res: Response): Promise<v
 export async function validerEntreprise(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.validerEntreprise(req.params.id as string);
+    await cacheInvalidate('cache:GET:/stats*');
     auditLog('VALIDER_ENTREPRISE', req.user?.userId, `entreprise:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
@@ -92,6 +94,7 @@ export async function getOffresEnAttente(req: AuthRequest, res: Response): Promi
 export async function validerOffre(req: AuthRequest, res: Response): Promise<void> {
   try {
     const result = await adminService.validerOffre(req.params.id as string);
+    await cacheInvalidate('cache:GET:/:*', `cache:GET:/${req.params.id}:*`, 'cache:GET:/stats*');
     auditLog('VALIDER_OFFRE', req.user?.userId, `offre:${req.params.id}`);
     res.status(200).json({ success: true, data: result });
   } catch (error: any) {
@@ -236,6 +239,7 @@ export async function validerStatut(req: AuthRequest, res: Response): Promise<vo
       where: { id },
       data: { estValide: true, idValidateur: req.user!.userId, dateValidation: new Date() }
     });
+    await cacheInvalidate('cache:GET:/stats*');
     res.json({ success: true, message: 'Déclaration validée', data: statut });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });

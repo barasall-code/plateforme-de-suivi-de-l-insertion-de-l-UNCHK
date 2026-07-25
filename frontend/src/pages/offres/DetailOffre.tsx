@@ -61,7 +61,7 @@ export default function DetailOffre() {
       const url = await uploadFichier(file, 'cv');
       setCvUrl(url);
     } catch (err) {
-      setError('Erreur lors du téléchargement du CV');
+      setError(err.response?.data?.message || 'Erreur lors du téléchargement du CV');
     } finally {
       setUploadingCv(false);
     }
@@ -76,7 +76,7 @@ export default function DetailOffre() {
       const url = await uploadFichier(file, 'lettre');
       setLettreUrl(url);
     } catch (err) {
-      setError('Erreur lors du téléchargement de la lettre');
+      setError(err.response?.data?.message || 'Erreur lors du téléchargement de la lettre');
     } finally {
       setUploadingLettre(false);
     }
@@ -91,7 +91,7 @@ export default function DetailOffre() {
       const url = await uploadFichier(file, 'diplome');
       setDiplomeUrl(url);
     } catch (err) {
-      setError('Erreur lors du téléchargement du diplôme');
+      setError(err.response?.data?.message || 'Erreur lors du téléchargement du diplôme');
     } finally {
       setUploadingDiplome(false);
     }

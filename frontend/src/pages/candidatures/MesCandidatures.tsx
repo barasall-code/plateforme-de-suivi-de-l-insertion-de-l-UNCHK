@@ -29,7 +29,7 @@ export default function MesCandidatures() {
       const data = await getMesCandidatures();
       setCandidatures(data);
     } catch (err: any) {
-      setError('Erreur lors du chargement des candidatures');
+      setError(err.response?.data?.message || 'Erreur lors du chargement des candidatures');
     } finally {
       setIsLoading(false);
     }

@@ -29,7 +29,9 @@ const LoginSchema = z.object({
 export async function register(req: Request, res: Response): Promise<void> {
   const validation = RegisterSchema.safeParse(req.body);
   if (!validation.success) {
-    res.status(422).json({ success: false, errors: validation.error.flatten().fieldErrors });
+    const fieldErrors = validation.error.flatten().fieldErrors;
+    const firstError = Object.values(fieldErrors).flat()[0] || 'Donnees invalides';
+    res.status(422).json({ success: false, message: firstError, errors: fieldErrors });
     return;
   }
   try {
@@ -43,7 +45,9 @@ export async function register(req: Request, res: Response): Promise<void> {
 export async function login(req: Request, res: Response): Promise<void> {
   const validation = LoginSchema.safeParse(req.body);
   if (!validation.success) {
-    res.status(422).json({ success: false, errors: validation.error.flatten().fieldErrors });
+    const fieldErrors = validation.error.flatten().fieldErrors;
+    const firstError = Object.values(fieldErrors).flat()[0] || 'Donnees invalides';
+    res.status(422).json({ success: false, message: firstError, errors: fieldErrors });
     return;
   }
   try {

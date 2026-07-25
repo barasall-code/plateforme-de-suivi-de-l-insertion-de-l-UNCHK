@@ -130,7 +130,7 @@ export default function MonProfil() {
       setSuccess('CV uploadé avec succès !');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Erreur lors du téléchargement du CV');
+      setError(err.response?.data?.message || 'Erreur lors du téléchargement du CV');
     } finally {
       setUploadingCv(false);
     }
@@ -153,7 +153,7 @@ export default function MonProfil() {
       setSuccess('Photo uploadée avec succès !');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError('Erreur lors du téléchargement de la photo');
+      setError(err.response?.data?.message || 'Erreur lors du téléchargement de la photo');
     } finally {
       setUploadingPhoto(false);
     }
