@@ -18,7 +18,7 @@ export default function Login() {
     try {
       await login(email, motDePasse);
       // Lire le role depuis le contexte mis à jour par login()
-      const savedUser = localStorage.getItem('user');
+      const savedUser = sessionStorage.getItem('user');
       const parsedUser = savedUser ? JSON.parse(savedUser) : null;
       if (parsedUser?.role === 'entreprise') navigate('/entreprise/dashboard');
       else if (parsedUser?.role === 'admin') navigate('/admin/dashboard');
@@ -169,11 +169,11 @@ export default function Login() {
             <p className="text-xs font-medium text-gray-500 mb-3 uppercase tracking-wide">Comptes de test</p>
             <div className="space-y-2">
               {[
-                { role: 'Étudiant', email: 'bara.sall@unchk.edu.sn', color: 'bg-blue-50 text-blue-700' },
-                { role: 'Diplômé', email: 'diplome.test@gmail.com', color: 'bg-purple-50 text-purple-700' },
+                { role: 'Étudiant', email: 'etudianttest@unchk.edu.sn', color: 'bg-blue-50 text-blue-700' },
+                { role: 'Diplômé', email: 'diplome@test.sn', color: 'bg-purple-50 text-purple-700' },
                 { role: 'Entreprise', email: 'entreprise@test.sn', color: 'bg-green-50 text-green-700' },
                 { role: 'Admin', email: 'admin@unchk.sn', color: 'bg-red-50 text-red-700' },
-                { role: 'Superviseur', email: 'superviseur@unchk.edu.sn', color: 'bg-purple-50 text-purple-700' },
+                { role: 'Superviseur', email: 'superviseur1@unchk.sn', color: 'bg-purple-50 text-purple-700' },
               ].map((compte) => (
                 <button key={compte.role} type="button"
                   onClick={() => { setEmail(compte.email); setMotDePasse(''); }}
