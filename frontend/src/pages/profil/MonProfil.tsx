@@ -60,7 +60,7 @@ export default function MonProfil() {
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [form, setForm] = useState<any>({});
-  const userRole = JSON.parse(localStorage.getItem('user') || '{}').role || 'etudiant';
+  const userRole = JSON.parse(sessionStorage.getItem('user') || '{}').role || 'etudiant';
   const situationOptions = userRole === 'diplome' ? OPTIONS_DIPLOME : OPTIONS_ETUDIANT;
 
   // Upload états

@@ -13,7 +13,7 @@ export default function DashboardDirection() {
   const [stats, setStats] = useState<any>(null);
   const [avancees, setAvancees] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
   useEffect(() => {
     Promise.all([

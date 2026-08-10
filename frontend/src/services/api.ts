@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = sessionStorage.getItem('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -34,9 +34,9 @@ api.interceptors.response.use(
       }
       original._retry = true;
       isRefreshing    = true;
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = sessionStorage.getItem('refreshToken');
       if (!refreshToken) {
-        localStorage.clear();
+        sessionStorage.clear();
         window.location.href = '/login';
         return Promise.reject(error);
       }
@@ -44,7 +44,7 @@ api.interceptors.response.use(
         const base = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
         const { data } = await axios.post(`${base}/auth/refresh`, { refreshToken });
         const newToken = data.data.accessToken;
-        localStorage.setItem('accessToken', newToken);
+        sessionStorage.setItem('accessToken', newToken);
         processQueue(null, newToken);
         original.headers.Authorization = `Bearer ${newToken}`;
         return api(original);

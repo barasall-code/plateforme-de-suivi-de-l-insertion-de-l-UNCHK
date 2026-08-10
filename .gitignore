@@ -8,3 +8,8 @@ uploads/
 backend/prisma/seed-admin.ts
 backend/prisma/seed-demo.ts
 backend/prisma/update-admin.ts
+backend/prepare-statut-diplome.js
+backend/prepare-candidatures-demo.js
+backend/enrich-all-candidatures.js
+backend/list-all-candidatures.js
+backend/enrich-lettres-restantes.js

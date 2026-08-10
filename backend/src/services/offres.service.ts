@@ -12,18 +12,20 @@ export async function getOffres(filters: any) {
     ];
   }
 
-  const offres = await prisma.offre.findMany({
-    where,
-    include: {
-      entreprise: { select: { nomEntreprise: true, secteurActivite: true } },
-      competences: { include: { competence: true } },
-    },
-    orderBy: { datePublication: 'desc' },
-    skip: filters.page ? (Number(filters.page) - 1) * 10 : 0,
-    take: 10,
-  });
+  const [offres, total] = await Promise.all([
+    prisma.offre.findMany({
+      where,
+      include: {
+        entreprise: { select: { nomEntreprise: true, secteurActivite: true } },
+        competences: { include: { competence: true } },
+      },
+      orderBy: { datePublication: 'desc' },
+      skip: filters.page ? (Number(filters.page) - 1) * 10 : 0,
+      take: 10,
+    }),
+    prisma.offre.count({ where }),
+  ]);
 
-  const total = await prisma.offre.count({ where });
   return { offres, total, page: Number(filters.page) || 1, totalPages: Math.ceil(total / 10) };
 }
 

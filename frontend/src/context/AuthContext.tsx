@@ -32,8 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const warningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const savedUser = localStorage.getItem('user');
+    const token = sessionStorage.getItem('accessToken');
+    const savedUser = sessionStorage.getItem('user');
     if (token && savedUser) {
       setAccessToken(token);
       setUser(JSON.parse(savedUser));
@@ -48,9 +48,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     clearTimers();
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('user');
     setAccessToken(null);
     setUser(null);
     setShowInactivityWarning(false);
@@ -94,9 +94,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, motDePasse: string) => {
     const response = await api.post('/auth/login', { email, motDePasse });
     const { accessToken, refreshToken, user } = response.data.data;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('accessToken', accessToken);
+    sessionStorage.setItem('refreshToken', refreshToken);
+    sessionStorage.setItem('user', JSON.stringify(user));
     setAccessToken(accessToken);
     setUser(user);
   };

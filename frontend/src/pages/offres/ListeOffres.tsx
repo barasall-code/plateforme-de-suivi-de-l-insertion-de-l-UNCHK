@@ -77,7 +77,7 @@ export default function ListeOffres() {
       return;
     }
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = sessionStorage.getItem('accessToken');
       await fetch('http://localhost:3001/api/notifications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },

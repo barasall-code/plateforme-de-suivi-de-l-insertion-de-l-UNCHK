@@ -33,7 +33,7 @@ export default function DashboardDiplome() {
   const [statuts, setStatuts] = useState<any[]>([]);
   const [candidatures, setCandidatures] = useState<any[]>([]);
   const [offres, setOffres] = useState<any[]>([]);
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}');
 
   useEffect(() => {
     Promise.all([
